@@ -223,6 +223,7 @@
       height: 380px;
       position: relative;
       overflow: hidden;
+      background: #0b0f17;
     }
 
     .hero-img-wrap img {
@@ -230,12 +231,66 @@
       height: 100%;
       object-fit: cover;
       object-position: center 20%;
-      transition: opacity 0.35s ease, transform 0.6s ease;
-      animation: heroBreathe 10s ease-in-out infinite alternate;
+      transition: opacity 0.3s ease;
+      will-change: transform;
+      -webkit-transform-origin: center center;
+      transform-origin: center center;
+      -webkit-animation: heroBreathe 4.5s ease-in-out infinite alternate;
+      animation: heroBreathe 4.5s ease-in-out infinite alternate;
+    }
+    @-webkit-keyframes heroBreathe {
+      0% {
+        -webkit-transform: scale(1) translateY(0);
+        transform: scale(1) translateY(0);
+      }
+      50% {
+        -webkit-transform: scale(1.04) translateY(-3px);
+        transform: scale(1.04) translateY(-3px);
+      }
+      100% {
+        -webkit-transform: scale(1.07) translateY(-6px);
+        transform: scale(1.07) translateY(-6px);
+      }
     }
     @keyframes heroBreathe {
-      0% { transform: scale(1); }
-      100% { transform: scale(1.035); }
+      0% {
+        transform: scale(1) translateY(0);
+      }
+      50% {
+        transform: scale(1.04) translateY(-3px);
+      }
+      100% {
+        transform: scale(1.07) translateY(-6px);
+      }
+    }
+
+    /* Candlelight ambient flickering glow overlay */
+    .candle-ambient-glow {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      pointer-events: none;
+      background: radial-gradient(circle at 82% 62%, rgba(251, 191, 36, 0.28) 0%, rgba(245, 158, 11, 0.12) 32%, transparent 68%);
+      mix-blend-mode: screen;
+      -webkit-animation: candleFlicker 2.5s ease-in-out infinite alternate;
+      animation: candleFlicker 2.5s ease-in-out infinite alternate;
+      z-index: 1;
+    }
+    @-webkit-keyframes candleFlicker {
+      0% { opacity: 0.55; -webkit-transform: scale(0.98); }
+      30% { opacity: 0.95; -webkit-transform: scale(1.03); }
+      60% { opacity: 0.7; -webkit-transform: scale(0.99); }
+      85% { opacity: 1; -webkit-transform: scale(1.04); }
+      100% { opacity: 0.8; -webkit-transform: scale(1.01); }
+    }
+    @keyframes candleFlicker {
+      0% { opacity: 0.55; transform: scale(0.98); }
+      30% { opacity: 0.95; transform: scale(1.03); }
+      60% { opacity: 0.7; transform: scale(0.99); }
+      85% { opacity: 1; transform: scale(1.04); }
+      100% { opacity: 0.8; transform: scale(1.01); }
     }
 
     .hero-img-wrap::after {
@@ -246,6 +301,7 @@
       right: 0;
       height: 120px;
       background: linear-gradient(to top, var(--card-bg), transparent);
+      z-index: 2;
     }
 
     .hero-content {
@@ -1512,6 +1568,7 @@
 
     <div class="hero-img-wrap">
       <img id="hero-counselor-img" src="assets/halmoni.jpg" alt="연화 할머니" width="96" height="96" loading="eager" fetchpriority="high">
+      <div class="candle-ambient-glow"></div>
     </div>
     <div class="hero-content">
       <span class="hero-tag" id="hero-counselor-tag">인생 풍파 · 재물 대가</span>
