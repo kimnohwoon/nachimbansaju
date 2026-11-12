@@ -2535,16 +2535,6 @@
       btnUnlockText.textContent = `👉 할머니의 비밀 비책 & 맞춤 책 선택하기 (더보기)`;
 
       // 3. Dynamic 8 Life Scores Calculation Engine (사주별 실시간 정밀 연산)
-      const myElem = ELEM_OF_GAN[dGan] || 'water';
-      const MOTHER_OF = { wood: 'water', fire: 'wood', earth: 'fire', metal: 'earth', water: 'metal' };
-      const DRAIN_OF = { wood: 'fire', fire: 'earth', earth: 'metal', metal: 'water', water: 'wood' };
-      const WEALTH_OF = { wood: 'earth', fire: 'metal', earth: 'water', metal: 'wood', water: 'fire' };
-      const OFFICER_OF = { wood: 'metal', fire: 'water', earth: 'wood', metal: 'fire', water: 'earth' };
-      const motherElem = MOTHER_OF[myElem] || 'metal';
-      const drainElem = DRAIN_OF[myElem] || 'wood';
-      const wealthElem = WEALTH_OF[myElem] || 'fire';
-      const officerElem = OFFICER_OF[myElem] || 'earth';
-
       const cntSelf = counts[myElem] || 0; // 비겁
       const cntOutput = counts[drainElem] || 0; // 식상
       const cntWealth = counts[wealthElem] || 0; // 재성
