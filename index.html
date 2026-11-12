@@ -1676,14 +1676,14 @@
           <span class="score-item-name">🌿 건강·체력</span>
           <span class="score-item-val" id="score-health">42점</span>
         </div>
-        <div class="score-item" style="grid-column: span 2; background: rgba(239, 68, 68, 0.12); border-color: rgba(239, 68, 68, 0.3);">
-          <span class="score-item-name" style="color: #fca5a5;">🚨 2027년 한 해 흐름 (조심)</span>
+        <div class="score-item" style="grid-column: span 2; background: rgba(239, 68, 68, 0.12); border-color: rgba(239, 68, 68, 0.3);" id="score-2027-box">
+          <span class="score-item-name" style="color: #fca5a5;" id="score-2027-title">🚨 2027년 한 해 흐름 (조심)</span>
           <span class="score-item-val" style="color: #ef4444;" id="score-2027">37점 (위기)</span>
         </div>
       </div>
       <div style="background: rgba(0,0,0,0.25); border-radius: 10px; padding: 10px 12px; font-size: 12px; color: #cbd5e1; line-height: 1.5;">
-        <span style="color: #4ade80; font-weight: 700;">🏆 가장 좋은 운:</span> 식상과 재성이 이어져 일한 만큼 돈이 붙는 구조!<br>
-        <span style="color: #ef4444; font-weight: 700;">⚠ 가장 조심할 운:</span> 2027년 정미년 화·토 중첩으로 인한 손재수와 피로 누적 주의!
+        <span style="color: #4ade80; font-weight: 700;">🏆 가장 좋은 운:</span> <span id="score-best-desc">식상과 재성이 이어져 일한 만큼 돈이 붙는 구조!</span><br>
+        <span style="color: #ef4444; font-weight: 700;">⚠ 가장 조심할 운:</span> <span id="score-worst-desc">2027년 정미년 화·토 중첩으로 인한 손재수와 피로 누적 주의!</span>
       </div>
     </div>
 
@@ -1841,15 +1841,13 @@
       <!-- Toss Checkout Button -->
       <button type="button" class="btn-checkout-toss" id="res-btn-checkout" onclick="triggerTossCheckout()">
         <span style="font-size: 16px;">💳</span>
-        <span id="res-btn-checkout-text">카드 · 카카오페이로 2027 신년운세 책 받기 (9,900원)</span>
+        <span id="res-btn-checkout-text">2027 신년운세 즉시 결제하기 (9,900원)</span>
       </button>
 
-      <div style="display: flex; justify-content: center; align-items: center; gap: 8px; margin-top: 12px; flex-wrap: wrap;">
-        <span style="font-size: 11px; color: #4ade80;">⚡ 결제 즉시 PDF 자동 다운로드</span>
+      <div style="display: flex; justify-content: center; align-items: center; gap: 8px; margin-top: 12px; font-size: 11px; color: #4ade80; font-weight: 700;">
+        <span>⚡ 결제 즉시 PDF 자동 다운로드</span>
         <span style="color: #475569;">·</span>
-        <a href="https://open.kakao.com/o/sfdOLuWi" target="_blank" style="font-size: 11px; color: #facc15; text-decoration: underline;">
-          💬 카톡 1:1 상담 및 무통장 입금
-        </a>
+        <span>🔒 256비트 안전결제</span>
       </div>
       
       <p style="font-size: 11px; color: #94a3b8; margin-top: 12px;">
@@ -2062,7 +2060,7 @@
         '제4부. 2027년 1월~12월 월별 운세 달력 (위기 날짜 & 기회 날짜 팩트체크)',
         '제5부. 나를 살릴 결정적 귀인(貴人)과 2027 액땜 개운 비책'
       ],
-      btn: '카드 · 카카오페이로 2027 신년운세 책 받기 (9,900원)'
+      btn: '2027 신년운세 즉시 결제하기 (9,900원)'
     },
     life: {
       price: 29900,
@@ -2084,7 +2082,7 @@
         '제9부. 나를 살리고 지켜줄 결정적 귀인(貴人)의 특징',
         '제10부. 말년운과 내 인생의 큰 그림을 완성하는 개운 비책'
       ],
-      btn: '카드 · 카카오페이로 100쪽 평생사주 책 받기 (29,900원)'
+      btn: '100쪽 평생사주 즉시 결제하기 (29,900원)'
     },
     child: {
       price: 19900,
@@ -2101,13 +2099,13 @@
         '제4부. 부모 자식 갈등 없는 상처 제로 1:1 맞춤 훈육 솔루션',
         '제5부. 평생을 좌우할 입시·진학·시험 대운과 조심할 시기'
       ],
-      btn: '카드 · 카카오페이로 자녀 사주 솔루션 책 받기 (19,900원)'
+      btn: '자녀 사주 솔루션 즉시 결제하기 (19,900원)'
     },
     couple: {
       price: 39900,
       originalPrice: 120000,
       discountRate: '67%',
-      name: '20인 사주 & 평생 궁합 완전판 PDF 책',
+      name: '2인 사주 & 평생 궁합 완전판 PDF 책',
       badge: '💔 왜 사랑하는데 매일 지옥처럼 싸울까?',
       title: '각자 사주 분석부터 화해 날짜까지<br><span>2인 사주 & 평생 궁합 완전판 PDF 책</span>',
       desc: '부부, 연인, 동업자… 죽도록 안 맞고 매일 속 터지는 이유가 사주 궁합에 다 나와 있습니다.<br>각자의 타고난 사주 분석은 물론 두 사람의 오행 합충, 갈등 촉발 버튼, <b>말 꺼내기 좋은 화해 날짜</b>까지 A4 정밀 PDF 책으로 밝혀드립니다.',
@@ -2120,7 +2118,7 @@
         '제6부. 돈 관리와 집안일, 미래를 합칠 때 터지는 위기 시기',
         '제7부. 평생 백년해로하기 위한 1:1 맞춤 화해·소통 개운 비책'
       ],
-      btn: '카드 · 카카오페이로 2인 사주&궁합 책 받기 (39,900원)'
+      btn: '2인 사주&궁합 즉시 결제하기 (39,900원)'
     }
   };
 
@@ -2535,6 +2533,160 @@
       }
       blurElem.textContent = blurText;
       btnUnlockText.textContent = `👉 할머니의 비밀 비책 & 맞춤 책 선택하기 (더보기)`;
+
+      // 3. Dynamic 8 Life Scores Calculation Engine (사주별 실시간 정밀 연산)
+      const myElem = ELEM_OF_GAN[dGan] || 'water';
+      const MOTHER_OF = { wood: 'water', fire: 'wood', earth: 'fire', metal: 'earth', water: 'metal' };
+      const DRAIN_OF = { wood: 'fire', fire: 'earth', earth: 'metal', metal: 'water', water: 'wood' };
+      const WEALTH_OF = { wood: 'earth', fire: 'metal', earth: 'water', metal: 'wood', water: 'fire' };
+      const OFFICER_OF = { wood: 'metal', fire: 'water', earth: 'wood', metal: 'fire', water: 'earth' };
+      const motherElem = MOTHER_OF[myElem] || 'metal';
+      const drainElem = DRAIN_OF[myElem] || 'wood';
+      const wealthElem = WEALTH_OF[myElem] || 'fire';
+      const officerElem = OFFICER_OF[myElem] || 'earth';
+
+      const cntSelf = counts[myElem] || 0; // 비겁
+      const cntOutput = counts[drainElem] || 0; // 식상
+      const cntWealth = counts[wealthElem] || 0; // 재성
+      const cntPower = counts[officerElem] || 0; // 관성
+      const cntResource = counts[motherElem] || 0; // 인성
+
+      // 1) 💰 돈 모으기 (재물 보존 & 축적운)
+      let sMoney = 50;
+      if (cntWealth === 1 || cntWealth === 2) {
+        sMoney += 18;
+        if (supportPct >= 40) sMoney += 12;
+        if (cntOutput >= 1) sMoney += 8;
+      } else if (cntWealth >= 3) {
+        sMoney += (supportPct >= 45 ? 12 : -6);
+        if (cntSelf >= 3) sMoney -= 8;
+      } else {
+        sMoney += (cntOutput >= 2 ? 6 : -10);
+      }
+      sMoney = Math.max(35, Math.min(94, Math.round(sMoney + ((year * 3 + month * 7 + day) % 9) - 4)));
+
+      // 2) 💼 직장·이직 (관운 & 조직 적응 & 명예)
+      let sJob = 50;
+      if (cntPower >= 1 && cntResource >= 1) {
+        sJob += 24;
+      } else if (cntPower >= 1) {
+        sJob += (supportPct >= 40 ? 14 : -4);
+      } else if (cntResource >= 2) {
+        sJob += 10;
+      } else {
+        sJob -= 8;
+      }
+      if (cntOutput >= 3 && cntPower >= 1) sJob -= 12;
+      sJob = Math.max(36, Math.min(93, Math.round(sJob + ((month * 5 + day * 3) % 9) - 4)));
+
+      // 3) 🏢 내 사업운 (창업, 독립, 장사, 추진력)
+      let sBiz = 48;
+      if (cntOutput >= 1) sBiz += cntOutput * 8;
+      if (cntWealth >= 1) sBiz += cntWealth * 7;
+      if (supportPct >= 40) sBiz += 8;
+      if (cntPower >= 2 && cntOutput === 0) sBiz -= 14;
+      sBiz = Math.max(34, Math.min(95, Math.round(sBiz + ((day * 7 + year) % 9) - 4)));
+
+      // 4) 💖 연애·인기 (도화살, 이성 매력, 사교성)
+      const jiList = [yJi, mJi, dJi, hJi].filter(Boolean);
+      const dohwaChars = ['子', '午', '卯', '酉'];
+      const dohwaCount = jiList.filter(j => dohwaChars.includes(j)).length;
+      let sLove = 42 + (dohwaCount * 14);
+      if (cntOutput >= 1) sLove += 8;
+      if (cntWealth >= 2) sLove += 6;
+      sLove = Math.max(38, Math.min(96, Math.round(sLove + ((month * 2 + day) % 7) - 3)));
+
+      // 5) 💍 결혼·궁합 (배우자궁 안정도 & 가정 화합)
+      const clashingJis = { '子': '午', '午': '子', '丑': '未', '未': '丑', '寅': '申', '申': '寅', '卯': '酉', '酉': '卯', '辰': '戌', '戌': '辰', '巳': '亥', '亥': '巳' };
+      const hasClashWithDay = jiList.some(j => j === clashingJis[dJi]);
+      let sMarriage = 58;
+      if (hasClashWithDay) {
+        sMarriage -= 18;
+      } else {
+        sMarriage += 12;
+      }
+      if (cntSelf >= 3) sMarriage -= 8;
+      sMarriage = Math.max(32, Math.min(91, Math.round(sMarriage + ((year + day * 4) % 9) - 4)));
+
+      // 6) 🌿 건강·체력 (오행 균형 & 조후)
+      let sHealth = 65;
+      const zeroCount = ['wood', 'fire', 'earth', 'metal', 'water'].filter(el => counts[el] === 0).length;
+      const overCount = ['wood', 'fire', 'earth', 'metal', 'water'].filter(el => counts[el] >= 3).length;
+      sHealth -= (zeroCount * 9);
+      sHealth -= (overCount * 8);
+      if (supportPct >= 35 && supportPct <= 65) sHealth += 10;
+      sHealth = Math.max(35, Math.min(92, Math.round(sHealth + ((month * 4 + day) % 7) - 3)));
+
+      // 7) 🚨 2027년 한 해 흐름 (정미년 丁未年 대운 대조)
+      let s2027 = 55;
+      if (dGan === '壬') s2027 += 16;
+      else if (dGan === '癸') s2027 -= 16;
+      else if (dGan === '庚' || dGan === '辛') s2027 += 10;
+      
+      if (jiList.includes('丑')) s2027 -= 14;
+      if (jiList.includes('午')) s2027 += 12;
+
+      if (counts.fire >= 3 || counts.earth >= 3) {
+        s2027 -= 12;
+      } else if (counts.water >= 3 || counts.metal >= 3) {
+        s2027 += 15;
+      }
+      s2027 = Math.max(30, Math.min(92, Math.round(s2027 + ((day * 2) % 7) - 3)));
+
+      // Render Scores to DOM
+      const elMoney = document.getElementById('score-money');
+      const elJob = document.getElementById('score-job');
+      const elBiz = document.getElementById('score-biz');
+      const elLove = document.getElementById('score-love');
+      const elMarriage = document.getElementById('score-marriage');
+      const elHealth = document.getElementById('score-health');
+      const el2027 = document.getElementById('score-2027');
+      const box2027 = document.getElementById('score-2027-box');
+      const title2027 = document.getElementById('score-2027-title');
+
+      if (elMoney) elMoney.textContent = `${sMoney}점`;
+      if (elJob) elJob.textContent = `${sJob}점`;
+      if (elBiz) elBiz.textContent = `${sBiz}점`;
+      if (elLove) elLove.textContent = `${sLove}점`;
+      if (elMarriage) elMarriage.textContent = `${sMarriage}점`;
+      if (elHealth) elHealth.textContent = `${sHealth}점`;
+      
+      if (el2027 && box2027 && title2027) {
+        let label2027 = s2027 >= 70 ? `${s2027}점 (대길 대운)` : (s2027 >= 50 ? `${s2027}점 (평탄·안정)` : `${s2027}점 (위기·조심)`);
+        el2027.textContent = label2027;
+        if (s2027 >= 70) {
+          el2027.style.color = '#4ade80';
+          box2027.style.background = 'rgba(74, 222, 128, 0.12)';
+          box2027.style.borderColor = 'rgba(74, 222, 128, 0.3)';
+          title2027.style.color = '#86efac';
+          title2027.textContent = '🌟 2027년 한 해 흐름 (기회)';
+        } else {
+          el2027.style.color = '#ef4444';
+          box2027.style.background = 'rgba(239, 68, 68, 0.12)';
+          box2027.style.borderColor = 'rgba(239, 68, 68, 0.3)';
+          title2027.style.color = '#fca5a5';
+          title2027.textContent = '🚨 2027년 한 해 흐름 (조심)';
+        }
+      }
+
+      // Best & Worst Score Analysis
+      const scoreList = [
+        { name: '재물·돈 모으기', score: sMoney, goodMsg: '식상과 재성의 흐름이 좋아 일한 만큼 통장에 돈이 꽂히는 재복 구조!', badMsg: '재물 새는 구멍(손재수)이 있어 돈 관리에 각별한 주의 필요!' },
+        { name: '직장·명예운', score: sJob, goodMsg: '조직에서 인정받고 승진·영전하는 관인상생의 흐름!', badMsg: '직장 상사·동료와의 갈등과 잦은 이직 고민이 찾아오는 시기!' },
+        { name: '사업·창업운', score: sBiz, goodMsg: '남 밑에 있기보다 내 판을 깔았을 때 결실이 극대화되는 독자 노선형!', badMsg: '무리한 사업 확장이나 동업 시 사기·손실 위험이 높은 구조!' },
+        { name: '연애·인기운', score: sLove, goodMsg: '도화살과 이성 매력이 만발하여 어딜 가나 눈길을 끄는 인기운!', badMsg: '이성으로 인한 구설수나 쓸데없는 감정 소모가 큰 시기!' },
+        { name: '결혼·배우자운', score: sMarriage, goodMsg: '배우자 자리가 평온하여 든든한 평생 내 편을 만나는 화합 구조!', badMsg: '일지 충·극으로 인해 부부 사이 마찰과 성격 차이 고비 주의!' },
+        { name: '건강·체력운', score: sHealth, goodMsg: '오행이 고루 분포하여 강인한 회복력과 뒷심을 타고난 체력!', badMsg: '오행 불균형으로 인한 만성 피로와 스트레스 화병 주의!' }
+      ];
+
+      scoreList.sort((a, b) => b.score - a.score);
+      const bestScore = scoreList[0];
+      const worstScore = scoreList[scoreList.length - 1];
+
+      const bestEl = document.getElementById('score-best-desc');
+      const worstEl = document.getElementById('score-worst-desc');
+      if (bestEl) bestEl.textContent = `${bestScore.name}(${bestScore.score}점): ${bestScore.goodMsg}`;
+      if (worstEl) worstEl.textContent = `${worstScore.name}(${worstScore.score}점): ${worstScore.badMsg}`;
 
       // Activate matching product tab
       if (selectedConcern === 'child') {
