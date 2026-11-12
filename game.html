@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>북부 대공의 시크릿 티룸 · 로판 머지</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+    body {
+      background: #0f141c;
+      font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Pretendard", sans-serif;
+      color: #2b2236;
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+    }
+    .game-container {
+      width: 100%;
+      max-width: 440px;
+      background: linear-gradient(180deg, #fdfbf7 0%, #f4effa 100%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      box-shadow: 0 0 35px rgba(0,0,0,0.6);
+    }
+    /* Top Bar */
+    .top-bar {
+      background: #1b2234;
+      color: #fbf7ee;
+      padding: 10px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid #d4af37;
+    }
+    .top-stat {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 13px;
+      font-weight: 700;
+      background: rgba(255,255,255,0.08);
+      padding: 4px 10px;
+      border-radius: 20px;
+      border: 1px solid rgba(212,175,55,0.4);
+    }
+    .stat-energy { color: #ffe082; }
+    .stat-coin { color: #ffd54f; }
+    .stat-gem { color: #ff80ab; }
+
+    /* Header Banner */
+    .header-banner {
+      background: linear-gradient(90deg, #2a1b40 0%, #1c2438 100%);
+      color: #f5eedc;
+      padding: 8px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      border-bottom: 1px solid #d4af37;
+    }
+    .header-title {
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: #f9f5e8;
+    }
+    .header-btn {
+      background: #d4af37;
+      color: #1a1226;
+      border: none;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    /* Story Synopsis Tag */
+    .story-tag-bar {
+      background: #efe8f8;
+      color: #5c3587;
+      padding: 6px 14px;
+      font-size: 11px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      border-bottom: 1px solid #dcd1ea;
+    }
+
+    /* Quest / Character Dialogue Card */
+    .quest-card {
+      margin: 10px 14px 6px;
+      background: #ffffff;
+      border: 2px solid #e2d5f1;
+      border-radius: 16px;
+      padding: 12px;
+      box-shadow: 0 4px 14px rgba(74,38,110,0.08);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      position: relative;
+    }
+    .quest-avatar-wrap {
+      position: relative;
+    }
+    .quest-avatar {
+      font-size: 38px;
+      background: #f3ebfa;
+      width: 54px;
+      height: 54px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      border: 2px solid #9c27b0;
+      flex-shrink: 0;
+    }
+    .quest-char-role {
+      position: absolute;
+      bottom: -4px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #2a1b40;
+      color: #ffd54f;
+      font-size: 9px;
+      font-weight: 800;
+      padding: 1px 6px;
+      border-radius: 8px;
+      white-space: nowrap;
+    }
+    .quest-info {
+      flex: 1;
+      min-width: 0;
+    }
+    .quest-bubble {
+      font-size: 12px;
+      font-weight: 700;
+      color: #1a1226;
+      margin-bottom: 4px;
+      line-height: 1.35;
+    }
+    .quest-req {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      color: #7b5b9c;
+    }
+    .quest-req-icon {
+      font-size: 16px;
+    }
+    .quest-btn {
+      background: linear-gradient(135deg, #7b1fa2 0%, #4a148c 100%);
+      color: #fff;
+      border: none;
+      padding: 10px 14px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(123,31,162,0.4);
+      transition: transform 0.1s;
+      flex-shrink: 0;
+    }
+    .quest-btn:active {
+      transform: scale(0.95);
+    }
+    .quest-btn:disabled {
+      background: #cfd8dc;
+      box-shadow: none;
+      cursor: not-allowed;
+    }
+
+    /* Generator Box */
+    .gen-section {
+      margin: 6px 14px;
+      display: flex;
+      gap: 8px;
+    }
+    .btn-generator {
+      flex: 1;
+      background: linear-gradient(135deg, #283593 0%, #1a237e 100%);
+      color: #fffdf9;
+      border: 2px solid #ffd54f;
+      padding: 12px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(26,35,126,0.3);
+      transition: transform 0.1s;
+    }
+    .btn-generator:active {
+      transform: scale(0.97);
+    }
+    .btn-recharge {
+      background: #fff8e1;
+      border: 2px solid #ffa000;
+      color: #e65100;
+      padding: 0 14px;
+      border-radius: 14px;
+      font-size: 11px;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Merge Grid Board */
+    .board-wrapper {
+      flex: 1;
+      margin: 6px 14px 12px;
+      background: #2b213a;
+      border: 3px solid #d4af37;
+      border-radius: 18px;
+      padding: 10px;
+      box-shadow: inset 0 3px 12px rgba(0,0,0,0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .board-grid {
+      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-gap: 8px;
+    }
+    .board-cell {
+      aspect-ratio: 1;
+      background: #faf6ff;
+      border-radius: 12px;
+      border: 1px solid #d1c4e9;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+      cursor: pointer;
+      transition: transform 0.15s, border-color 0.15s;
+    }
+    .board-cell:active {
+      transform: scale(0.96);
+    }
+    .board-cell.selected {
+      border: 3px solid #ff4081 !important;
+      background: #fce4ec !important;
+      animation: pulseCell 0.8s infinite alternate;
+    }
+    @keyframes pulseCell {
+      from { transform: scale(1); }
+      to { transform: scale(1.05); }
+    }
+    .item-icon {
+      font-size: 28px;
+      line-height: 1;
+      margin-bottom: 2px;
+      pointer-events: none;
+    }
+    .item-name {
+      font-size: 10px;
+      font-weight: 700;
+      color: #311b92;
+      pointer-events: none;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 90%;
+    }
+    .item-level {
+      position: absolute;
+      top: 3px;
+      left: 4px;
+      font-size: 9px;
+      font-weight: 800;
+      color: #6a1b9a;
+      background: rgba(255,255,255,0.85);
+      padding: 1px 4px;
+      border-radius: 6px;
+    }
+
+    /* Bottom Info */
+    .bottom-info {
+      padding: 10px 14px 16px;
+      text-align: center;
+      font-size: 11px;
+      color: #6a5282;
+      line-height: 1.4;
+      border-top: 1px solid #e1d6ed;
+    }
+    .bottom-tag {
+      display: inline-block;
+      background: #f3e5f5;
+      color: #7b1fa2;
+      border: 1px solid #ce93d8;
+      padding: 3px 8px;
+      border-radius: 10px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    /* Modal */
+    .modal-overlay {
+      display: none;
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(15,20,28,0.75);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .modal-card {
+      background: #ffffff;
+      border: 3px solid #d4af37;
+      border-radius: 20px;
+      width: 100%;
+      max-width: 360px;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    }
+    .modal-title {
+      font-size: 17px;
+      font-weight: 800;
+      color: #2a1b40;
+      margin-bottom: 10px;
+    }
+    .modal-desc {
+      font-size: 12px;
+      color: #4a3861;
+      line-height: 1.6;
+      margin-bottom: 18px;
+      text-align: left;
+      background: #fbf9fe;
+      padding: 12px;
+      border-radius: 12px;
+      border: 1px solid #e8def2;
+    }
+    .modal-btn {
+      background: #2a1b40;
+      color: #ffd54f;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    /* Sparkle Particle Animation */
+    .particle {
+      position: absolute;
+      pointer-events: none;
+      font-size: 18px;
+      animation: floatUp 0.6s ease-out forwards;
+      z-index: 50;
+    }
+    @keyframes floatUp {
+      0% { opacity: 1; transform: translateY(0) scale(0.8); }
+      100% { opacity: 0; transform: translateY(-30px) scale(1.4); }
+    }
+  </style>
+</head>
+<body>
+
+<div class="game-container">
+  <!-- Top Stats Bar -->
+  <div class="top-bar">
+    <div class="top-stat stat-energy">
+      ⚡ <span id="stat-energy">10</span>/10
+    </div>
+    <div class="top-stat stat-coin">
+      🪙 <span id="stat-coin">0</span> 골드
+    </div>
+    <div class="top-stat stat-gem">
+      💎 <span id="stat-gem">10</span> 다이아
+    </div>
+  </div>
+
+  <!-- Header Banner -->
+  <div class="header-banner">
+    <div class="header-title">
+      🏰 <strong>북부 대공의 시크릿 티룸</strong>
+    </div>
+    <button class="header-btn" onclick="openBookModal()">📜 황실 도감</button>
+  </div>
+
+  <!-- Story Synopsis Tag -->
+  <div class="story-tag-bar">
+    <span>📖</span> "사형대에서 과거로 회귀한 몰락 영애... 대공저를 사로잡다!"
+  </div>
+
+  <!-- Quest Card -->
+  <div class="quest-card">
+    <div class="quest-avatar-wrap">
+      <div class="quest-avatar" id="quest-avatar">❄️</div>
+      <div class="quest-char-role" id="quest-role">북부 대공</div>
+    </div>
+    <div class="quest-info">
+      <div class="quest-bubble" id="quest-bubble">"영애, 이 차의 향기가... 어째서 내 차가운 피를 끓게 만드는 거지?"</div>
+      <div class="quest-req" id="quest-req">
+        주문: <span class="quest-req-icon" id="quest-icon">🫖</span> <strong id="quest-name">로열 얼그레이 (Lv.3)</strong>
+        <span id="quest-status" style="color:#d84315; font-weight:700;">(0/1)</span>
+      </div>
+    </div>
+    <button class="quest-btn" id="quest-btn" onclick="completeQuest()" disabled>헌상</button>
+  </div>
+
+  <!-- Generator Section -->
+  <div class="gen-section">
+    <button class="btn-generator" onclick="generateItem()">
+      <span>🫖</span> 은제 티포트 추출 (⚡ -1)
+    </button>
+    <button class="btn-recharge" onclick="rechargeEnergy()">
+      <span>⚡ 완충</span>
+      <span style="font-size:9px; color:#c2185b;">(현질 0원)</span>
+    </button>
+  </div>
+
+  <!-- Merge Board -->
+  <div class="board-wrapper">
+    <div class="board-grid" id="board">
+      <!-- 16 cells generated by JS -->
+    </div>
+  </div>
+
+  <!-- Bottom Info -->
+  <div class="bottom-info">
+    <div class="bottom-tag">👑 로판 머지 시제품 가동 중</div><br>
+    같은 다과 2개를 <strong>터치</strong>하면 상위 황실 보물로 합쳐져요! ✨<br>
+    대공·황태자·악녀의 취향을 맞춰 사교계 최고의 티룸을 완성해 보세요 ㅎㅎ
+  </div>
+
+  <!-- Modal -->
+  <div class="modal-overlay" id="modal" onclick="closeModal()">
+    <div class="modal-card" onclick="event.stopPropagation()">
+      <div class="modal-title" id="modal-title">📜 제국 사교계 8대 다과 도감</div>
+      <div class="modal-desc" id="modal-desc">
+        1단계: 🍃 고산지 야생 찻잎<br>
+        2단계: 💧 성수 한 방울<br>
+        3단계: 🫖 로열 얼그레이 홍차<br>
+        4단계: 🧁 장미 마카롱 타워<br>
+        5단계: 💎 에메랄드 크리스탈 티<br>
+        6단계: 👑 황실 전용 골드 티세트<br>
+        7단계: 💍 북부 대공의 가문 인장 반지<br>
+        8단계: ✨ 사교계 여왕의 다이아 티아라
+      </div>
+      <button class="modal-btn" onclick="closeModal()">닫기</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Audio synthesizer (Web Audio API)
+  const AudioContext = window.AudioContext || window.webkitAudioContext;
+  let audioCtx = null;
+  function getAudioCtx() {
+    if (!audioCtx) audioCtx = new AudioContext();
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+    return audioCtx;
+  }
+  function playSound(type) {
+    try {
+      const ctx = getAudioCtx();
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      const now = ctx.currentTime;
+      if (type === 'pop') {
+        osc.frequency.setValueAtTime(380, now);
+        osc.frequency.exponentialRampToValueAtTime(760, now + 0.08);
+        gain.gain.setValueAtTime(0.15, now);
+        gain.gain.linearRampToValueAtTime(0.01, now + 0.08);
+        osc.start(now);
+        osc.stop(now + 0.08);
+      } else if (type === 'merge') {
+        osc.frequency.setValueAtTime(587.33, now); // D5
+        osc.frequency.setValueAtTime(739.99, now + 0.06); // F#5
+        osc.frequency.setValueAtTime(880.00, now + 0.12); // A5
+        gain.gain.setValueAtTime(0.2, now);
+        gain.gain.linearRampToValueAtTime(0.01, now + 0.2);
+        osc.start(now);
+        osc.stop(now + 0.2);
+      } else if (type === 'coin') {
+        osc.frequency.setValueAtTime(987.77, now); // B5
+        osc.frequency.setValueAtTime(1479.98, now + 0.08); // F#6
+        gain.gain.setValueAtTime(0.25, now);
+        gain.gain.linearRampToValueAtTime(0.01, now + 0.25);
+        osc.start(now);
+        osc.stop(now + 0.25);
+      }
+    } catch(e) {}
+  }
+
+  // Items definition (8 tiers - Ropan style)
+  const ITEMS = [
+    null,
+    { level: 1, name: '야생 찻잎', icon: '🍃' },
+    { level: 2, name: '성수 한방울', icon: '💧' },
+    { level: 3, name: '로열 얼그레이', icon: '🫖' },
+    { level: 4, name: '장미 마카롱', icon: '🧁' },
+    { level: 5, name: '에메랄드 티', icon: '💎' },
+    { level: 6, name: '황실 티세트', icon: '👑' },
+    { level: 7, name: '대공의 반지', icon: '💍' },
+    { level: 8, name: '여왕의 티아라', icon: '✨' }
+  ];
+
+  // Game State
+  const GRID_SIZE = 16;
+  let boardState = new Array(GRID_SIZE).fill(0);
+  let selectedIndex = -1;
+  let energy = 10;
+  let coin = 0;
+  let gem = 10;
+
+  // Ropan Quest Pool
+  const QUEST_POOL = [
+    { targetLevel: 3, avatar: '❄️', role: '북부 대공', bubble: '영애, 이 차의 향기가... 어째서 내 얼어붙은 피를 끓게 만드는 거지?', rewardCoin: 60 },
+    { targetLevel: 4, avatar: '👑', role: '황태자', bubble: '그대가 만든 장미 마카롱이라면... 제국이라도 바칠 수 있소.', rewardCoin: 150 },
+    { targetLevel: 2, avatar: '🥀', role: '악녀 이사벨라', bubble: '흥! 맑은 성수로 낯빛이라도 고쳐보시지, 천한 영애!', rewardCoin: 40 },
+    { targetLevel: 5, avatar: '🛡️', role: '근위기사단장', bubble: '영애의 에메랄드 티를 지키기 위해서라면 검을 바치겠습니다.', rewardCoin: 320 },
+    { targetLevel: 3, avatar: '❄️', role: '집착 대공', bubble: '내게만 이 차를 내어주겠다고... 약속해.', rewardCoin: 120 }
+  ];
+  let currentQuestIndex = 0;
+
+  // Init Board
+  function initBoard() {
+    const boardEl = document.getElementById('board');
+    boardEl.innerHTML = '';
+    for (let i = 0; i < GRID_SIZE; i++) {
+      const cell = document.createElement('div');
+      cell.className = 'board-cell';
+      cell.id = 'cell-' + i;
+      cell.onclick = () => handleCellClick(i);
+      boardEl.appendChild(cell);
+    }
+    // Seed initial 3 items
+    boardState[0] = 1;
+    boardState[1] = 1;
+    boardState[2] = 2;
+    renderBoard();
+    updateQuestUI();
+  }
+
+  // Render
+  function renderBoard() {
+    for (let i = 0; i < GRID_SIZE; i++) {
+      const cell = document.getElementById('cell-' + i);
+      const itemLv = boardState[i];
+      cell.className = 'board-cell' + (selectedIndex === i ? ' selected' : '');
+      if (itemLv > 0 && ITEMS[itemLv]) {
+        const item = ITEMS[itemLv];
+        cell.innerHTML = `
+          <span class="item-level">Lv.${item.level}</span>
+          <span class="item-icon">${item.icon}</span>
+          <span class="item-name">${item.name}</span>
+        `;
+      } else {
+        cell.innerHTML = '';
+      }
+    }
+    document.getElementById('stat-energy').innerText = energy;
+    document.getElementById('stat-coin').innerText = coin;
+    document.getElementById('stat-gem').innerText = gem;
+    checkQuestReady();
+  }
+
+  // Handle Cell Click (Touch or Tap)
+  function handleCellClick(index) {
+    playSound('pop');
+    if (selectedIndex === -1) {
+      if (boardState[index] > 0) {
+        selectedIndex = index;
+      }
+    } else if (selectedIndex === index) {
+      selectedIndex = -1;
+    } else {
+      const fromItem = boardState[selectedIndex];
+      const toItem = boardState[index];
+
+      if (toItem === 0) {
+        boardState[index] = fromItem;
+        boardState[selectedIndex] = 0;
+        selectedIndex = -1;
+      } else if (toItem === fromItem) {
+        if (toItem < ITEMS.length - 1) {
+          const nextLv = toItem + 1;
+          boardState[index] = nextLv;
+          boardState[selectedIndex] = 0;
+          selectedIndex = -1;
+          playSound('merge');
+          spawnSparkle(index);
+        } else {
+          selectedIndex = index;
+        }
+      } else {
+        selectedIndex = index;
+      }
+    }
+    renderBoard();
+  }
+
+  // Sparkle Animation
+  function spawnSparkle(cellIndex) {
+    const cell = document.getElementById('cell-' + cellIndex);
+    if (!cell) return;
+    const p = document.createElement('span');
+    p.className = 'particle';
+    p.innerText = '✨';
+    cell.appendChild(p);
+    setTimeout(() => p.remove(), 600);
+  }
+
+  // Generator
+  function generateItem() {
+    if (energy <= 0) {
+      showEnergyAlert();
+      return;
+    }
+    const emptyIndices = [];
+    for (let i = 0; i < GRID_SIZE; i++) {
+      if (boardState[i] === 0) emptyIndices.push(i);
+    }
+    if (emptyIndices.length === 0) {
+      alert('티룸 진열장이 꽉 찼습니다! 같은 다과끼리 합쳐주세요!');
+      return;
+    }
+    energy--;
+    playSound('pop');
+
+    const targetIdx = emptyIndices[Math.floor(Math.random() * emptyIndices.length)];
+    const dropLv = Math.random() < 0.25 ? 2 : 1;
+    boardState[targetIdx] = dropLv;
+    spawnSparkle(targetIdx);
+    renderBoard();
+  }
+
+  // Recharge Energy
+  function rechargeEnergy() {
+    energy = 10;
+    playSound('coin');
+    alert('⚡ 황실 성수로 마력이 완충되었습니다! (10/10)\n노운 님은 30만 원 현질 안 하셔도 됩니다 ㅎㅎ');
+    renderBoard();
+  }
+
+  function showEnergyAlert() {
+    alert('⚡ 마력이 소진되었습니다!\n동방찻집이라면 지금 1,500원 결제창을 띄웠겠지만... ㅋㅋㅋ\n오른쪽 [⚡ 완충] 버튼을 누르면 0원에 즉시 채워집니다!');
+  }
+
+  // Quest Logic
+  function updateQuestUI() {
+    const q = QUEST_POOL[currentQuestIndex];
+    const target = ITEMS[q.targetLevel];
+    document.getElementById('quest-avatar').innerText = q.avatar;
+    document.getElementById('quest-role').innerText = q.role;
+    document.getElementById('quest-bubble').innerText = `"${q.bubble}"`;
+    document.getElementById('quest-icon').innerText = target.icon;
+    document.getElementById('quest-name').innerText = `${target.name} (Lv.${target.level})`;
+    checkQuestReady();
+  }
+
+  function checkQuestReady() {
+    const q = QUEST_POOL[currentQuestIndex];
+    let count = 0;
+    for (let i = 0; i < GRID_SIZE; i++) {
+      if (boardState[i] === q.targetLevel) count++;
+    }
+    const statusEl = document.getElementById('quest-status');
+    const btnEl = document.getElementById('quest-btn');
+    if (count > 0) {
+      statusEl.innerText = `(1/1) 바칠 수 있음!`;
+      statusEl.style.color = '#7b1fa2';
+      btnEl.disabled = false;
+    } else {
+      statusEl.innerText = `(0/1)`;
+      statusEl.style.color = '#d84315';
+      btnEl.disabled = true;
+    }
+  }
+
+  function completeQuest() {
+    const q = QUEST_POOL[currentQuestIndex];
+    for (let i = 0; i < GRID_SIZE; i++) {
+      if (boardState[i] === q.targetLevel) {
+        boardState[i] = 0;
+        break;
+      }
+    }
+    coin += q.rewardCoin;
+    playSound('coin');
+    alert(`💖 [${q.role}] 님의 호감도가 상승했습니다!\n🪙 +${q.rewardCoin} 골드 하사!`);
+
+    currentQuestIndex = (currentQuestIndex + 1) % QUEST_POOL.length;
+    updateQuestUI();
+    renderBoard();
+  }
+
+  function openBookModal() {
+    document.getElementById('modal').style.display = 'flex';
+  }
+  function closeModal() {
+    document.getElementById('modal').style.display = 'none';
+  }
+
+  setInterval(() => {
+    if (energy < 10) {
+      energy++;
+      document.getElementById('stat-energy').innerText = energy;
+    }
+  }, 10000);
+
+  initBoard();
+</script>
+
+</body>
+</html>
