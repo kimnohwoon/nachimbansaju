@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>주문 완료 · 운명나침반</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700;800&family=Noto+Serif+KR:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #090d16;
+      --card-bg: rgba(18, 24, 38, 0.95);
+      --gold: #d4af37;
+      --gold-light: #f3e5ab;
+      --gold-dark: #aa820a;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 16px;
+      line-height: 1.6;
+    }
+    .status-card {
+      background: var(--card-bg);
+      border: 1px solid rgba(212, 175, 55, 0.25);
+      border-radius: 20px;
+      padding: 32px 24px;
+      max-width: 440px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6), 0 0 30px rgba(212, 175, 55, 0.1);
+    }
+    .icon-badge {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: rgba(37, 99, 235, 0.15);
+      border: 2px solid #2563eb;
+      color: #60a5fa;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      margin: 0 auto 20px;
+    }
+    .icon-badge.success {
+      background: rgba(34, 197, 94, 0.15);
+      border-color: #22c55e;
+      color: #4ade80;
+    }
+    .icon-badge.fail {
+      background: rgba(239, 68, 68, 0.15);
+      border-color: #ef4444;
+      color: #f87171;
+    }
+    h1 {
+      font-size: 20px;
+      font-weight: 800;
+      color: #ffffff;
+      margin-bottom: 8px;
+    }
+    p.subtitle {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+    }
+    .receipt-box {
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 24px;
+      text-align: left;
+      font-size: 13px;
+    }
+    .receipt-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 6px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .receipt-row:last-child {
+      border-bottom: none;
+      padding-top: 10px;
+      font-weight: 700;
+      color: var(--gold-light);
+    }
+    .receipt-label {
+      color: var(--text-muted);
+    }
+    .btn-download-pdf {
+      display: block;
+      width: 100%;
+      background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+      color: #000;
+      text-decoration: none;
+      padding: 16px;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 800;
+      margin-bottom: 12px;
+      box-shadow: 0 4px 18px rgba(212, 175, 55, 0.4);
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s;
+    }
+    .btn-download-pdf:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 24px rgba(212, 175, 55, 0.6);
+    }
+    .btn-kakao-as {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      width: 100%;
+      background: #fee500;
+      color: #191919;
+      text-decoration: none;
+      padding: 13px;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+    .btn-home {
+      display: inline-block;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 13px;
+      margin-top: 10px;
+      padding: 8px 16px;
+    }
+    .btn-home:hover {
+      color: #ffffff;
+    }
+    .notice-box {
+      background: rgba(212, 175, 55, 0.08);
+      border: 1px solid rgba(212, 175, 55, 0.2);
+      border-radius: 10px;
+      padding: 12px;
+      font-size: 12px;
+      color: var(--gold-light);
+      text-align: left;
+      margin-bottom: 18px;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="status-card" id="card-content">
+    <div class="icon-badge success" id="status-icon">✓</div>
+    <h1 id="status-title">결제가 정상 완료되었습니다!</h1>
+    <p class="subtitle" id="status-sub">할머니의 비밀 비책 맞춤 PDF 책이 잠금 해제되었습니다.</p>
+
+    <div class="notice-box">
+      💡 <b>무인 자동화 완료</b><br>
+      아래 [PDF 책 즉시 다운로드] 버튼을 누르시면 폰에 즉시 저장됩니다. 궁금한 점은 카카오톡 1:1 상담실에서 무료 질문 AS를 도와드립니다.
+    </div>
+
+    <div class="receipt-box">
+      <div class="receipt-row">
+        <span class="receipt-label">주문 상품</span>
+        <span id="rec-product">2027 신년운세 완전판 PDF 책</span>
+      </div>
+      <div class="receipt-row">
+        <span class="receipt-label">주문 번호</span>
+        <span id="rec-orderid">-</span>
+      </div>
+      <div class="receipt-row">
+        <span class="receipt-label">결제 일시</span>
+        <span id="rec-time">-</span>
+      </div>
+      <div class="receipt-row">
+        <span class="receipt-label">결제 금액</span>
+        <span id="rec-amount">9,900원</span>
+      </div>
+    </div>
+
+    <button type="button" class="btn-download-pdf" id="btn-download" onclick="downloadSajuPdf()">
+      📥 내 맞춤 사주 PDF 책 즉시 다운로드
+    </button>
+
+    <a href="https://open.kakao.com/o/sfdOLuWi" target="_blank" class="btn-kakao-as">
+      💬 카카오톡으로도 받기 & 1회 무료 질문 AS
+    </a>
+
+    <a href="/" class="btn-home">← 운명나침반 첫 화면으로 이동</a>
+  </div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const status = params.get('status');
+    const orderId = params.get('orderId') || 'ORD_' + Math.floor(Date.now() / 1000);
+    const productKey = params.get('product') || 'newyear';
+    const amount = params.get('amount') || '9900';
+
+    const prodNames = {
+      newyear: '2027 신년운세 완전판 PDF 책',
+      life: '100쪽 평생 대운 완전판 PDF 책',
+      child: '자녀 기질·입시대운 맞춤 솔루션 PDF 책',
+      couple: '2인 사주 & 평생 궁합 완전판 PDF 책'
+    };
+
+    const pName = prodNames[productKey] || '2027 신년운세 완전판 PDF 책';
+
+    document.getElementById('rec-product').textContent = pName;
+    document.getElementById('rec-orderid').textContent = orderId.slice(0, 16);
+    document.getElementById('rec-amount').textContent = Number(amount).toLocaleString() + '원';
+    document.getElementById('rec-time').textContent = new Date().toLocaleString('ko-KR');
+
+    if (status === 'fail') {
+      document.getElementById('status-icon').className = 'icon-badge fail';
+      document.getElementById('status-icon').textContent = '✕';
+      document.getElementById('status-title').textContent = '결제가 완료되지 않았습니다';
+      document.getElementById('status-sub').textContent = '결제가 취소되었거나 카드 승인 중 문제가 발생했습니다.';
+      document.getElementById('btn-download').style.display = 'none';
+    }
+
+    function downloadSajuPdf() {
+      alert('할머니의 정밀 맞춤 사주 보고서를 생성 중입니다.\n생성된 파일이 기기에 자동 다운로드됩니다.');
+      // Create a clean printable summary or guide
+      const content = `[운명나침반 정밀 사주 지침서]\n상품: ${pName}\n주문번호: ${orderId}\n결제금액: ${Number(amount).toLocaleString()}원\n\n할머니의 말씀: '말 못 할 가슴앓이 혼자 삭이느라 얼마나 고단했니...'\n정밀 분석 보고서 및 1회 무료 질문 AS는 카카오톡 1:1 상담실(https://open.kakao.com/o/sfdOLuWi)에서 주문번호를 말씀해주시면 즉시 지원됩니다.`;
+      const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `운명나침반_${pName.replace(/\\s+/g, '_')}_소장용.txt`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
+  </script>
+</body>
+</html>

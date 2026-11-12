@@ -1,0 +1,2655 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>운명나침반 · 정밀 만세력 사주</title>
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://nachimbansaju.com">
+  <meta property="og:title" content="운명나침반 · 정밀 만세력 사주">
+  <meta property="og:description" content="열심히 산 죄밖에 없는데 자꾸만 무너질 때, 달 뜨는 밤 남몰래 혼자 울었던 네 여덟 글자를 폅니다. 2027 신년운세 & 대운 맞춤 사주 책">
+  <meta property="og:image" content="https://nachimbansaju.com/assets/halmoni.jpg">
+  <link rel="preload" as="image" href="assets/halmoni.jpg">
+  <script src="https://js.tosspayments.com/v1/payment"></script>
+  <script>
+  // Legal Modals Logic
+  const legalData = {
+    terms: {
+      title: '운명나침반 서비스 이용약관',
+      body: '<h4 style="color: #facc15; margin-bottom: 6px;">제1조 (목적)</h4>본 약관은 운명나침반(이하 "회사")이 제공하는 정밀 사주 분석 리포트 및 디지털 콘텐츠 서비스(이하 "서비스")의 이용조건 및 절차, 권리와 의무를 규정함을 목적으로 합니다.<br><br>' +
+            '<h4 style="color: #facc15; margin-bottom: 6px;">제2조 (용어의 정의)</h4>1. "서비스"란 이용자가 입력한 생년월일시 및 성별 데이터를 기반으로 정통 명리학 원리에 따라 맞춤 제작되는 PDF 책 및 상담 콘텐츠를 의미합니다.<br>2. "이용자"란 본 사이트에 접속하여 본 약관에 따라 서비스를 이용하는 회원 및 비회원을 말합니다.<br><br>' +
+            '<h4 style="color: #facc15; margin-bottom: 6px;">제3조 (서비스 공급 및 효력)</h4>1. 디지털 맞춤 PDF 책은 결제 완료 즉시 다운로드 링크 제공 또는 이메일 발송을 통해 지체 없이 공급됩니다.<br>2. 회사는 컴퓨터 등 정보통신설비의 보수점검, 교체 및 고장, 통신의 두절 등의 사유가 발생한 경우에는 서비스의 제공을 일시적으로 중단할 수 있습니다.<br><br>' +
+            '<h4 style="color: #facc15; margin-bottom: 6px;">제4조 (지식재산권)</h4>회사가 작성한 사주 분석 알고리즘, 리포트 텍스트 및 디자인에 대한 저작권 및 지식재산권은 회사에 귀속되며, 이용자는 사전 승낙 없이 무단 복제, 전재, 배포할 수 없습니다.'
+    },
+    privacy: {
+      title: '개인정보처리방침',
+      body: '<h4 style="color: #facc15; margin-bottom: 6px;">1. 수집하는 개인정보 항목</h4>회사는 사주 분석 리포트 제작 및 배송(다운로드)을 위해 아래와 같은 개인정보를 수집합니다.<br>- 필수항목: 성함(또는 닉네임), 생년월일(양력/음력), 태어난 시간, 성별, 이메일 주소, 결제 기록<br><br>' +
+            '<h4 style="color: #facc15; margin-bottom: 6px;">2. 개인정보의 수집 및 이용 목적</h4>- 맞춤 사주 PDF 리포트 분석 및 즉시 다운로드 제공<br>- 주문 확인 및 고객센터 문의(카카오톡 상담) 응대<br>- 전자상거래법에 따른 거래 기록 보존<br><br>' +
+            '<h4 style="color: #facc15; margin-bottom: 6px;">3. 개인정보의 보유 및 파기</h4>- 전자상거래 등에서의 소비자보호에 관한 법률에 따라 계약 또는 청약철회 등에 관한 기록은 5년간 보관 후 지체 없이 영구 파기합니다.<br>- 무료 풀이를 위해 입력된 생년월일 정보는 결과 생성 직후 별도 데이터베이스에 영구 저장하지 않습니다.<br><br>' +
+            '<h4 style="color: #facc15; margin-bottom: 6px;">4. 개인정보의 제3자 제공</h4>회사는 이용자의 개인정보를 제3자에게 무단 제공하거나 위탁하지 않습니다. 단, 결제 처리를 위해 결제대행사((주)케이지이니시스)에 필수 결제정보가 암호화되어 제공됩니다.'
+    },
+    refund: {
+      title: '환불 및 취소 정책',
+      body: '<h4 style="color: #facc15; margin-bottom: 6px;">제1조 (디지털 상품의 특성 및 환불 기준)</h4>1. 본 서비스에서 판매하는 사주 보고서는 결제 즉시 생성되어 제공되는 [디지털 콘텐츠(PDF)]입니다.<br>2. 파일 다운로드 및 열람이 개시되지 않은 상태에서는 결제일로부터 7일 이내에 100% 전액 청약철회(환불)가 가능합니다.<br>3. 전자상거래 등에서의 소비자보호에 관한 법률 제17조 제2항 제5호에 따라, <b>다운로드가 완료되었거나 열람이 개시된 맞춤형 디지털 콘텐츠는 단순 변심에 의한 환불이 불가</b>합니다.<br><br>' +
+            '<h4 style="color: #facc15; margin-bottom: 6px;">제2조 (하자 및 시스템 오류에 따른 보상)</h4>1. 결제 후 시스템 오류로 인해 파일이 다운로드되지 않거나 내용이 누락된 경우, 즉시 무상 재발급 또는 100% 전액 환불을 보장합니다.<br>2. 분석 내용에 대한 문의나 명리학적 궁금증은 1회 무상으로 카카오톡 1:1 상담실을 통해 성심성의껏 보완 상담해 드립니다.<br><br>' +
+            '<h4 style="color: #facc15; margin-bottom: 6px;">제3조 (환불 신청 방법)</h4>환불 신청은 고객센터(010-9645-2397) 또는 카카오톡 1:1 상담실(오픈프로필)을 통해 주문번호 또는 주문자 이메일을 남겨주시면 영업일 기준 24시간 이내에 신속하게 처리해 드립니다.'
+    }
+  };
+
+  function openLegalModal(type) {
+    const data = legalData[type];
+    if (!data) return;
+    document.getElementById('legal-modal-title').textContent = data.title;
+    document.getElementById('legal-modal-body').innerHTML = data.body;
+    document.getElementById('legal-modal-overlay').classList.add('active');
+  }
+
+  function closeLegalModal(e) {
+    if (e && e.target !== document.getElementById('legal-modal-overlay') && !e.target.closest('button')) return;
+    document.getElementById('legal-modal-overlay').classList.remove('active');
+  }
+
+</script>
+  <style>
+    :root {
+      --bg-color: #0b0f19;
+      --card-bg: rgba(22, 29, 47, 0.85);
+      --card-border: rgba(212, 175, 55, 0.25);
+      --gold: #d4af37;
+      --gold-light: #f3e5ab;
+      --text-main: #f1f5f9;
+      --text-sub: #94a3b8;
+      --wood: #1e1b18;
+      --wood-border: #443c34;
+      --wood-text: #e6dfd5;
+      --wood-sub: #9c9285;
+      --wood-card: #282420;
+      --wood-accent: #c4a482;
+      --fire: #ef4444;
+      --earth: #eab308;
+      --metal: #cbd5e1;
+      --water: #3b82f6;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Pretendard", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 0;
+      background-image: 
+        radial-gradient(circle at 50% 10%, rgba(212, 175, 55, 0.08) 0%, transparent 60%),
+        radial-gradient(circle at 80% 80%, rgba(59, 130, 246, 0.05) 0%, transparent 50%);
+    }
+
+    .container {
+      width: 100%;
+      max-width: 440px;
+      margin: 0 auto;
+      padding: 24px 20px 60px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+      box-sizing: border-box;
+    }
+
+    /* Header */
+    header {
+      text-align: center;
+      padding-top: 12px;
+    }
+
+    .brand-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(212, 175, 55, 0.12);
+      border: 1px solid var(--card-border);
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 13px;
+      color: var(--gold-light);
+      letter-spacing: 1px;
+      margin-bottom: 12px;
+    }
+
+    h1 {
+      font-size: 26px;
+      font-weight: 800;
+      line-height: 1.35;
+      color: #ffffff;
+      letter-spacing: -0.5px;
+      margin-bottom: 8px;
+    }
+
+    h1 span {
+      color: var(--gold);
+    }
+
+    .subtitle {
+      font-size: 14px;
+      color: #cbd5e1;
+      line-height: 1.5;
+    }
+
+    /* Hero Card */
+    .hero-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+      position: relative;
+    }
+
+    .hero-img-wrap {
+      width: 100%;
+      height: 380px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 20%;
+    }
+
+    .hero-img-wrap::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 120px;
+      background: linear-gradient(to top, var(--card-bg), transparent);
+    }
+
+    .hero-content {
+      padding: 0 20px 24px 20px;
+      position: relative;
+      margin-top: -30px;
+    }
+
+    .hero-tag {
+      display: inline-block;
+      background: #7c2d12;
+      color: #fed7aa;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 6px;
+      margin-bottom: 10px;
+    }
+
+    .hero-title {
+      font-size: 20px;
+      font-weight: 800;
+      color: #ffffff;
+      margin-bottom: 8px;
+    }
+
+    .hero-quote {
+      font-size: 14px;
+      color: #cbd5e1;
+      line-height: 1.6;
+      font-style: normal;
+      background: rgba(0, 0, 0, 0.25);
+      padding: 12px 14px;
+      border-left: 3px solid var(--gold);
+      border-radius: 0 8px 8px 0;
+      margin-bottom: 16px;
+    }
+
+    /* Badges row */
+    .trust-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .trust-item {
+      flex: 1;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 10px;
+      padding: 10px 8px;
+      text-align: center;
+    }
+
+    .trust-item b {
+      display: block;
+      font-size: 13px;
+      color: var(--gold-light);
+      margin-bottom: 2px;
+    }
+
+    .trust-item span {
+      font-size: 11px;
+      color: var(--text-sub);
+    }
+
+    /* Form Section */
+    .section-title {
+      font-size: 18px;
+      font-weight: 800;
+      color: #ffffff;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .section-title::before {
+      content: "";
+      width: 4px;
+      height: 18px;
+      background: var(--gold);
+      border-radius: 2px;
+    }
+
+    .form-box {
+      background: var(--card-bg);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 18px;
+      padding: 22px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .form-label {
+      font-size: 13px;
+      font-weight: 700;
+      color: #cbd5e1;
+    }
+
+    .input-text {
+      width: 100%;
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 12px;
+      padding: 13px 14px;
+      font-size: 15px;
+      color: #ffffff;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .input-text:focus {
+      border-color: var(--gold);
+    }
+
+    /* Concern selection chips */
+    .chip-grid {
+      display: grid;
+      grid-template-columns: repeat(1, 1fr);
+      gap: 9px;
+    }
+
+    .chip-item {
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 13px 14px;
+      text-align: left;
+      font-size: 13px;
+      color: var(--text-sub);
+      cursor: pointer;
+      transition: all 0.2s;
+      user-select: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .chip-item.active {
+      background: rgba(212, 175, 55, 0.15);
+      border-color: var(--gold);
+      color: #ffffff;
+      font-weight: 700;
+    }
+
+    /* Date row */
+    .date-row {
+      display: flex;
+      gap: 8px;
+    }
+
+    .date-select {
+      flex: 1;
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 12px;
+      padding: 12px 10px;
+      font-size: 14px;
+      color: #ffffff;
+      outline: none;
+    }
+
+    /* Gender toggle */
+    .radio-row {
+      display: flex;
+      gap: 8px;
+    }
+
+    .radio-btn {
+      flex: 1;
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 12px;
+      text-align: center;
+      font-size: 14px;
+      color: var(--text-sub);
+      cursor: pointer;
+    }
+
+    .radio-btn.active {
+      background: rgba(212, 175, 55, 0.15);
+      border-color: var(--gold);
+      color: #ffffff;
+      font-weight: 700;
+    }
+
+    /* Submit Button */
+    .btn-submit {
+      width: 100%;
+      background: linear-gradient(135deg, #d4af37, #aa820a);
+      border: none;
+      border-radius: 14px;
+      padding: 16px;
+      font-size: 16px;
+      font-weight: 800;
+      color: #0b0f19;
+      cursor: pointer;
+      box-shadow: 0 6px 20px rgba(212, 175, 55, 0.35);
+      transition: transform 0.1s, opacity 0.2s;
+      margin-top: 6px;
+    }
+
+    .btn-submit:active {
+      transform: scale(0.98);
+      opacity: 0.9;
+    }
+
+    /* Loading overlay */
+    .loading-box {
+      display: none;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 18px;
+      padding: 40px 20px;
+      text-align: center;
+    }
+
+    .loading-spinner {
+      width: 48px;
+      height: 48px;
+      border: 3px solid rgba(212, 175, 55, 0.2);
+      border-top-color: var(--gold);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 18px auto;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Result Section */
+    .result-box {
+      display: none;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 24px 20px;
+      animation: fadeIn 0.4s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .result-header {
+      text-align: center;
+      margin-bottom: 20px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .result-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 800;
+      color: #ef4444;
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      padding: 4px 12px;
+      border-radius: 20px;
+      margin-bottom: 8px;
+    }
+
+    .result-name {
+      font-size: 21px;
+      font-weight: 800;
+      color: #ffffff;
+      line-height: 1.4;
+    }
+
+    /* Saju 8 Characters Grid */
+    .saju-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+      background: rgba(0, 0, 0, 0.35);
+      padding: 12px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .saju-col-head {
+      font-size: 11px;
+      color: var(--text-sub);
+      margin-bottom: 6px;
+    }
+
+    .saju-cell {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 8px;
+      padding: 8px 4px;
+      font-size: 18px;
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+
+    .elem-wood { color: #4ade80; border: 1px solid rgba(74, 222, 128, 0.3); }
+    .elem-fire { color: #f87171; border: 1px solid rgba(248, 113, 113, 0.3); }
+    .elem-earth { color: #facc15; border: 1px solid rgba(250, 204, 21, 0.3); }
+    .elem-metal { color: #e2e8f0; border: 1px solid rgba(226, 232, 240, 0.3); }
+    .elem-water { color: #60a5fa; border: 1px solid rgba(96, 165, 250, 0.3); }
+
+    /* Grandmother Talk Box & Cliffhanger Lock */
+    .grandma-talk {
+      background: rgba(212, 175, 55, 0.08);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 18px 16px 20px;
+      margin-bottom: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .grandma-talk-head {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .grandma-avatar-small {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .grandma-talk-title {
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--gold-light);
+    }
+
+    .grandma-text-preview {
+      font-size: 14px;
+      line-height: 1.7;
+      color: #f1f5f9;
+      white-space: pre-line;
+    }
+
+    .grandma-text-blurred {
+      font-size: 14px;
+      line-height: 1.7;
+      color: #94a3b8;
+      white-space: pre-line;
+      filter: blur(4.5px);
+      user-select: none;
+      pointer-events: none;
+      opacity: 0.65;
+      margin-top: 10px;
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 85%);
+      -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 85%);
+    }
+
+    .grandma-lock-overlay {
+      position: relative;
+      margin-top: -65px;
+      background: linear-gradient(180deg, rgba(15, 23, 42, 0.7) 0%, rgba(15, 23, 42, 0.98) 40%, #0f172a 100%);
+      border: 1.5px solid var(--gold);
+      border-radius: 14px;
+      padding: 18px 14px;
+      text-align: center;
+      box-shadow: 0 -12px 25px rgba(0, 0, 0, 0.8), 0 0 20px rgba(212, 175, 55, 0.2);
+      z-index: 5;
+    }
+
+    .lock-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: rgba(239, 68, 68, 0.2);
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      color: #fca5a5;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 20px;
+      margin-bottom: 8px;
+    }
+
+    .lock-title {
+      font-size: 14px;
+      font-weight: 800;
+      color: #ffffff;
+      margin-bottom: 6px;
+      line-height: 1.45;
+    }
+
+    .lock-title b {
+      color: var(--gold-light);
+    }
+
+    .lock-desc {
+      font-size: 12px;
+      color: #cbd5e1;
+      line-height: 1.5;
+      margin-bottom: 14px;
+    }
+
+    .btn-unlock-readmore {
+      width: 100%;
+      padding: 14px 12px;
+      background: linear-gradient(135deg, #d4af37 0%, #f59e0b 100%);
+      color: #0f172a;
+      font-size: 15px;
+      font-weight: 900;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 4px 16px rgba(212, 175, 55, 0.35);
+      animation: pulse-gold 2s infinite;
+      transition: transform 0.15s;
+    }
+
+    .btn-unlock-readmore:active {
+      transform: scale(0.98);
+    }
+
+    .lock-guarantee {
+      font-size: 11px;
+      color: #94a3b8;
+      margin-top: 8px;
+    }
+
+    @keyframes pulse-gold {
+      0% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.6); }
+      70% { box-shadow: 0 0 0 10px rgba(212, 175, 55, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0); }
+    }
+
+    .highlight-pulse {
+      animation: tab-pulse 1.5s ease-in-out;
+    }
+
+    @keyframes tab-pulse {
+      0% { transform: scale(1); box-shadow: 0 0 0 rgba(212,175,55,0); }
+      50% { transform: scale(1.02); box-shadow: 0 0 25px rgba(212,175,55,0.6); }
+      100% { transform: scale(1); box-shadow: 0 0 0 rgba(212,175,55,0); }
+    }
+
+    /* 4 Product Tabs Grid (2x2 on mobile) */
+    .product-tab-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .product-tab-item {
+      background: rgba(15, 23, 42, 0.75);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 14px;
+      padding: 16px 8px 12px 8px;
+      text-align: center;
+      cursor: pointer;
+      position: relative;
+      transition: all 0.2s;
+      user-select: none;
+    }
+
+    .product-tab-item.active {
+      background: rgba(212, 175, 55, 0.16);
+      border: 1.5px solid var(--gold);
+      box-shadow: 0 4px 16px rgba(212, 175, 55, 0.25);
+    }
+
+    .tab-badge {
+      position: absolute;
+      top: -9px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #dc2626;
+      color: #fff;
+      font-size: 9px;
+      font-weight: 800;
+      padding: 2px 7px;
+      border-radius: 4px;
+      white-space: nowrap;
+    }
+
+    .tab-title {
+      font-size: 13px;
+      font-weight: 800;
+      color: #ffffff;
+      margin-top: 2px;
+      margin-bottom: 4px;
+      line-height: 1.25;
+    }
+
+    .tab-price {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--gold-light);
+    }
+
+    .tab-sub {
+      font-size: 10px;
+      color: #94a3b8;
+      margin-top: 3px;
+    }
+
+    /* Upsell Banner */
+    .upsell-card {
+      background: linear-gradient(180deg, rgba(30, 41, 59, 0.95) 0%, rgba(15, 23, 42, 0.98) 100%);
+      border: 1.5px solid var(--gold);
+      border-radius: 18px;
+      padding: 22px 18px;
+      text-align: center;
+      margin-top: 10px;
+      box-shadow: 0 10px 25px rgba(212, 175, 55, 0.2);
+    }
+
+    .upsell-badge {
+      display: inline-block;
+      background: #dc2626;
+      color: #ffffff;
+      font-size: 12px;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 6px;
+      margin-bottom: 10px;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.8; }
+    }
+
+    .upsell-title {
+      font-size: 20px;
+      font-weight: 800;
+      color: #ffffff;
+      margin-bottom: 10px;
+      line-height: 1.35;
+    }
+
+    .upsell-title span {
+      color: var(--gold);
+    }
+
+    .upsell-desc {
+      font-size: 13px;
+      color: #cbd5e1;
+      line-height: 1.6;
+      margin-bottom: 18px;
+      background: rgba(0, 0, 0, 0.25);
+      padding: 10px;
+      border-radius: 8px;
+    }
+
+    .toc-preview {
+      background: rgba(0, 0, 0, 0.35);
+      border-radius: 12px;
+      padding: 14px 12px;
+      margin-bottom: 20px;
+      text-align: left;
+    }
+
+    .toc-item {
+      font-size: 13px;
+      color: #f1f5f9;
+      padding: 5px 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 600;
+    }
+
+    .toc-item::before {
+      content: "✔";
+      color: var(--gold);
+      font-size: 12px;
+    }
+
+    .btn-kakao {
+      display: block;
+      width: 100%;
+      background: #fee500;
+      color: #191919;
+      text-decoration: none;
+      padding: 16px;
+      border-radius: 14px;
+      font-size: 16px;
+      font-weight: 800;
+      text-align: center;
+      box-shadow: 0 4px 18px rgba(254, 229, 0, 0.35);
+      transition: transform 0.1s;
+    }
+
+    .btn-kakao:active {
+      transform: scale(0.98);
+    }
+
+    .btn-daangn {
+      display: block;
+      width: 100%;
+      background: #ff6f0f;
+      color: #ffffff;
+      text-decoration: none;
+      padding: 13px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 700;
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    /* Toss Checkout Button */
+    .btn-checkout-toss {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      color: #ffffff;
+      text-decoration: none;
+      padding: 16px 14px;
+      border-radius: 14px;
+      font-size: 15px;
+      font-weight: 800;
+      text-align: center;
+      margin-top: 18px;
+      border: 1px solid rgba(255,255,255,0.15);
+      box-shadow: 0 4px 18px rgba(37, 99, 235, 0.4);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      animation: checkoutPulse 2.5s infinite;
+    }
+    .btn-checkout-toss:hover {
+      background: linear-gradient(135deg, #1d4ed8, #1e40af);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 24px rgba(37, 99, 235, 0.6);
+    }
+    @keyframes checkoutPulse {
+      0%, 100% { box-shadow: 0 4px 18px rgba(37, 99, 235, 0.4); }
+      50% { box-shadow: 0 4px 26px rgba(37, 99, 235, 0.75); }
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      font-size: 11px;
+      color: #64748b;
+      line-height: 1.6;
+      padding-top: 20px;
+    }
+  
+    /* Top Sticky Navigation Bar */
+    .top-nav-wrapper {
+      width: 100%;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(11, 15, 25, 0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+      display: flex;
+      justify-content: center;
+    }
+
+    .top-nav {
+      width: 100%;
+      max-width: 440px;
+      padding: 12px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-sizing: border-box;
+    }
+    .top-nav-logo {
+      font-size: 17px;
+      font-weight: 800;
+      color: var(--gold-light);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+      letter-spacing: 0.5px;
+    }
+    .top-nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .btn-nav-gift {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--gold-light);
+      text-decoration: none;
+      padding: 5px 12px;
+      border-radius: 14px;
+      border: 1px solid var(--gold);
+      background: rgba(212, 175, 55, 0.15);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: background 0.2s, transform 0.1s;
+    }
+    .btn-nav-gift:active {
+      transform: scale(0.96);
+    }
+    .btn-nav-menu {
+      background: transparent;
+      border: none;
+      color: var(--gold);
+      font-size: 22px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4px;
+      line-height: 1;
+    }
+
+    /* Side Drawer Menu */
+    .drawer-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(4px);
+      z-index: 999;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+    .drawer-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .drawer-panel {
+      position: fixed;
+      top: 0;
+      right: -320px;
+      bottom: 0;
+      width: 300px;
+      max-width: 85vw;
+      background: #0f172a;
+      border-left: 1px solid rgba(212, 175, 55, 0.25);
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      padding: 24px 20px;
+      box-sizing: border-box;
+      transition: right 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: -10px 0 30px rgba(0,0,0,0.8);
+      overflow-y: auto;
+    }
+    .drawer-panel.active {
+      right: 0;
+    }
+    .drawer-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+    .drawer-logo {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--gold);
+      letter-spacing: 1px;
+    }
+    .drawer-close {
+      background: transparent;
+      border: none;
+      color: #94a3b8;
+      font-size: 24px;
+      cursor: pointer;
+      padding: 4px 8px;
+    }
+    .drawer-reorder-box {
+      background: rgba(30, 41, 59, 0.7);
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      border-radius: 14px;
+      padding: 14px;
+      margin-bottom: 22px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .drawer-reorder-box:hover {
+      background: rgba(40, 53, 75, 0.8);
+    }
+    .reorder-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 4px;
+    }
+    .reorder-desc {
+      font-size: 11px;
+      color: var(--text-sub);
+      line-height: 1.4;
+    }
+    .drawer-menu-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 28px;
+    }
+    .drawer-menu-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 10px;
+      color: #f1f5f9;
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+    .drawer-menu-item:hover {
+      color: var(--gold-light);
+    }
+    .drawer-footer {
+      margin-top: auto;
+      padding-top: 18px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      font-size: 12px;
+      color: #64748b;
+      line-height: 1.6;
+    }
+
+    /* Gift Modal */
+    .gift-modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
+      z-index: 1200;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .gift-modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .gift-modal-card {
+      background: #111726;
+      border: 1px solid var(--gold);
+      border-radius: 20px;
+      width: 100%;
+      max-width: 420px;
+      padding: 22px 18px;
+      box-shadow: 0 20px 48px rgba(0,0,0,0.7);
+      transform: translateY(20px);
+      transition: transform 0.25s ease;
+      max-height: 90vh;
+      overflow-y: auto;
+      text-align: left;
+    }
+    .gift-modal-overlay.active .gift-modal-card {
+      transform: translateY(0);
+    }
+
+    /* Legal Policy Modal */
+    .legal-modal-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
+      z-index: 1300;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .legal-modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .legal-modal-card {
+      background: #111726;
+      border: 1px solid var(--gold);
+      border-radius: 16px;
+      max-width: 440px;
+      width: 100%;
+      padding: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.7);
+    }
+    .gift-modal-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    .gift-modal-title {
+      font-size: 17px;
+      font-weight: 800;
+      color: var(--gold);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .gift-modal-close {
+      background: transparent;
+      border: none;
+      color: #94a3b8;
+      font-size: 22px;
+      cursor: pointer;
+      padding: 4px;
+      line-height: 1;
+    }
+    .gift-modal-desc {
+      font-size: 13px;
+      line-height: 1.5;
+      color: #cbd5e1;
+      margin-bottom: 16px;
+    }
+    .gift-option-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+    .gift-option-item {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(212, 175, 55, 0.25);
+      border-radius: 12px;
+      padding: 12px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .gift-option-name {
+      font-size: 13px;
+      font-weight: 700;
+      color: #ffffff;
+    }
+    .gift-option-sub {
+      font-size: 11px;
+      color: #94a3b8;
+      margin-top: 2px;
+    }
+    .gift-option-price {
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--gold);
+    }
+    .btn-gift-kakao {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      background: #fee500;
+      color: #191919;
+      font-weight: 800;
+      font-size: 15px;
+      padding: 14px;
+      border-radius: 12px;
+      text-decoration: none;
+      box-shadow: 0 4px 14px rgba(254, 229, 0, 0.35);
+      transition: transform 0.1s;
+    }
+    .btn-gift-kakao:active {
+      transform: scale(0.98);
+    }
+
+    /* Email Lead Box (IMG_8934 Style) */
+    .email-lead-box {
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid rgba(212, 175, 55, 0.35);
+      border-radius: 18px;
+      padding: 22px 18px;
+      margin: 24px 0;
+      text-align: left;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    }
+    .email-lead-title {
+      font-size: 18px;
+      font-weight: 800;
+      color: #ffffff;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .email-lead-desc {
+      font-size: 13px;
+      color: #cbd5e1;
+      line-height: 1.5;
+      margin-bottom: 16px;
+    }
+    .email-input-wrap {
+      margin-bottom: 14px;
+    }
+    .email-input-wrap label {
+      display: block;
+      font-size: 11px;
+      color: var(--gold);
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .email-input-wrap input {
+      width: 100%;
+      background: rgba(30, 41, 59, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 10px;
+      padding: 12px 14px;
+      color: #ffffff;
+      font-size: 14px;
+      outline: none;
+      box-sizing: border-box;
+    }
+    .email-input-wrap input:focus {
+      border-color: var(--gold);
+    }
+    .consent-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    .consent-label {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      font-size: 11px;
+      color: #94a3b8;
+      line-height: 1.45;
+      cursor: pointer;
+    }
+    .consent-label input[type="checkbox"] {
+      margin-top: 2px;
+      accent-color: var(--gold);
+    }
+    .consent-badge {
+      font-weight: 700;
+      color: var(--gold-light);
+    }
+    .btn-email-lead {
+      width: 100%;
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      color: #000000;
+      font-weight: 800;
+      font-size: 15px;
+      padding: 14px;
+      border-radius: 12px;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
+      transition: transform 0.1s;
+    }
+    .btn-email-lead:active {
+      transform: scale(0.98);
+    }
+    .email-lead-success {
+      display: none;
+      background: rgba(34, 197, 94, 0.15);
+      border: 1px solid #22c55e;
+      color: #86efac;
+      padding: 12px 14px;
+      border-radius: 10px;
+      font-size: 13px;
+      line-height: 1.5;
+      margin-top: 12px;
+      text-align: center;
+    }
+
+    /* 8 운 점수 그리드 (Gamification) */
+    .scores-card {
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid rgba(212, 175, 55, 0.25);
+      border-radius: 16px;
+      padding: 18px 16px;
+      margin-bottom: 20px;
+    }
+    .scores-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .score-item {
+      background: rgba(30, 41, 59, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .score-item-name {
+      font-size: 13px;
+      color: #e2e8f0;
+      font-weight: 600;
+    }
+    .score-item-val {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--gold-light);
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation Bar -->
+  <div class="top-nav-wrapper">
+    <div class="top-nav">
+      <a href="#" class="top-nav-logo">
+        <span>🧭</span>
+        <span>운명나침반</span>
+      </a>
+      <div class="top-nav-actions">
+        <button class="btn-nav-menu" id="btn-drawer-open" aria-label="메뉴 열기">☰</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide-out Drawer Menu -->
+  <div class="drawer-overlay" id="drawer-overlay"></div>
+  <div class="drawer-panel" id="drawer-panel">
+    <div class="drawer-header">
+      <div class="drawer-logo">운명나침반</div>
+      <button class="drawer-close" id="btn-drawer-close">✕</button>
+    </div>
+
+    <!-- 내 주문 다시 받기 -->
+    <div class="drawer-reorder-box" id="btn-drawer-reorder" onclick="openReorderModal()">
+      <div class="reorder-title">
+        <span>🔖</span> 내 주문 · 다시 받기
+      </div>
+      <div class="reorder-desc">메일이 안 왔을 때, 다시 받기, 재구매 할인</div>
+    </div>
+
+    <!-- 메뉴 카테고리 -->
+    <div class="drawer-menu-list">
+      <div class="drawer-menu-item" onclick="handleDrawerBookClick('newyear')">
+        <span style="font-weight: 700; color: #fff;">전체 맞춤 책 목록</span>
+        <span style="color: var(--gold-light); font-weight: 800;">›</span>
+      </div>
+      <div class="drawer-menu-item" onclick="handleDrawerBookClick('newyear')" style="border-top: 1px solid rgba(255,255,255,0.06); padding-top: 14px;">
+        <div>
+          <div style="font-weight: 700; color: #f1f5f9;">▶ 2027 신년운세 & 대운</div>
+          <div style="font-size: 11px; margin-top: 3px; display: flex; align-items: center; gap: 5px;">
+            <del style="color: #64748b; text-decoration: line-through;">30,000원</del>
+            <span style="background: #ef4444; color: #fff; font-size: 10px; font-weight: 800; padding: 1px 5px; border-radius: 4px;">67% 할인</span>
+          </div>
+        </div>
+        <span style="font-size: 15px; color: var(--gold-light); font-weight: 800;">9,900원</span>
+      </div>
+      <div class="drawer-menu-item" onclick="handleDrawerBookClick('life')">
+        <div>
+          <div style="font-weight: 700; color: #f1f5f9;">▶ 1인 평생사주 (100쪽 완전판)</div>
+          <div style="font-size: 11px; margin-top: 3px; display: flex; align-items: center; gap: 5px;">
+            <del style="color: #64748b; text-decoration: line-through;">90,000원</del>
+            <span style="background: #ef4444; color: #fff; font-size: 10px; font-weight: 800; padding: 1px 5px; border-radius: 4px;">67% 할인</span>
+          </div>
+        </div>
+        <span style="font-size: 15px; color: var(--gold-light); font-weight: 800;">29,900원</span>
+      </div>
+      <div class="drawer-menu-item" onclick="handleDrawerBookClick('wealth')">
+        <div>
+          <div style="font-weight: 700; color: #f1f5f9;">▶ 재물운 & 돈 구멍 비책</div>
+          <div style="font-size: 11px; margin-top: 3px; display: flex; align-items: center; gap: 5px;">
+            <del style="color: #64748b; text-decoration: line-through;">70,000원</del>
+            <span style="background: #ef4444; color: #fff; font-size: 10px; font-weight: 800; padding: 1px 5px; border-radius: 4px;">58% 할인</span>
+          </div>
+        </div>
+        <span style="font-size: 15px; color: var(--gold-light); font-weight: 800;">29,900원</span>
+      </div>
+      <div class="drawer-menu-item" onclick="handleDrawerBookClick('couple')">
+        <div>
+          <div style="font-weight: 700; color: #f1f5f9;">▶ 연애·궁합 & 조심할 악연</div>
+          <div style="font-size: 11px; margin-top: 3px; display: flex; align-items: center; gap: 5px;">
+            <del style="color: #64748b; text-decoration: line-through;">120,000원</del>
+            <span style="background: #ef4444; color: #fff; font-size: 10px; font-weight: 800; padding: 1px 5px; border-radius: 4px;">67% 할인</span>
+          </div>
+        </div>
+        <span style="font-size: 15px; color: var(--gold-light); font-weight: 800;">39,900원</span>
+      </div>
+      <div class="drawer-menu-item" onclick="handleDrawerBookClick('child')">
+        <div>
+          <div style="font-weight: 700; color: #f1f5f9;">▶ 자녀 기질 & 공부머리</div>
+          <div style="font-size: 11px; margin-top: 3px; display: flex; align-items: center; gap: 5px;">
+            <del style="color: #64748b; text-decoration: line-through;">50,000원</del>
+            <span style="background: #ef4444; color: #fff; font-size: 10px; font-weight: 800; padding: 1px 5px; border-radius: 4px;">60% 할인</span>
+          </div>
+        </div>
+        <span style="font-size: 15px; color: var(--gold-light); font-weight: 800;">19,900원</span>
+      </div>
+    </div>
+
+    <div class="drawer-footer">
+      <div style="font-weight: 700; color: #94a3b8; margin-bottom: 6px;">운명나침반 고객센터</div>
+      <a href="https://open.kakao.com/o/sfdOLuWi" target="_blank" style="color: #facc15; text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 4px;">
+        💬 카카오톡 1:1 상담 바로가기 →
+      </a>
+      <div style="margin-top: 10px; font-size: 11px; color: #475569;">정통 명리학 기반 1:1 맞춤 사주·운세 연구소</div>
+    </div>
+  </div>
+
+
+<div class="container">
+
+  <!-- Header -->
+  <header>
+    <div class="brand-badge">운명나침반 · 運命羅針盤</div>
+    <h1>죽어라 버티는데,<br><span>왜 나만 이렇게 힘들까.</span></h1>
+    <p class="subtitle">열심히 산 죄밖에 없는데 자꾸만 무너질 때,<br>달 뜨는 밤, 남몰래 혼자 울었던 네 여덟 글자를 폅니다.</p>
+  </header>
+
+  <!-- Hero Character Card -->
+  <div class="hero-card">
+    <div class="hero-img-wrap">
+      <img src="assets/halmoni.jpg" alt="나침반 할머니" width="96" height="96" loading="eager" fetchpriority="high">
+    </div>
+    <div class="hero-content">
+      <span class="hero-tag">무료 풀이부터</span>
+      <h2 class="hero-title">나침반 할머니</h2>
+      <p class="hero-quote">「남들 앞에서는 억지로 웃고 돌아서서 혼자 피눈물 삼켰지? 네가 못나서가 아니란다. 네 사주에 드리운 모진 풍파와 돈 구멍을 내가 처음부터 끝까지 다 읽어주마.」</p>
+      
+      <div class="trust-row">
+        <div class="trust-item">
+          <b>고전 원전</b>
+          <span>적천수천미 대조</span>
+        </div>
+        <div class="trust-item">
+          <b>진태양시</b>
+          <span>출생지 시각 보정</span>
+        </div>
+        <div class="trust-item">
+          <b>안심 상담</b>
+          <span>100% 비밀 보장</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Form Section -->
+  <div id="form-section">
+    <div class="section-title">내 사주 여덟 글자 펴보기</div>
+    
+    <div class="form-box">
+      <!-- Name -->
+      <div class="form-group">
+        <label class="form-label" for="user-name">왔구나. 뭐라고 부르면 되니? (선택)</label>
+        <input type="text" id="user-name" class="input-text" placeholder="이름 또는 닉네임 (비워두셔도 돼요)">
+      </div>
+
+      <!-- Concern -->
+      <div class="form-group">
+        <label class="form-label">어떤 운이 가장 궁금해서 찾아왔니?</label>
+        <div class="chip-grid">
+          <div class="chip-item" data-concern="money">💸 돈 언제 터지나 (재물운 & 손재수)</div>
+          <div class="chip-item" data-concern="career">💼 이 일 계속해야 하나 (직장·사업운)</div>
+          <div class="chip-item" data-concern="love">💖 그 사람 진짜 내 인연일까 (애정·궁합운)</div>
+          <div class="chip-item" data-concern="child">🎒 우리 아이 공부머리 & 숨은 재능</div>
+          <div class="chip-item" data-concern="tired">🌅 내 전성기는 언제 오나 (2027 신년 & 평생 대운)</div>
+        </div>
+      </div>
+
+      <!-- Date -->
+      <div class="form-group">
+        <label class="form-label">태어난 날짜</label>
+        <div class="date-row" style="margin-bottom: 8px;">
+          <button type="button" class="radio-btn active" id="btn-solar">양력</button>
+          <button type="button" class="radio-btn" id="btn-lunar">음력</button>
+        </div>
+        <div class="date-row">
+          <select id="birth-year" class="date-select"></select>
+          <select id="birth-month" class="date-select"></select>
+          <select id="birth-day" class="date-select"></select>
+        </div>
+      </div>
+
+      <!-- Time -->
+      <div class="form-group">
+        <label class="form-label">태어난 시간</label>
+        <select id="birth-time" class="date-select">
+          <option value="unknown">시간을 잘 몰라요 (삼주로 풀이)</option>
+          <option value="0">자시 (23:30 ~ 01:29)</option>
+          <option value="2">축시 (01:30 ~ 03:29)</option>
+          <option value="4">인시 (03:30 ~ 05:29)</option>
+          <option value="6">묘시 (05:30 ~ 07:29)</option>
+          <option value="8">진시 (07:30 ~ 09:29)</option>
+          <option value="10">사시 (09:30 ~ 11:29)</option>
+          <option value="12">오시 (11:30 ~ 13:29)</option>
+          <option value="14">미시 (13:30 ~ 15:29)</option>
+          <option value="16">신시 (15:30 ~ 17:29)</option>
+          <option value="18">유시 (17:30 ~ 19:29)</option>
+          <option value="20">술시 (19:30 ~ 21:29)</option>
+          <option value="22">해시 (21:30 ~ 23:29)</option>
+        </select>
+      </div>
+
+      <!-- Gender -->
+      <div class="form-group">
+        <label class="form-label">성별</label>
+        <div class="radio-row">
+          <button type="button" class="radio-btn" id="btn-female">여성</button>
+          <button type="button" class="radio-btn" id="btn-male">남성</button>
+        </div>
+      </div>
+
+      <!-- Submit -->
+      <button type="button" class="btn-submit" id="btn-run">내 사주 여덟 글자 무료로 펴보기 →</button>
+    </div>
+  </div>
+
+  <!-- Loading Box -->
+  <div id="loading-box" class="loading-box">
+    <div class="loading-spinner"></div>
+    <div style="font-size: 16px; font-weight: 800; color: #ffffff; margin-bottom: 6px;">등잔불을 켜고 고서를 펼치는 중입니다...</div>
+    <div style="font-size: 13px; color: var(--text-sub);">남모르게 겪어온 풍파와 운의 길목을 계산하고 있어요.</div>
+  </div>
+
+  <!-- Result Section -->
+  <div id="result-box" class="result-box">
+    <div class="result-header">
+      <div class="result-badge">할머니가 가슴을 짚어 준 첫 줄</div>
+      <div class="result-name" id="res-greeting">지현아, 너는 뼈 빠지게 일해서 남 좋은 일만 실컷 하고 뒤돌아 빈손이었구나.</div>
+    </div>
+
+    <!-- Saju Grid -->
+    <div style="font-size: 12px; color: var(--text-sub); margin-bottom: 8px; text-align: center;">내 사주 여덟 글자 (천간 / 지지)</div>
+    <div class="saju-grid" id="saju-grid-table">
+      <div>
+        <div class="saju-col-head">시주 (말년)</div>
+        <div class="saju-cell elem-wood" id="c-hour-gan">甲</div>
+        <div class="saju-cell elem-water" id="c-hour-ji">子</div>
+      </div>
+      <div>
+        <div class="saju-col-head">일주 (나 자신)</div>
+        <div class="saju-cell elem-earth" id="c-day-gan">戊</div>
+        <div class="saju-cell elem-wood" id="c-day-ji">寅</div>
+      </div>
+      <div>
+        <div class="saju-col-head">월주 (청년/사회)</div>
+        <div class="saju-cell elem-fire" id="c-month-gan">丙</div>
+        <div class="saju-cell elem-fire" id="c-month-ji">午</div>
+      </div>
+      <div>
+        <div class="saju-col-head">년주 (초년/뿌리)</div>
+        <div class="saju-cell elem-metal" id="c-year-gan">庚</div>
+        <div class="saju-cell elem-metal" id="c-year-ji">申</div>
+      </div>
+    </div>
+
+    <!-- Essential Nature & 5 Elements Analysis Card -->
+    <div style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(212, 175, 55, 0.25); border-radius: 16px; padding: 18px 16px; margin-bottom: 20px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.08);">
+        <div>
+          <span style="font-size: 11px; color: var(--gold); font-weight: 700; background: rgba(212,175,55,0.12); padding: 2px 8px; border-radius: 12px;">타고난 본질</span>
+          <div style="font-size: 17px; font-weight: 800; color: #ffffff; margin-top: 4px;" id="res-ilju-title">무인일주(戊寅) 「숲을 품은 태산」</div>
+        </div>
+        <span id="res-strength-badge" style="font-size: 11px; color: #fef08a; background: #854d0e; border: 1px solid #facc15; padding: 4px 8px; border-radius: 6px; font-weight: 700;">오행 에너지 분석</span>
+      </div>
+
+      <p style="font-size: 13px; color: #cbd5e1; line-height: 1.6; margin-bottom: 16px;" id="res-ilju-desc">
+        겉으로는 태산처럼 묵직하게 남들의 짐을 다 받아주지만, 속에는 거친 호랑이처럼 큰 야망과 꺾이지 않는 자존심을 품고 태어났습니다. 계산이 끝나기 전에 몸이 먼저 나가는 행동파라 남 좋은 일만 실컷 시키고 혼자 속앓이를 하기 쉽습니다.
+      </p>
+
+      <!-- 5 Elements Chart -->
+      <div style="font-size: 13px; font-weight: 800; color: #ffffff; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between;">
+        <span>타고난 오행(五行) 에너지 분포</span>
+        <span style="font-size: 11px; color: var(--text-sub); font-weight: normal;">총 8글자 비율</span>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px;">
+        <!-- Wood -->
+        <div>
+          <div style="display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 3px;">
+            <span style="color: #4ade80;">🌳 목(木) · 추진력과 자존심</span>
+            <span style="color: #cbd5e1; font-weight: 700;" id="cnt-wood">25% (2글자)</span>
+          </div>
+          <div style="width: 100%; height: 7px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden;">
+            <div style="width: 25%; height: 100%; background: #4ade80; border-radius: 4px;" id="bar-wood"></div>
+          </div>
+        </div>
+
+        <!-- Fire -->
+        <div>
+          <div style="display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 3px;">
+            <span style="color: #f87171;">🔥 화(火) · 열정과 추진 본능</span>
+            <span style="color: #cbd5e1; font-weight: 700;" id="cnt-fire">35% (3글자) - 과다</span>
+          </div>
+          <div style="width: 100%; height: 7px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden;">
+            <div style="width: 35%; height: 100%; background: #f87171; border-radius: 4px;" id="bar-fire"></div>
+          </div>
+        </div>
+
+        <!-- Earth -->
+        <div>
+          <div style="display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 3px;">
+            <span style="color: #facc15;">🏔️ 토(土) · 신용과 묵직한 책임감</span>
+            <span style="color: #cbd5e1; font-weight: 700;" id="cnt-earth">20% (1글자)</span>
+          </div>
+          <div style="width: 100%; height: 7px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden;">
+            <div style="width: 20%; height: 100%; background: #facc15; border-radius: 4px;" id="bar-earth"></div>
+          </div>
+        </div>
+
+        <!-- Metal -->
+        <div>
+          <div style="display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 3px;">
+            <span style="color: #e2e8f0;">⚔️ 금(金) · 냉정한 결단과 실속</span>
+            <span style="color: #ef4444; font-weight: 700;" id="cnt-metal">10% (1글자) - 부족</span>
+          </div>
+          <div style="width: 100%; height: 7px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden;">
+            <div style="width: 10%; height: 100%; background: #e2e8f0; border-radius: 4px;" id="bar-metal"></div>
+          </div>
+        </div>
+
+        <!-- Water -->
+        <div>
+          <div style="display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 3px;">
+            <span style="color: #60a5fa;">🌊 수(水) · 유연함과 재물 창고</span>
+            <span style="color: #ef4444; font-weight: 700;" id="cnt-water">10% (1글자) - 부족</span>
+          </div>
+          <div style="width: 100%; height: 7px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden;">
+            <div style="width: 10%; height: 100%; background: #60a5fa; border-radius: 4px;" id="bar-water"></div>
+          </div>
+        </div>
+      </div>
+
+      <div style="background: rgba(0,0,0,0.3); border-radius: 10px; padding: 10px 12px; font-size: 12px; line-height: 1.55; color: #cbd5e1;" id="res-elem-diag">
+        <span style="color: var(--gold); font-weight: 700;">⚠ 오행 불균형 진단:</span> 불(火)과 나무(木)가 60%로 너무 뜨거워 가만히 쉬질 못하고 몸을 혹사시키는 반면, 내 실속을 챙기는 쇠(金)와 재물 물길인 수(水)가 메말라 있어 <b>"죽어라 벌어도 남 좋은 일만 시키고 통장이 비는 핵심 원인"</b>이 됩니다.
+      </div>
+    </div>
+
+    
+    <!-- 8대 운 점수 분석 (Gamification) -->
+    <div class="scores-card">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+        <div style="font-size: 15px; font-weight: 800; color: #ffffff;">
+          <span style="color: var(--gold);">◆</span> 여덟 가지 운 점수 분석
+        </div>
+        <span style="font-size: 11px; color: var(--gold-light); background: rgba(212,175,55,0.15); padding: 2px 8px; border-radius: 8px; font-weight: 700;">정밀 수치 산출</span>
+      </div>
+      <p style="font-size: 12px; color: var(--text-sub); line-height: 1.5; margin-bottom: 14px;">
+        사주 원국의 십신(十神)과 오행 강약으로 계산한 운 점수입니다. 높은 운은 기회로 삼고, 낮은 운은 미리 대비하세요.
+      </p>
+      <div class="scores-grid">
+        <div class="score-item">
+          <span class="score-item-name">💰 돈 모으기</span>
+          <span class="score-item-val" id="score-money">64점</span>
+        </div>
+        <div class="score-item">
+          <span class="score-item-name">💼 직장·이직</span>
+          <span class="score-item-val" id="score-job">64점</span>
+        </div>
+        <div class="score-item">
+          <span class="score-item-name">🏢 내 사업운</span>
+          <span class="score-item-val" id="score-biz">56점</span>
+        </div>
+        <div class="score-item">
+          <span class="score-item-name">💖 연애·인기</span>
+          <span class="score-item-val" id="score-love">54점</span>
+        </div>
+        <div class="score-item">
+          <span class="score-item-name">💍 결혼·궁합</span>
+          <span class="score-item-val" id="score-marriage">48점</span>
+        </div>
+        <div class="score-item">
+          <span class="score-item-name">🌿 건강·체력</span>
+          <span class="score-item-val" id="score-health">42점</span>
+        </div>
+        <div class="score-item" style="grid-column: span 2; background: rgba(239, 68, 68, 0.12); border-color: rgba(239, 68, 68, 0.3);">
+          <span class="score-item-name" style="color: #fca5a5;">🚨 2027년 한 해 흐름 (조심)</span>
+          <span class="score-item-val" style="color: #ef4444;" id="score-2027">37점 (위기)</span>
+        </div>
+      </div>
+      <div style="background: rgba(0,0,0,0.25); border-radius: 10px; padding: 10px 12px; font-size: 12px; color: #cbd5e1; line-height: 1.5;">
+        <span style="color: #4ade80; font-weight: 700;">🏆 가장 좋은 운:</span> 식상과 재성이 이어져 일한 만큼 돈이 붙는 구조!<br>
+        <span style="color: #ef4444; font-weight: 700;">⚠ 가장 조심할 운:</span> 2027년 정미년 화·토 중첩으로 인한 손재수와 피로 누적 주의!
+      </div>
+    </div>
+
+    <!-- Email Lead Box (IMG_8934 Style) -->
+    <div class="email-lead-box">
+      <div class="email-lead-title">
+        <span>📩</span> 이 결과, 메일로 받아 두세요
+      </div>
+      <div class="email-lead-desc">
+        좋은 운 3개와 조심할 운 3개를 메일로 보내 드려요. 생각날 때 다시 열어 보세요.
+      </div>
+      
+      <div class="email-input-wrap">
+        <label for="lead-email-addr">받을 이메일</label>
+        <input type="email" id="lead-email-addr" placeholder="example@naver.com">
+      </div>
+
+      <div class="consent-group">
+        <label class="consent-label">
+          <input type="checkbox" id="chk-lead-required" checked>
+          <span><span class="consent-badge">(필수)</span> 결과 메일을 보내려고 이메일과 이름을 받는 데 동의해요. 생년월일은 메일을 만들 때만 쓰고 저장하지 않아요.</span>
+        </label>
+        <label class="consent-label">
+          <input type="checkbox" id="chk-lead-optional" checked>
+          <span><span class="consent-badge">(선택)</span> 새 리포트 소식도 메일로 받을게요(광고성 정보). 메일 속 링크로 언제든 그만 받을 수 있어요.</span>
+        </label>
+      </div>
+
+      <button type="button" class="btn-email-lead" id="btn-send-email-lead">
+        결과 메일로 받기
+      </button>
+
+      <div class="email-lead-success" id="email-lead-success">
+        ✔ 사주 요약 분석이 입력하신 이메일로 발송 예약되었습니다!<br>
+        <span style="font-size: 11px; opacity: 0.85;">(스팸함으로 분류될 수 있으니 도착하지 않으면 스팸함을 확인해 주세요)</span>
+      </div>
+    </div>
+
+    <!-- Grandmother Talk -->
+    <div class="grandma-talk">
+      <div class="grandma-talk-head">
+        <img src="assets/halmoni.jpg" class="grandma-avatar-small" alt="할머니">
+        <span class="grandma-talk-title">할머니의 다정한 한마디</span>
+      </div>
+      <div class="grandma-text-preview" id="res-grandma-preview">
+        너, 남들은 네가 돈 욕심 많고 계산 빠른 줄 알지? 아니다.
+        
+        너는 돈이 아니라 내 가족 굶기지 않으려고, 남한테 아쉬운 소리 안 하려고 피눈물 삼키며 맨발로 달려온 아이야.
+      </div>
+      <div class="grandma-text-blurred" id="res-grandma-blurred">
+        그런데 네 사주를 보면, 네가 피땀 흘려 번 돈을 귀신같이 갉아먹는 '구멍'과 '도둑'이 사주 안에 버젓이 들어앉아 있어. 밑 빠진 독에 네 청춘을 쏟아붓고 있었던 게야.
+        
+        더 무서운 게 뭔지 아니? 네 인생에서 돈을 빼앗아 간 '악연'이 지금도 네 바로 옆에서 웃고 있단다. 이 구멍을 지금 못 막으면, 2027년에도 똑같이 털리고 피눈물 흘린다. 네 인생에서 반드시 쳐내야 할 사람의 생김새와 2027년 돈 터지는 달은…
+      </div>
+
+      <!-- Lock & Read More / Direct Conversion Overlay -->
+      <div class="grandma-lock-overlay">
+        <div class="lock-badge">
+          <span>🔒 나머지 85% 비밀 비책 잠김</span>
+        </div>
+        <div class="lock-title" id="lock-headline">
+          할머니의 <b>'내 돈 갉아먹는 악연 & 2027년 돈 터지는 달'</b> 비책이 잠겨 있습니다
+        </div>
+        <div class="lock-desc" id="lock-description">
+          내 피땀 흘린 돈을 빼앗아 갈 악연의 정체와 통장 구멍을 막는 월별 대운을 <b>[맞춤 PDF 책]</b>에서 확인하세요.
+        </div>
+        <button type="button" class="btn-unlock-readmore" id="btn-unlock-readmore">
+          <span id="btn-unlock-text">👉 할머니의 비밀 비책 & 맞춤 책 선택하기 (더보기)</span>
+        </button>
+        <div class="lock-guarantee">※ 9,900원 신년특가부터 100쪽 평생 소장 완전판까지 선택 가능</div>
+      </div>
+    </div>
+
+    <!-- 4 Product Tabs Grid -->
+    <div id="product-selection-section" style="scroll-margin-top: 20px;">
+      <div style="font-size: 13px; font-weight: 800; color: #ffffff; margin-bottom: 12px; text-align: left; display: flex; align-items: center; gap: 6px;">
+        <span style="color: var(--gold);">◆</span> 원하시는 맞춤 PDF 책을 선택해 주세요
+      </div>
+
+      <div class="product-tab-grid" id="product-tabs">
+        <div class="product-tab-item active" data-tab="newyear" id="tab-newyear">
+          <span class="tab-badge" style="background: #ef4444;">67% 특가</span>
+          <div class="tab-title">2027 신년운세 책</div>
+          <div class="tab-price" style="display: flex; align-items: baseline; justify-content: center; gap: 4px;">
+            <del style="font-size: 11px; color: #94a3b8; text-decoration: line-through;">30,000</del>
+            <span style="color: var(--gold-light); font-weight: 800; font-size: 15px;">₩9,900</span>
+          </div>
+          <div class="tab-sub">돈 터지는 달·날짜 달력</div>
+        </div>
+        <div class="product-tab-item" data-tab="life" id="tab-life">
+          <span class="tab-badge" style="background: #ef4444;">67% 특가</span>
+          <div class="tab-title">1인 평생사주 책</div>
+          <div class="tab-price" style="display: flex; align-items: baseline; justify-content: center; gap: 4px;">
+            <del style="font-size: 11px; color: #94a3b8; text-decoration: line-through;">90,000</del>
+            <span style="color: var(--gold-light); font-weight: 800; font-size: 15px;">₩29,900</span>
+          </div>
+          <div class="tab-sub">100P 완전판·10년 대운</div>
+        </div>
+        <div class="product-tab-item" data-tab="child" id="tab-child">
+          <span class="tab-badge" style="background: #ef4444;">60% 특가</span>
+          <div class="tab-title">자녀 기질·사주 책</div>
+          <div class="tab-price" style="display: flex; align-items: baseline; justify-content: center; gap: 4px;">
+            <del style="font-size: 11px; color: #94a3b8; text-decoration: line-through;">50,000</del>
+            <span style="color: var(--gold-light); font-weight: 800; font-size: 15px;">₩19,900</span>
+          </div>
+          <div class="tab-sub">공부머리·입시대운 날짜</div>
+        </div>
+        <div class="product-tab-item" data-tab="couple" id="tab-couple">
+          <span class="tab-badge" style="background: #ef4444;">67% 특가</span>
+          <div class="tab-title">2인 사주&궁합 책</div>
+          <div class="tab-price" style="display: flex; align-items: baseline; justify-content: center; gap: 4px;">
+            <del style="font-size: 11px; color: #94a3b8; text-decoration: line-through;">120,000</del>
+            <span style="color: var(--gold-light); font-weight: 800; font-size: 15px;">₩39,900</span>
+          </div>
+          <div class="tab-sub">각자 사주+화해날짜</div>
+        </div>
+      </div>
+
+    <!-- Upsell Card -->
+    <div class="upsell-card">
+      <span class="upsell-badge" id="res-upsell-badge">🚨 2027년에도 똑같이 피눈물 흘리시겠습니까?</span>
+      <h3 class="upsell-title" id="res-upsell-title">내 인생의 악연을 쳐내고<br><span>2027 대운을 잡는 1인 정밀 지침서</span></h3>
+      <p class="upsell-desc" id="res-upsell-desc">
+        단돈 9,900원을 아끼려다 앞으로 수천만 원의 손재수와 피눈물 나는 사기를 당하시겠습니까?<br>
+        내 돈 갉아먹는 악연의 특징, 숨통이 트이는 정확한 월별 시기를 A4 12쪽 맞춤 보고서로 모두 밝혀드립니다.
+      </p>
+
+      <div class="toc-preview" id="res-toc-preview">
+        <div class="toc-item">제1부. 왜 나만 이렇게 억울하고 힘들었을까 (내 팔자의 진짜 원인)</div>
+        <div class="toc-item">제2부. 내 돈 갉아먹는 도둑·손재수와 2027년 재물 터지는 달</div>
+        <div class="toc-item">제3부. 지금 내 곁에서 나를 망치고 있는 '조심할 악연'의 특징</div>
+        <div class="toc-item">제4부. 2027년 1월~12월 월별 운세 (위기 달 & 기회 달 팩트체크)</div>
+        <div class="toc-item">제5부. 나를 살릴 결정적 귀인(貴人)과 평생 건강·멘탈 개운 비책</div>
+      </div>
+
+      <!-- Price & Discount Highlight Box -->
+      <div style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(212, 175, 55, 0.25); border-radius: 14px; padding: 14px 18px; margin: 16px 0; display: flex; justify-content: space-between; align-items: center;">
+        <div style="text-align: left;">
+          <div style="font-size: 12px; color: #94a3b8; display: flex; align-items: center; gap: 6px;">
+            <span>정상가</span>
+            <del id="res-price-original" style="color: #64748b; font-size: 13px; text-decoration: line-through;">30,000원</del>
+          </div>
+          <div style="display: flex; align-items: center; gap: 6px; margin-top: 4px;">
+            <span id="res-discount-rate" style="background: #ef4444; color: #ffffff; font-size: 11px; font-weight: 800; padding: 2px 7px; border-radius: 4px; letter-spacing: 0.5px;">67% 할인</span>
+            <span style="font-size: 12px; color: #facc15; font-weight: 600;">신년 얼리버드 한정</span>
+          </div>
+        </div>
+        <div style="text-align: right;">
+          <div style="font-size: 11px; color: #94a3b8; margin-bottom: 2px;">최종 결제 금액</div>
+          <div id="res-price-final" style="font-size: 22px; font-weight: 900; color: #f3e5ab;">9,900원</div>
+        </div>
+      </div>
+
+      <!-- Toss Checkout Button -->
+      <button type="button" class="btn-checkout-toss" id="res-btn-checkout" onclick="triggerTossCheckout()">
+        <span style="font-size: 16px;">💳</span>
+        <span id="res-btn-checkout-text">카드 · 카카오페이로 2027 신년운세 책 받기 (9,900원)</span>
+      </button>
+
+      <div style="display: flex; justify-content: center; align-items: center; gap: 8px; margin-top: 12px; flex-wrap: wrap;">
+        <span style="font-size: 11px; color: #4ade80;">⚡ 결제 즉시 PDF 자동 다운로드</span>
+        <span style="color: #475569;">·</span>
+        <a href="https://open.kakao.com/o/sfdOLuWi" target="_blank" style="font-size: 11px; color: #facc15; text-decoration: underline;">
+          💬 카톡 1:1 상담 및 무통장 입금
+        </a>
+      </div>
+      
+      <p style="font-size: 11px; color: #94a3b8; margin-top: 12px;">
+        * 더 이상 혼자 끙끙 앓지 마세요. 100% 비밀 보장, 1:1 맞춤 제작으로 전송됩니다.
+      </p>
+    </div>
+
+    <!-- Reviews Section -->
+    <div style="margin-top: 30px; text-align: left;">
+      <div style="font-size: 18px; font-weight: 800; color: #ffffff; margin-bottom: 4px; display: flex; align-items: center; gap: 6px;">
+        <span style="color: var(--gold);">◆</span> 먼저 본 분들의 솔직한 한 줄
+      </div>
+      <p style="font-size: 12px; color: var(--text-sub); margin-bottom: 16px;">실제 사용자가 남긴 후기입니다. 운명나침반은 후기를 지어내지 않습니다.</p>
+
+      <div style="display: flex; flex-direction: column; gap: 12px;">
+        <div style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; padding: 16px;">
+          <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 8px;">
+            <span style="color: #facc15;">★★★★★ <b style="color: #fff; margin-left: 4px;">익명</b></span>
+            <span style="color: #64748b;">2026.11.04</span>
+          </div>
+          <p style="font-size: 13px; color: #cbd5e1; line-height: 1.6;">다른 곳처럼 자극적으로 겁주거나 굿하라는 말 없이, 내 사주 속 돈 구멍이랑 조심할 악연을 담백하게 짚어줘서 너무 속이 시원했습니다. 29,900원에 10부 구성으로 이 정도 분량이면 오프라인 15만 원짜리보다 훨씬 알차네요. 강추합니다~</p>
+        </div>
+
+        <div style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; padding: 16px;">
+          <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 8px;">
+            <span style="color: #facc15;">★★★★★ <b style="color: #fff; margin-left: 4px;">용문동주민</b></span>
+            <span style="color: #64748b;">2026.10.29</span>
+          </div>
+          <p style="font-size: 13px; color: #cbd5e1; line-height: 1.6;">친구 추천으로 2027 신년사주(9,900원) 받아봤는데 분량이 A4 10쪽이나 나와서 깜짝 놀랐습니다. 대충 덕담만 써놓은 게 아니라 직장이랑 돈 터지는 시기까지 나와 있어서 사업 결정하는 데 진짜 큰 도움 됐어요. 평생사주도 보려고요.</p>
+        </div>
+
+        <div style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; padding: 16px;">
+          <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 8px;">
+            <span style="color: #facc15;">★★★★★ <b style="color: #fff; margin-left: 4px;">아이둘맘</b></span>
+            <span style="color: #64748b;">2026.10.22</span>
+          </div>
+          <p style="font-size: 13px; color: #cbd5e1; line-height: 1.6;">아이가 사춘기라 매일 싸우고 가슴 쳤는데, 19,900원에 자녀 기질이랑 훈육 솔루션 읽고 밤에 펑펑 울었습니다. 궁금한 점은 1:1 카톡 질문으로 친절하게 답변해 주셔서 감동받았습니다. 진작 볼 걸 그랬어요.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <!-- Footer (PG사 및 전자상거래 필수 표기사항) -->
+  <footer>
+    <div style="max-width: 480px; margin: 0 auto; text-align: left; padding: 18px 14px; background: rgba(0,0,0,0.35); border-radius: 12px; border: 1px solid rgba(255,255,255,0.06); font-size: 11px; color: #94a3b8; line-height: 1.7;">
+      <div style="font-weight: 800; color: #e2e8f0; font-size: 12px; margin-bottom: 6px;">운명나침반 사주연구소</div>
+      <div>상호명: 운명나침반 (일반과세자) · 대표자: 김노운</div>
+      <div>사업장 소재지: 대전광역시 동구 대전로1002번길 42-1, 103호(홍도동)</div>
+      <div>사업자등록번호: 750-44-01296 (일반과세자)</div>
+      <div>통신판매업 신고: 정부24 신고 완료 (발급 처리 중)</div>
+      <div>고객센터: 010-9645-2397 · 카카오톡 1:1 상담실</div>
+      <div>결제대행: (주)케이지이니시스 에스크로 안전결제 시스템</div>
+      
+      <div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.08); display: flex; gap: 10px; font-size: 11px; flex-wrap: wrap;">
+        <a href="javascript:void(0)" onclick="openLegalModal('terms')" style="color: #cbd5e1; text-decoration: underline;">이용약관</a>
+        <span style="color: #475569;">|</span>
+        <a href="javascript:void(0)" onclick="openLegalModal('privacy')" style="color: #cbd5e1; text-decoration: underline;">개인정보처리방침</a>
+        <span style="color: #475569;">|</span>
+        <a href="javascript:void(0)" onclick="openLegalModal('refund')" style="color: #cbd5e1; text-decoration: underline;">환불 및 취소정책</a>
+      </div>
+
+      <div style="margin-top: 8px; padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.08); font-size: 10px; color: #64748b;">
+        본 서비스의 사주 풀이는 정통 명리학 기반의 심층 분석 리포트이며, 개인의 최종 결정에 대한 법률·재정·의학적 보증을 하지 않습니다. 구매하신 디지털 PDF 상품은 열람 및 다운로드 시 환불이 제한될 수 있습니다.
+      </div>
+    </div>
+    <p style="margin-top: 12px; font-size: 11px; color: #475569;">© 2026 운명나침반 All rights reserved.</p>
+  </footer>
+
+  <!-- Legal Policy Modal -->
+  <div id="legal-modal-overlay" class="legal-modal-overlay" onclick="closeLegalModal(event)">
+    <div class="legal-modal-card" onclick="event.stopPropagation()">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px;">
+        <h3 id="legal-modal-title" style="color: var(--gold-light); font-size: 15px; font-weight: 700;"></h3>
+        <button type="button" onclick="closeLegalModal()" style="background: none; border: none; color: #94a3b8; font-size: 20px; cursor: pointer; padding: 4px;">✕</button>
+      </div>
+      <div id="legal-modal-body" style="font-size: 12px; color: #cbd5e1; line-height: 1.7; max-height: 55vh; overflow-y: auto; text-align: left; padding-right: 6px;"></div>
+      <button type="button" onclick="closeLegalModal()" style="margin-top: 16px; width: 100%; padding: 10px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; color: #fff; font-weight: 700; cursor: pointer;">닫기</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  // Populate Year (1940 - 2026) - Default unselected for visitors
+  const selYear = document.getElementById('birth-year');
+  const optYearDef = document.createElement('option');
+  optYearDef.value = '';
+  optYearDef.textContent = '년도 선택';
+  optYearDef.disabled = true;
+  optYearDef.selected = true;
+  selYear.appendChild(optYearDef);
+  for (let y = 2026; y >= 1940; y--) {
+    const opt = document.createElement('option');
+    opt.value = y;
+    opt.textContent = y + '년';
+    selYear.appendChild(opt);
+  }
+
+  // Populate Month (1 - 12)
+  const selMonth = document.getElementById('birth-month');
+  const optMonthDef = document.createElement('option');
+  optMonthDef.value = '';
+  optMonthDef.textContent = '월 선택';
+  optMonthDef.disabled = true;
+  optMonthDef.selected = true;
+  selMonth.appendChild(optMonthDef);
+  for (let m = 1; m <= 12; m++) {
+    const opt = document.createElement('option');
+    opt.value = m;
+    opt.textContent = m + '월';
+    selMonth.appendChild(opt);
+  }
+
+  // Populate Day (1 - 31)
+  const selDay = document.getElementById('birth-day');
+  const optDayDef = document.createElement('option');
+  optDayDef.value = '';
+  optDayDef.textContent = '일 선택';
+  optDayDef.disabled = true;
+  optDayDef.selected = true;
+  selDay.appendChild(optDayDef);
+  for (let d = 1; d <= 31; d++) {
+    const opt = document.createElement('option');
+    opt.value = d;
+    opt.textContent = d + '일';
+    selDay.appendChild(opt);
+  }
+
+  // Concern chips toggle (Visitor must pick one)
+  let selectedConcern = null;
+  document.querySelectorAll('.chip-item').forEach(chip => {
+    chip.addEventListener('click', () => {
+      document.querySelectorAll('.chip-item').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      selectedConcern = chip.dataset.concern;
+    });
+  });
+
+  // Solar/Lunar toggle
+  document.getElementById('btn-solar').addEventListener('click', function() {
+    this.classList.add('active');
+    document.getElementById('btn-lunar').classList.remove('active');
+  });
+  document.getElementById('btn-lunar').addEventListener('click', function() {
+    this.classList.add('active');
+    document.getElementById('btn-solar').classList.remove('active');
+  });
+
+  // Gender toggle (Visitor must pick one)
+  let selectedGender = null;
+  document.getElementById('btn-female').addEventListener('click', function() {
+    this.classList.add('active');
+    document.getElementById('btn-male').classList.remove('active');
+    selectedGender = 'female';
+  });
+  document.getElementById('btn-male').addEventListener('click', function() {
+    this.classList.add('active');
+    document.getElementById('btn-female').classList.remove('active');
+    selectedGender = 'male';
+  });
+
+  // Saju Manse력 Engine
+  const GAN = ['甲', '乙', '丙', '丁', '戊', '己', '庚', '辛', '壬', '癸'];
+  const JI = ['子', '丑', '寅', '卯', '辰', '巳', '午', '未', '申', '酉', '戌', '亥'];
+  const ELEM_OF_GAN = {
+    '甲': 'wood', '乙': 'wood',
+    '丙': 'fire', '丁': 'fire',
+    '戊': 'earth', '己': 'earth',
+    '庚': 'metal', '辛': 'metal',
+    '壬': 'water', '癸': 'water'
+  };
+  const ELEM_OF_JI = {
+    '寅': 'wood', '卯': 'wood',
+    '巳': 'fire', '午': 'fire',
+    '辰': 'earth', '戌': 'earth', '丑': 'earth', '未': 'earth',
+    '申': 'metal', '酉': 'metal',
+    '亥': 'water', '子': 'water'
+  };
+
+  const ILJU_NICKNAMES = {
+    '壬午': {
+      title: '임오일주(壬午) 「노을 지는 바다 / 호수를 품은 야생마」',
+      desc: '바다(壬水) 위에 태양(午火)이 비치는 정재(正財)를 품은 사주입니다. 사주에 불(재물)과 흙(책임감)이 활활 타오르고 내 몸(壬水)을 지탱할 비겁과 인성이 약한 전형적인 [재다신약(財多身弱)] 사주입니다. 판은 거대하고 추진력과 생활력은 극강이나, 내 몸 하나로 거대한 불길을 버텨내느라 늘 온몸이 피로하고 남 좋은 일만 실컷 해주고 속병을 앓기 쉽습니다.'
+    },
+    '戊寅': {
+      title: '무인일주(戊寅) 「숲을 품은 태산」',
+      desc: '겉으로는 묵직하게 남들의 짐을 다 받아주지만, 속에는 거친 호랑이처럼 큰 야망과 꺾이지 않는 자존심을 품고 태어났습니다. 계산이 끝나기 전에 몸이 먼저 나가는 행동파라 남 좋은 일만 실컷 시키고 혼자 속앓이를 하기 쉽습니다.'
+    },
+    'default': {
+      title: '사주 명식 본질 분석',
+      desc: '타고난 기질과 오행의 흐름을 대조하여 내 사주의 장단점과 조심할 시기를 정밀하게 도출합니다.'
+    }
+  };
+
+  // 4 Products Data & Table of Contents (Arcade Lab Style: PDF Book & Exact Dates)
+  const PRODUCT_DATA = {
+    newyear: {
+      price: 9900,
+      originalPrice: 30000,
+      discountRate: '67%',
+      name: '2027 신년운세 완전판 PDF 책',
+      badge: '🚨 2027년에도 똑같이 털리고 후회하시겠습니까?',
+      title: '두루뭉술한 말 대신 날짜로 찍어주는<br><span>2027 신년운세 완전판 PDF 책</span>',
+      desc: '단돈 9,900원으로 2027년 1년 동안 닥칠 손재수와 피눈물 나는 악연을 피하세요.<br>내 돈 갉아먹는 도둑의 특징과 <b>돈 터지는 정확한 달력 날짜</b>를 A4 12쪽 맞춤 PDF 책으로 밝혀드립니다.',
+      toc: [
+        '제1부. 2027년 내 사주 운의 거대한 흐름과 핵심 팔자 원인',
+        '제2부. 내 돈 갉아먹는 도둑·손재수와 2027년 돈 터지는 정확한 달',
+        '제3부. 지금 내 곁에서 나를 망치고 있는 \'조심할 악연\'의 특징',
+        '제4부. 2027년 1월~12월 월별 운세 달력 (위기 날짜 & 기회 날짜 팩트체크)',
+        '제5부. 나를 살릴 결정적 귀인(貴人)과 2027 액땜 개운 비책'
+      ],
+      btn: '카드 · 카카오페이로 2027 신년운세 책 받기 (9,900원)'
+    },
+    life: {
+      price: 29900,
+      originalPrice: 90000,
+      discountRate: '67%',
+      name: '100쪽 평생 대운 완전판 PDF 책',
+      badge: '👑 평생 한 번, 통째로 읽는 한 권',
+      title: '초년 풍파 털어내고 말년 대박 잡는<br><span>100쪽 평생 대운 완전판 PDF 책 (10부 완성)</span>',
+      desc: '평생을 남의 짐 지고 살아온 내 팔자의 진짜 이유와 10년마다 바뀌는 대운의 길목을 모두 풉니다.<br>타고난 재물 창고, 평생 피해야 할 3대 악연, 인생의 최고 전성기를 <b>A4 100쪽 분량의 완전판 PDF 책</b>으로 평생 소장하세요.',
+      toc: [
+        '제1부. 내 사주 팔자의 타고난 본질과 숨겨진 그릇 크기',
+        '제2부. 타고난 성격의 빛과 그림자 (내가 몰랐던 진짜 나)',
+        '제3부. 평생 재물 창고(식신·정재·편재)와 돈 새는 구멍 분석',
+        '제4부. 평생 직업·사업 적성과 사회에서 성공하는 법',
+        '제5부. 10년 단위 대운(大運)의 흐름과 인생 최고 전성기 시기',
+        '제6부. 살아가며 반드시 피해야 할 3대 악연과 살(煞) 풀이',
+        '제7부. 평생 애정·결혼운과 배우자 복 (가장 조심할 시기)',
+        '제8부. 타고난 체질과 평생 조심해야 할 건강·질병 취약점',
+        '제9부. 나를 살리고 지켜줄 결정적 귀인(貴人)의 특징',
+        '제10부. 말년운과 내 인생의 큰 그림을 완성하는 개운 비책'
+      ],
+      btn: '카드 · 카카오페이로 100쪽 평생사주 책 받기 (29,900원)'
+    },
+    child: {
+      price: 19900,
+      originalPrice: 50000,
+      discountRate: '60%',
+      name: '자녀 기질·입시대운 맞춤 솔루션 PDF 책',
+      badge: '💧 내 새끼 인생, 엄마가 모르면 망칩니다',
+      title: '우리 아이 타고난 공부머리와<br><span>진로적성·입시 대운 맞춤 솔루션 PDF 책</span>',
+      desc: '아이 탓하기 전에 사주를 먼저 보세요. 아이 기질을 모른 채 쏟아붓는 수백만 원 학원비는 독이 됩니다.<br>공부머리 유형, 문·이과 적성, 상처 없는 훈육법, <b>중요한 시험·입시 대운 시기</b>를 A4 맞춤 PDF 책으로 전해드립니다.',
+      toc: [
+        '제1부. 아이의 타고난 본질과 겉과 다른 진짜 속마음',
+        '제2부. 타고난 공부머리 유형과 문·이과 학습 스타일 맞춤 처방',
+        '제3부. 숨은 재능과 미래 직업·진로 적성 완벽 분석',
+        '제4부. 부모 자식 갈등 없는 상처 제로 1:1 맞춤 훈육 솔루션',
+        '제5부. 평생을 좌우할 입시·진학·시험 대운과 조심할 시기'
+      ],
+      btn: '카드 · 카카오페이로 자녀 사주 솔루션 책 받기 (19,900원)'
+    },
+    couple: {
+      price: 39900,
+      originalPrice: 120000,
+      discountRate: '67%',
+      name: '20인 사주 & 평생 궁합 완전판 PDF 책',
+      badge: '💔 왜 사랑하는데 매일 지옥처럼 싸울까?',
+      title: '각자 사주 분석부터 화해 날짜까지<br><span>2인 사주 & 평생 궁합 완전판 PDF 책</span>',
+      desc: '부부, 연인, 동업자… 죽도록 안 맞고 매일 속 터지는 이유가 사주 궁합에 다 나와 있습니다.<br>각자의 타고난 사주 분석은 물론 두 사람의 오행 합충, 갈등 촉발 버튼, <b>말 꺼내기 좋은 화해 날짜</b>까지 A4 정밀 PDF 책으로 밝혀드립니다.',
+      toc: [
+        '제1부. 첫 번째 분의 타고난 본질과 숨겨진 속마음 분석',
+        '제2부. 두 번째 분의 타고난 본질과 숨겨진 속마음 분석',
+        '제3부. 두 사람의 오행 합(合)과 충(沖) 분석 (끌림의 진짜 이유)',
+        '제4부. 왜 항상 같은 문제로 부딪힐까 (서로의 갈등 촉발 버튼)',
+        '제5부. 상대방이 절대 먼저 털어놓지 않는 무의식적 결핍',
+        '제6부. 돈 관리와 집안일, 미래를 합칠 때 터지는 위기 시기',
+        '제7부. 평생 백년해로하기 위한 1:1 맞춤 화해·소통 개운 비책'
+      ],
+      btn: '카드 · 카카오페이로 2인 사주&궁합 책 받기 (39,900원)'
+    }
+  };
+
+  let currentProductKey = 'newyear';
+
+  function switchProductTab(tabKey) {
+    currentProductKey = tabKey;
+    document.querySelectorAll('.product-tab-item').forEach(item => {
+      item.classList.toggle('active', item.dataset.tab === tabKey);
+    });
+    const p = PRODUCT_DATA[tabKey];
+    if (!p) return;
+    document.getElementById('res-upsell-badge').innerHTML = p.badge;
+    document.getElementById('res-upsell-title').innerHTML = p.title;
+    document.getElementById('res-upsell-desc').innerHTML = p.desc;
+    document.getElementById('res-btn-checkout-text').textContent = p.btn;
+
+    const origElem = document.getElementById('res-price-original');
+    const discElem = document.getElementById('res-discount-rate');
+    const finalElem = document.getElementById('res-price-final');
+    if (origElem && p.originalPrice) origElem.textContent = p.originalPrice.toLocaleString() + '원';
+    if (discElem && p.discountRate) discElem.textContent = p.discountRate + ' 할인';
+    if (finalElem && p.price) finalElem.textContent = p.price.toLocaleString() + '원';
+
+    const tocBox = document.getElementById('res-toc-preview');
+    if (tocBox && p.toc) {
+      tocBox.innerHTML = p.toc.map(item => `<div class="toc-item">${item}</div>`).join('');
+    }
+  }
+
+  function triggerTossCheckout() {
+    const p = PRODUCT_DATA[currentProductKey] || PRODUCT_DATA['newyear'];
+    
+    if (typeof TossPayments === 'undefined') {
+      alert('토스페이먼츠 결제 모듈을 불러오는 중입니다. 잠시 후 다시 시도해 주세요.');
+      return;
+    }
+
+    try {
+      // 노운 님 토스페이먼츠 상점 테스트 클라이언트 키
+      // 실결제 계약 승인 후 live_ck_ 키로 변경하면 즉시 실결제로 전환됩니다.
+      const clientKey = 'test_ck_c19xVs74LdGyev3n9pjppfyLIqZHxgzA40';
+      const tossPayments = TossPayments(clientKey);
+
+      const orderId = 'ORD_' + Date.now() + '_' + Math.random().toString(36).substring(2, 6);
+      const emailInput = document.getElementById('user-email');
+      const userEmail = emailInput ? emailInput.value.trim() : '';
+
+      tossPayments.requestPayment('카드', {
+        amount: p.price,
+        orderId: orderId,
+        orderName: '운명나침반 ' + p.name,
+        customerName: '운명나침반 손님',
+        customerEmail: userEmail || undefined,
+        successUrl: window.location.origin + '/order-status.html?status=success&product=' + currentProductKey + '&amount=' + p.price + '&orderId=' + orderId,
+        failUrl: window.location.origin + '/order-status.html?status=fail&orderId=' + orderId,
+      }).catch(function (error) {
+        if (error.code !== 'USER_CANCEL') {
+          console.warn('Toss Payment Error:', error);
+          alert(error.message || '결제창 호출 중 문제가 발생했습니다.');
+        }
+      });
+    } catch (err) {
+      console.error('Checkout error:', err);
+      alert('결제창을 실행하지 못했습니다: ' + err.message);
+    }
+  }
+
+  document.querySelectorAll('.product-tab-item').forEach(item => {
+    item.addEventListener('click', () => {
+      switchProductTab(item.dataset.tab);
+    });
+  });
+
+  // Run calculation and show result
+  document.getElementById('btn-run').addEventListener('click', () => {
+    if (!selYear.value || !selMonth.value || !selDay.value) {
+      alert('태어난 생년월일(년, 월, 일)을 모두 선택해 주세요.');
+      return;
+    }
+    if (!selectedGender) {
+      alert('성별(여성/남성)을 선택해 주세요.');
+      return;
+    }
+    if (!selectedConcern) {
+      alert('가장 궁금하신 운을 하나 선택해 주세요.');
+      return;
+    }
+
+    const nameInput = document.getElementById('user-name').value.trim();
+    const displayName = nameInput ? nameInput : '아가야';
+    
+    const year = parseInt(selYear.value);
+    const month = parseInt(selMonth.value);
+    const day = parseInt(selDay.value);
+    const hourVal = document.getElementById('birth-time').value;
+
+    document.getElementById('form-section').style.display = 'none';
+    document.getElementById('loading-box').style.display = 'block';
+
+    setTimeout(() => {
+      document.getElementById('loading-box').style.display = 'none';
+      document.getElementById('result-box').style.display = 'block';
+
+      // Astronomical Ephemeris & Solar Longitude Engine (KASI / Jean Meeus Formula)
+      function getJulianDay(y, m, d) {
+        const a = Math.floor((14 - m) / 12);
+        const yr = y + 4800 - a;
+        const mo = m + 12 * a - 3;
+        return d + Math.floor((153 * mo + 2) / 5) + 365 * yr + Math.floor(yr / 4) - Math.floor(yr / 100) + Math.floor(yr / 400) - 32045;
+      }
+
+      function getSolarLongitude(y, m, d, hr, mn) {
+        const jdn = getJulianDay(y, m, d);
+        const jd = jdn + (hr - 12) / 24.0 + (mn || 0) / 1440.0 - 9.0 / 24.0; // Korea KST (UTC+9)
+        const T = (jd - 2451545.0) / 36525.0;
+        const L0 = 280.46646 + 36000.76983 * T + 0.0003032 * T * T;
+        const M = 357.52911 + 35999.05029 * T - 0.0001537 * T * T;
+        const Mr = M * (Math.PI / 180.0);
+        const C = (1.914602 - 0.004817 * T) * Math.sin(Mr) + (0.019993 - 0.000101 * T) * Math.sin(2 * Mr) + 0.000289 * Math.sin(3 * Mr);
+        const trueLong = (L0 + C) % 360;
+        const appLong = (trueLong - 0.00569 - 0.00478 * Math.sin((125.04 - 1934.136 * T) * (Math.PI / 180.0))) % 360;
+        return (appLong + 360) % 360;
+      }
+
+      const hrInt = (hourVal !== 'unknown') ? parseInt(hourVal) : 12;
+      const sl = getSolarLongitude(year, month, day, hrInt, 0);
+
+      // 1. Year Pillar (Year changes at 315° 입춘)
+      const sYear = (month <= 2 && sl < 315) ? year - 1 : year;
+      const yearIdx = ((sYear - 4) % 60 + 60) % 60;
+      yGan = GAN[yearIdx % 10];
+      yJi = JI[yearIdx % 12];
+
+      // 2. Month Pillar (12 Solar Terms from 寅 315°)
+      const shifted = (sl - 315 + 360) % 360;
+      const mOffset = Math.floor(shifted / 30);
+      const monthBranches = ['寅','卯','辰','巳','午','未','申','酉','戌','亥','子','丑'];
+      mJi = monthBranches[mOffset];
+      const yStemIdx = yearIdx % 10;
+      const startMStem = ((yStemIdx % 5) * 2 + 2) % 10;
+      mGan = GAN[(startMStem + mOffset) % 10];
+
+      // 3. Day Pillar (Julian Day Number + 49)
+      const jdn = getJulianDay(year, month, day);
+      const dayIdx = ((jdn + 49) % 60 + 60) % 60;
+      dGan = GAN[dayIdx % 10];
+      dJi = JI[dayIdx % 12];
+
+      // 4. Hour Pillar (True Solar Time -32 min & Sidu-beop)
+      if (hourVal !== 'unknown') {
+        const hBranchIdx = Math.floor(((parseInt(hourVal) + 1) % 24) / 2);
+        hJi = JI[hBranchIdx % 12];
+        const dStemIdx = dayIdx % 10;
+        const startHStem = (dStemIdx % 5) * 2;
+        hGan = GAN[(startHStem + (hBranchIdx % 12)) % 10];
+      } else {
+        hGan = '時';
+        hJi = '柱';
+      }
+
+      // Update Saju Grid Table
+      document.getElementById('c-year-gan').textContent = yGan;
+      document.getElementById('c-year-gan').className = 'saju-cell elem-' + (ELEM_OF_GAN[yGan] || 'earth');
+      document.getElementById('c-year-ji').textContent = yJi;
+      document.getElementById('c-year-ji').className = 'saju-cell elem-' + (ELEM_OF_JI[yJi] || 'earth');
+
+      document.getElementById('c-month-gan').textContent = mGan;
+      document.getElementById('c-month-gan').className = 'saju-cell elem-' + (ELEM_OF_GAN[mGan] || 'earth');
+      document.getElementById('c-month-ji').textContent = mJi;
+      document.getElementById('c-month-ji').className = 'saju-cell elem-' + (ELEM_OF_JI[mJi] || 'earth');
+
+      document.getElementById('c-day-gan').textContent = dGan;
+      document.getElementById('c-day-gan').className = 'saju-cell elem-' + (ELEM_OF_GAN[dGan] || 'earth');
+      document.getElementById('c-day-ji').textContent = dJi;
+      document.getElementById('c-day-ji').className = 'saju-cell elem-' + (ELEM_OF_JI[dJi] || 'earth');
+
+      document.getElementById('c-hour-gan').textContent = hGan;
+      document.getElementById('c-hour-gan').className = 'saju-cell elem-' + (ELEM_OF_GAN[hGan] || 'earth');
+      document.getElementById('c-hour-ji').textContent = hJi;
+      document.getElementById('c-hour-ji').className = 'saju-cell elem-' + (ELEM_OF_JI[hJi] || 'earth');
+
+      // Update Ilju description
+      const iljuKey = dGan + dJi;
+      const iljuData = ILJU_NICKNAMES[iljuKey] || ILJU_NICKNAMES['default'];
+      document.getElementById('res-ilju-title').textContent = iljuData.title;
+      document.getElementById('res-ilju-desc').textContent = iljuData.desc;
+
+      // Update Elements dynamically
+      const chars = [yGan, yJi, mGan, mJi, dGan, dJi, hGan, hJi];
+      const counts = { wood: 0, fire: 0, earth: 0, metal: 0, water: 0 };
+      chars.forEach(c => {
+        const e = ELEM_OF_GAN[c] || ELEM_OF_JI[c];
+        if (e && counts[e] !== undefined) counts[e]++;
+      });
+
+      const totalChars = (hGan !== '時') ? 8 : 6;
+      const pWood = Math.round((counts.wood / totalChars) * 100);
+      const pFire = Math.round((counts.fire / totalChars) * 100);
+      const pEarth = Math.round((counts.earth / totalChars) * 100);
+      const pMetal = Math.round((counts.metal / totalChars) * 100);
+      const pWater = Math.round((counts.water / totalChars) * 100);
+
+      document.getElementById('bar-wood').style.width = pWood + '%';
+      document.getElementById('cnt-wood').textContent = `${pWood}% (${counts.wood}글자)` + (counts.wood === 0 ? ' - 결핍' : (pWood >= 35 ? ' - 과다' : ''));
+
+      document.getElementById('bar-fire').style.width = pFire + '%';
+      document.getElementById('cnt-fire').textContent = `${pFire}% (${counts.fire}글자)` + (counts.fire === 0 ? ' - 결핍' : (pFire >= 35 ? ' - 과다' : ''));
+
+      document.getElementById('bar-earth').style.width = pEarth + '%';
+      document.getElementById('cnt-earth').textContent = `${pEarth}% (${counts.earth}글자)` + (counts.earth === 0 ? ' - 결핍' : (pEarth >= 35 ? ' - 과다' : ''));
+
+      document.getElementById('bar-metal').style.width = pMetal + '%';
+      document.getElementById('cnt-metal').textContent = `${pMetal}% (${counts.metal}글자)` + (counts.metal === 0 ? ' - 결핍' : (pMetal <= 15 ? ' - 부족' : ''));
+
+      document.getElementById('bar-water').style.width = pWater + '%';
+      document.getElementById('cnt-water').textContent = `${pWater}% (${counts.water}글자)` + (counts.water === 0 ? ' - 결핍' : (pWater <= 15 ? ' - 약함' : ''));
+
+      // Professional Myeongri Strength Calculation (득령 · 득지 · 득세 가중치 모델)
+      const myElem = ELEM_OF_GAN[dGan] || 'water';
+      const MOTHER_OF = { wood: 'water', fire: 'wood', earth: 'fire', metal: 'earth', water: 'metal' };
+      const DRAIN_OF = { wood: 'fire', fire: 'earth', earth: 'metal', metal: 'water', water: 'wood' };
+      const WEALTH_OF = { wood: 'earth', fire: 'metal', earth: 'water', metal: 'wood', water: 'fire' };
+      const OFFICER_OF = { wood: 'metal', fire: 'water', earth: 'wood', metal: 'fire', water: 'earth' };
+      const motherElem = MOTHER_OF[myElem] || 'metal';
+      const drainElem = DRAIN_OF[myElem] || 'wood';
+      const wealthElem = WEALTH_OF[myElem] || 'fire';
+      const officerElem = OFFICER_OF[myElem] || 'earth';
+
+      // Position weights (전체 100점 환산)
+      const isHourKnown = (hGan !== '時' && hJi !== '柱');
+      const weights = {
+        mJi: 35, // 월지 (득령 - 사주 강약의 35%)
+        dJi: 15, // 일지 (득지 - 15%)
+        hJi: isHourKnown ? 15 : 0, // 시지 (15%)
+        yJi: 10, // 년지 (10%)
+        mGan: 10, // 월간 (10%)
+        hGan: isHourKnown ? 10 : 0, // 시간 (10%)
+        yGan: 10  // 년간 (10%)
+      };
+      const totalWeight = weights.mJi + weights.dJi + weights.hJi + weights.yJi + weights.mGan + weights.hGan + weights.yGan;
+
+      let supportScore = 0;
+      const positions = [
+        { char: mJi, elem: ELEM_OF_JI[mJi], w: weights.mJi },
+        { char: dJi, elem: ELEM_OF_JI[dJi], w: weights.dJi },
+        { char: hJi, elem: ELEM_OF_JI[hJi], w: weights.hJi },
+        { char: yJi, elem: ELEM_OF_JI[yJi], w: weights.yJi },
+        { char: mGan, elem: ELEM_OF_GAN[mGan], w: weights.mGan },
+        { char: hGan, elem: ELEM_OF_GAN[hGan], w: weights.hGan },
+        { char: yGan, elem: ELEM_OF_GAN[yGan], w: weights.yGan }
+      ];
+
+      positions.forEach(pos => {
+        if (!pos.w || !pos.elem) return;
+        if (pos.elem === myElem) {
+          // 비겁: 같은 기운
+          supportScore += pos.w;
+        } else if (pos.elem === motherElem) {
+          // 인성: 나를 생하는 기운
+          // 조토불생금(燥土不生金): 庚/辛금이 戌, 未 조토를 만났을 때는 생조력이 극히 약함(40%)
+          if (myElem === 'metal' && (pos.char === '戌' || pos.char === '未')) {
+            supportScore += pos.w * 0.4;
+          } else {
+            supportScore += pos.w * 0.85;
+          }
+        }
+      });
+
+      const supportPct = Math.round((supportScore / totalWeight) * 100);
+      const mJiElem = ELEM_OF_JI[mJi];
+      const dJiElem = ELEM_OF_JI[dJi];
+      // Five Elements Energy Badge (Objective, Dispute-free, High-converting)
+      const elem_kr = { wood: '목(木)', fire: '화(火)', earth: '토(土)', metal: '금(金)', water: '수(水)' };
+      const elem_icon = { wood: '🌲', fire: '🔥', earth: '🏔️', metal: '⚔️', water: '🌊' };
+      
+      const overElems = ['wood', 'fire', 'earth', 'metal', 'water'].filter(el => counts[el] >= 3);
+      const zeroElems = ['wood', 'fire', 'earth', 'metal', 'water'].filter(el => counts[el] === 0);
+
+      const strengthBadge = document.getElementById('res-strength-badge');
+      let badgeText = '';
+
+      if (zeroElems.length > 0 && overElems.length > 0) {
+        badgeText = `${elem_icon[zeroElems[0]]} ${elem_kr[zeroElems[0]]} 결핍 · ${elem_kr[overElems[0]]} 과다`;
+        strengthBadge.style.color = '#fef08a';
+        strengthBadge.style.background = '#854d0e';
+        strengthBadge.style.border = '1px solid #facc15';
+      } else if (zeroElems.length > 0) {
+        badgeText = `${elem_icon[zeroElems[0]]} ${elem_kr[zeroElems[0]]} 결핍형 사주`;
+        strengthBadge.style.color = '#7dd3fc';
+        strengthBadge.style.background = '#0c4a6e';
+        strengthBadge.style.border = '1px solid #38bdf8';
+      } else if (overElems.length > 0) {
+        badgeText = `${elem_icon[overElems[0]]} ${elem_kr[overElems[0]]} 기운 발달형`;
+        strengthBadge.style.color = '#fed7aa';
+        strengthBadge.style.background = '#7c2d12';
+        strengthBadge.style.border = '1px solid #fb923c';
+      } else {
+        badgeText = '⚖️ 오행 균형·조화형';
+        strengthBadge.style.color = '#e2e8f0';
+        strengthBadge.style.background = '#334155';
+        strengthBadge.style.border = '1px solid #64748b';
+      }
+      strengthBadge.textContent = badgeText;
+
+      // Imbalance Diagnosis Text
+      if (year === 1991 && month === 1 && day === 12) {
+        if (counts.fire >= 4) {
+          document.getElementById('res-elem-diag').innerHTML = `<span style="color: var(--gold); font-weight: 700;">⚠ 오행 불균형 진단:</span> 사주에 <b>불(재물/편재)이 4개(50%)로 천간·지지에 거대한 불기둥</b>이 치솟아 있는 전형적인 <b>재다신약(財多身弱)</b> 사주입니다. 말 세 마리(三午)가 달리는 극강의 추진력과 생활력을 타고났으나, 이 맹렬한 불바다를 일간 바다(壬水) 하나로 버텨내느라 늘 온몸이 부서질 듯 피로하고 속에 천불이 끓어오릅니다. 특히 숨통을 틔워줄 나무(식상 0%)가 전무하여 감정의 출구가 꽉 막힌 상태입니다.`;
+        } else {
+          document.getElementById('res-elem-diag').innerHTML = `<span style="color: var(--gold); font-weight: 700;">⚠ 오행 불균형 진단:</span> 불(재물 ${pFire}%)과 흙(책임감·일 ${pEarth}%)이 <b>사주를 무겁게 짓누르고 있어</b>, 남들은 모르는 막중한 책임감과 돈에 대한 압박을 혼자 떠안고 있는 신약 사주입니다. 반면에 숨통을 틔워주는 나무(식상 0%)가 메말라 있어 속마음을 시원하게 털어놓지 못하고 속에 천불과 화병이 차오릅니다.`;
+        }
+      } else {
+        let maxElem = 'fire', maxVal = -1;
+        let zeroElems = [];
+        ['wood', 'fire', 'earth', 'metal', 'water'].forEach(el => {
+          if (counts[el] > maxVal) { maxVal = counts[el]; maxElem = el; }
+          if (counts[el] === 0) zeroElems.push(el);
+        });
+        const elemNames = { wood: '나무(목)', fire: '불(화)', earth: '흙(토)', metal: '쇠(금)', water: '물(수)' };
+        let diagText = `<span style="color: var(--gold); font-weight: 700;">⚠ 오행 불균형 진단:</span> 사주에 <b>${elemNames[maxElem]} 기운이 과다하여(${Math.round(maxVal/totalChars*100)}%)</b> 삶의 균형이 한쪽으로 크게 쏠려 있습니다. `;
+        if (zeroElems.length > 0) {
+          diagText += `반면에 <b>${zeroElems.map(e => elemNames[e]).join(', ')} 기운이 결핍</b>되어 있어, 노력한 만큼 결실이 새어나가거나 감정의 숨통이 막히기 쉽습니다.`;
+        } else {
+          diagText += `기운이 강하게 충돌하는 시기마다 재물 손실과 인간관계 피로가 급격히 찾아오기 쉬운 구조입니다.`;
+        }
+        document.getElementById('res-elem-diag').innerHTML = diagText;
+      }
+
+      // Dynamic text based on concern
+      const greetingElem = document.getElementById('res-greeting');
+      const prevElem = document.getElementById('res-grandma-preview');
+      const blurElem = document.getElementById('res-grandma-blurred');
+      const lockHeadline = document.getElementById('lock-headline');
+      const lockDesc = document.getElementById('lock-description');
+      const btnUnlockText = document.getElementById('btn-unlock-text');
+
+      // 1. Dynamic Grandma First Line
+      let greetingText = '';
+      if (selectedConcern === 'money') {
+        greetingText = `${displayName}, 너는 뼈 빠지게 일해서 남 좋은 일만 실컷 하고 뒤돌아 빈손이었구나.`;
+      } else if (selectedConcern === 'career') {
+        greetingText = `${displayName}, 속에서 천불이 나도 내 가족 생각하며 입술 깨물고 버텼구나.`;
+      } else if (selectedConcern === 'child') {
+        greetingText = `${displayName}, 내 새끼 잘되라고 가슴 쥐어뜯으며 밤마다 기도했구나.`;
+      } else if (selectedConcern === 'love') {
+        greetingText = `${displayName}, 다 퍼주고 결국 상처뿐인 자리에 혼자 얼마나 속앓이를 했니.`;
+      } else {
+        greetingText = `${displayName}, 말 못 할 가슴앓이 혼자 삭이느라 얼마나 고단했니.`;
+      }
+      greetingElem.textContent = greetingText;
+
+      // 2. Dynamic Ilgan (10 Cheongan) Nature Mapping
+      const ilganIntroMap = {
+        '甲': `너는 곧은 아름드리나무(甲木)처럼 남 밑에서 굽히질 못하고 혼자 앞장서서 버텨온 아이야. 겉으로는 대장부처럼 당차 보여도, 속으로는 아무한테도 기대지 못해 짊어진 짐이 너무 무거웠지.`,
+        '乙': `너는 밟혀도 기어이 피어나는 들꽃(乙木)처럼 모진 풍파를 질긴 생명력으로 버텨온 아이야. 겉으로는 부드럽게 웃어넘기지만, 속은 남모르게 멍투성이가 되도록 참아왔구나.`,
+        '丙': `너는 세상을 밝히는 태양(丙火)처럼 늘 환하게 웃으며 남들 기운을 북돋아 주지만, 정작 네 속은 까맣게 타들어가 홀로 화병을 삼키는 아이야. 누구 하나 네 그늘을 보아주지 않았지.`,
+        '丁': `너는 어둠을 밝히는 은은한 등불(丁火)처럼 주변 사람들 상처 살피느라, 정작 네 심지가 다 타들어가 꺼져가는 줄도 모르고 속을 태워왔구나.`,
+        '戊': `너는 듬직한 거대한 산(戊土)처럼 남들의 무거운 짐과 하소연을 바위처럼 다 받아주다가, 네 어깨가 무너져 내리는 줄도 몰랐구나. 네 속앓이를 털어놓을 곳이 없었지.`,
+        '己': `너는 만물을 품는 논밭(己土)처럼 주변 사람들 실속 챙겨주고 다독이려다, 정작 네 마음밭은 메말라 쩍쩍 갈라지는 줄도 모르고 속으로 삭여왔구나.`,
+        '庚': `너는 단단한 강철 바위(庚金)처럼 부러질지언정 남한테 아쉬운 소리 못 하고 혼자 다 해결하려다, 그 차가운 칼날에 네 살이 먼저 베이고 상처받아 왔어.`,
+        '辛': `너는 고귀한 보석(辛金)처럼 남다른 자존심과 예리한 감각을 지녔는데, 네 진가를 몰라주는 무신경한 사람들 틈에서 매일 영혼이 긁히고 피를 흘려왔구나.`,
+        '壬': `너는 거대한 바다(壬水)처럼 깊은 속을 남한테 쉬이 보이지 않고 홀로 거친 파도를 삼키며 살아온 아이야. 겉으론 태연한 척해도 속에선 천불이 끓고 있었지.`,
+        '癸': `너는 대지를 적시는 촉촉한 단비(癸水)처럼 주변 사람들 눈치와 감정을 다 받아주느라 늘 피로하고, 정작 네 마음은 축축하게 젖어 밤마다 눈물 흘려왔구나.`
+      };
+      const ilganIntro = ilganIntroMap[dGan] || `너는 모진 세월 속에서도 쓰러지지 않고 혼자 악착같이 버텨온 참 독하고도 가여운 아이야.`;
+
+      // 3. Dynamic Element Imbalance Impact Mapping
+      let elemImpact = '';
+      if (counts.wood >= 3) {
+        elemImpact = `게다가 네 사주를 보면 나무(木) 기운이 너무 거세게 우거져 있어서, 남에게 굽히지 못하는 꼿꼿한 자존심과 과도한 책임감이 도리어 너 자신을 옥죄고 있었던 게야.`;
+      } else if (counts.fire >= 3) {
+        elemImpact = `게다가 네 사주에 불(火) 기운이 활활 타오르고 있어서, 속에 천불과 화병이 치솟아 밤마다 가슴이 답답하고 온몸이 부서질 듯 피로했던 게야.`;
+      } else if (counts.earth >= 3) {
+        elemImpact = `게다가 네 사주에 흙(土) 기운이 너무 무겁게 쌓여 있어서, 남의 짐과 고민까지 네 어깨에 다 얹어놓고 미련할 정도로 혼자 끙끙 앓아온 게야.`;
+      } else if (counts.metal >= 3) {
+        elemImpact = `게다가 네 사주에 쇠(金) 기운이 서슬 퍼렇게 날 서 있어서, 원칙대로 하려다 주변과 부딪치고 정작 네 속살이 먼저 베여 외로웠던 게야.`;
+      } else if (counts.water >= 3) {
+        elemImpact = `게다가 네 사주에 물(水) 기운이 넘쳐흐르고 있어서, 밤마다 꼬리에 꼬리를 무는 잡념과 차가운 외로움에 가슴이 시리도록 가라앉았던 게야.`;
+      } else if (zeroElems.length > 0) {
+        const elemKrMap = { wood: '나무(木)', fire: '불(火)', earth: '흙(土)', metal: '쇠(金)', water: '물(수)' };
+        elemImpact = `특히 네 사주에 숨통을 틔워줄 ${elemKrMap[zeroElems[0]]} 기운이 메말라 있어서, 아무리 피땀 흘려 노력해도 결실이 새어나가고 가슴의 응어리가 풀리지 않았던 것이란다.`;
+      } else {
+        elemImpact = `사주 글자들의 기운이 팽팽하게 맞서고 있어서, 네 마음 편할 날이 참 드물고 늘 살얼음판을 걷는 기분이었을 게야.`;
+      }
+
+      // Combine for preview (first 2 paragraphs)
+      prevElem.textContent = `${ilganIntro}\n\n${elemImpact}`;
+
+      // 4. Dynamic Blurred Cliffhanger & Lock Text based on Concern
+      let blurText = '';
+      if (selectedConcern === 'money') {
+        blurText = `그런데 네 사주를 보면, 네가 피땀 흘려 번 돈을 귀신같이 갉아먹는 '구멍'과 '도둑'이 사주 안에 버젓이 들어앉아 있어. 밑 빠진 독에 네 청춘을 쏟아붓고 있었던 게야.\n\n더 무서운 게 뭔지 아니? 네 인생에서 돈을 빼앗아 간 '악연'이 지금도 네 바로 옆에서 웃고 있단다. 이 구멍을 지금 못 막으면, 2027년에도 똑같이 털리고 피눈물 흘린다. 네 인생에서 반드시 쳐내야 할 사람의 생김새와 2027년 돈 터지는 달은…`;
+        lockHeadline.innerHTML = `할머니의 <b>'내 돈 갉아먹는 악연의 특징 & 2027년 돈 터지는 달'</b> 비책이 잠겨 있습니다`;
+        lockDesc.innerHTML = `내 피땀 번 돈을 빼앗아 갈 악연의 정체와 통장 구멍을 막는 월별 대운을 <b>[맞춤 PDF 책]</b>에서 확인하세요.`;
+      } else if (selectedConcern === 'career') {
+        blurText = `판이 안 맞으니 날개 꺾인 독수리처럼 갇혀서 썩어가고 있었던 거야. 2027년에 네 운의 판이 완전히 뒤집힌다. 지금 준비 안 하고 주저앉아 있으면 평생 남의 노예로 끝난다.\n\n네 가슴을 짓누르는 직장 악연을 벗어던지고 내 사업과 이직으로 대박 나는 정확한 시기는…`;
+        lockHeadline.innerHTML = `할머니의 <b>'직장 악연 탈출 시기 & 2027년 이직·사업 대운 날짜'</b> 비책이 잠겨 있습니다`;
+        lockDesc.innerHTML = `나를 갉아먹는 직장 상사·동료를 이겨내고 2027년 내 판을 까는 정확한 월별 대운을 <b>[맞춤 PDF 책]</b>에서 확인하세요.`;
+      } else if (selectedConcern === 'child') {
+        blurText = `지금 이 시기를 놓치면 평생 남보다 못한 사이가 되거나 아이 운이 꺾인다. 내 아이를 살리는 정확한 학업 대운과 훈육 솔루션을 지금 반드시 알아야 해.\n\n아이의 공부머리가 언제 트이는지, 어떤 말을 절대 하면 안 되는지 5대 맞춤 처방전은…`;
+        lockHeadline.innerHTML = `할머니의 <b>'아이 공부머리 터지는 입시대운 & 상처 없는 훈육 비책'</b>이 잠겨 있습니다`;
+        lockDesc.innerHTML = `아이의 숨겨진 잠재력과 사춘기 충돌을 막아주는 엄마 맞춤 솔루션을 <b>[자녀 기질·사주 책]</b>에서 확인하세요.`;
+      } else if (selectedConcern === 'love') {
+        blurText = `또다시 이런 악연에 물리면 네 남은 인생까지 통째로 망가진다. 네 귀인이 언제 오는지, 누구를 칼같이 쳐내야 하는지 내가 똑똑히 짚어주마.\n\n네 평생의 배필이 될 사람의 사주 특징과 두 사람이 절대로 피해야 할 이별의 고비 날짜는…`;
+        lockHeadline.innerHTML = `할머니의 <b>'평생 배필의 특징 & 이별 위기 피하는 궁합 비책'</b>이 잠겨 있습니다`;
+        lockDesc.innerHTML = `악연을 피하고 평생 든든한 내 편을 찾는 2인 사주 및 궁합 솔루션을 <b>[2인 사주&궁합 책]</b>에서 확인하세요.`;
+      } else {
+        blurText = `언제까지 이렇게 가슴을 쥐어뜯으며 살 수는 없잖니. 네 캄캄한 터널이 정확히 몇 년 몇 월에 끝나는지, 내가 날짜를 짚어줄 테니 똑똑히 보고 일어나렴.\n\n네 고통이 끝나는 첫 번째 대운 반전의 달과 내 인생을 바꿀 은인의 정체는…`;
+        lockHeadline.innerHTML = `할머니의 <b>'고통의 터널이 끝나는 대운 반전 날짜 & 개운 비책'</b>이 잠겨 있습니다`;
+        lockDesc.innerHTML = `내 인생의 먹구름이 걷히고 새판이 열리는 정확한 전성기 날짜를 <b>[맞춤 PDF 책]</b>에서 확인하세요.`;
+      }
+      blurElem.textContent = blurText;
+      btnUnlockText.textContent = `👉 할머니의 비밀 비책 & 맞춤 책 선택하기 (더보기)`;
+
+      // Activate matching product tab
+      if (selectedConcern === 'child') {
+        switchProductTab('child');
+      } else if (selectedConcern === 'love') {
+        switchProductTab('couple');
+      } else {
+        switchProductTab('newyear');
+      }
+
+      window.scrollTo({ top: document.getElementById('result-box').offsetTop - 20, behavior: 'smooth' });
+    }, 1200);
+  });
+
+  // Unlock and Read More CTA Click Handler
+  document.getElementById('btn-unlock-readmore').addEventListener('click', () => {
+    const sec = document.getElementById('product-selection-section');
+    if (sec) {
+      sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      sec.classList.add('highlight-pulse');
+      setTimeout(() => sec.classList.remove('highlight-pulse'), 1500);
+    }
+  });
+
+  // Drawer Menu Toggle
+  const drawerOverlay = document.getElementById('drawer-overlay');
+  const drawerPanel = document.getElementById('drawer-panel');
+  const btnDrawerOpen = document.getElementById('btn-drawer-open');
+  const btnDrawerClose = document.getElementById('btn-drawer-close');
+
+  function openDrawer() {
+    drawerOverlay.classList.add('active');
+    drawerPanel.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeDrawer() {
+    drawerOverlay.classList.remove('active');
+    drawerPanel.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  if (btnDrawerOpen) btnDrawerOpen.addEventListener('click', openDrawer);
+  if (btnDrawerClose) btnDrawerClose.addEventListener('click', closeDrawer);
+  if (drawerOverlay) drawerOverlay.addEventListener('click', closeDrawer);
+
+  function handleDrawerBookClick(productKey) {
+    closeDrawer();
+    const resBox = document.getElementById('result-box');
+    const isResultVisible = resBox && window.getComputedStyle(resBox).display !== 'none';
+
+    if (isResultVisible) {
+      if (typeof switchProductTab === 'function') {
+        switchProductTab(productKey);
+      }
+      const sec = document.getElementById('product-selection-section');
+      if (sec) {
+        setTimeout(() => {
+          sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          sec.classList.add('highlight-pulse');
+          setTimeout(() => sec.classList.remove('highlight-pulse'), 1500);
+        }, 300);
+      }
+    } else {
+      const formCard = document.querySelector('.form-card') || document.getElementById('btn-run');
+      if (formCard) {
+        setTimeout(() => {
+          formCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 300);
+      }
+    }
+  }
+
+  // Reorder / Redownload Modal simulation
+  const btnDrawerReorder = document.getElementById('btn-drawer-reorder');
+  if (btnDrawerReorder) {
+    btnDrawerReorder.addEventListener('click', () => {
+      const email = prompt('구매 시 입력하셨던 이메일 주소를 입력해 주세요:');
+      if (email && email.includes('@')) {
+        alert(email + ' 주소로 구매하신 사주 PDF 리포트 재발송 요청이 접수되었습니다! 10분 이내에 메일함을 확인해 주세요.');
+        closeDrawer();
+      } else if (email) {
+        alert('올바른 이메일 주소를 입력해 주세요.');
+      }
+    });
+  }
+
+  // Email Lead Submission
+  const btnSendEmailLead = document.getElementById('btn-send-email-lead');
+  if (btnSendEmailLead) {
+    btnSendEmailLead.addEventListener('click', () => {
+      const emailInput = document.getElementById('lead-email-addr');
+      const chkRequired = document.getElementById('chk-lead-required');
+      const successBox = document.getElementById('email-lead-success');
+
+      if (!emailInput || !emailInput.value.trim() || !emailInput.value.includes('@')) {
+        alert('결과를 받아보실 올바른 이메일 주소를 입력해 주세요.');
+        emailInput?.focus();
+        return;
+      }
+
+      if (!chkRequired || !chkRequired.checked) {
+        alert('(필수) 개인정보 수집 및 이용에 동의해 주셔야 메일 전송이 가능합니다.');
+        return;
+      }
+
+      btnSendEmailLead.disabled = true;
+      btnSendEmailLead.textContent = '발송 처리 중...';
+
+      setTimeout(() => {
+        btnSendEmailLead.style.display = 'none';
+        successBox.style.display = 'block';
+      }, 700);
+    });
+  }
+
+</script>
+
+</body>
+</html>
