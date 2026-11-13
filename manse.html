@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>운명나침반 · 무료 정밀 만세력 & 대운 조회</title>
+  <title>운명나침반 · 나침반 정밀 만세력 (대운 · 세운 · 월운 · 지장간)</title>
   
-  <meta name="description" content="생년월일시만 넣으면 3초 만에 사주 8글자, 10년 대운, 오행 비율, 12운성을 무료로 조회하는 정통 명리학 만세력입니다.">
-  <meta property="og:title" content="운명나침반 · 무료 정밀 만세력 & 대운 조회">
-  <meta property="og:description" content="누구나 평생 무료! 사주 원국 8글자와 10년 대운 타임라인을 3초 만에 확인하세요.">
+  <meta name="description" content="사주 원국 8글자, 지장간, 12운성, 신살, 10년 대운, 연도별 세운, 1~12월 월운을 무료로 조회하는 정통 명리학 만세력입니다.">
+  <meta property="og:title" content="운명나침반 · 나침반 정밀 만세력">
+  <meta property="og:description" content="지장간·12신살부터 대운·세운·월운까지 한눈에 보는 정통 만세력">
   <meta property="og:url" content="https://nachimbansaju.com/manse.html">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -45,7 +45,7 @@
       display: flex;
       justify-content: center;
       min-height: 100vh;
-      line-height: 1.5;
+      line-height: 1.45;
     }
 
     .app-container {
@@ -63,13 +63,13 @@
 
     /* Top Nav */
     .top-nav {
-      height: 56px;
+      height: 54px;
       padding: 0 16px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       border-bottom: 1px solid rgba(255,255,255,0.08);
-      background: rgba(13, 19, 34, 0.9);
+      background: rgba(13, 19, 34, 0.95);
       backdrop-filter: blur(10px);
       position: sticky;
       top: 0;
@@ -82,14 +82,14 @@
       text-decoration: none;
       color: var(--gold-light);
       font-weight: 800;
-      font-size: 16px;
+      font-size: 15px;
     }
     .top-nav-btn {
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 700;
       color: #0f172a;
       background: linear-gradient(135deg, #facc15, #ca8a04);
-      padding: 6px 12px;
+      padding: 5px 12px;
       border-radius: 20px;
       text-decoration: none;
       display: inline-flex;
@@ -99,40 +99,38 @@
 
     /* Hero Banner */
     .hero-box {
-      padding: 24px 20px 18px;
+      padding: 20px 16px 14px;
       text-align: center;
       background: radial-gradient(circle at 50% 20%, rgba(212,175,55,0.15), transparent 70%);
       border-bottom: 1px solid rgba(255,255,255,0.06);
     }
     .hero-badge {
       display: inline-block;
-      font-size: 11px;
+      font-size: 10px;
       font-weight: 800;
       color: var(--gold-light);
       background: rgba(212,175,55,0.15);
       border: 1px solid rgba(212,175,55,0.4);
-      padding: 3px 10px;
+      padding: 2px 10px;
       border-radius: 20px;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
     }
     .hero-title {
-      font-size: 22px;
+      font-size: 20px;
       font-weight: 900;
       color: #ffffff;
       line-height: 1.35;
-      margin-bottom: 6px;
+      margin-bottom: 4px;
     }
-    .hero-title span {
-      color: var(--gold);
-    }
+    .hero-title span { color: var(--gold); }
     .hero-sub {
-      font-size: 13px;
+      font-size: 12px;
       color: var(--text-sub);
     }
 
     /* Content Area */
     .content-area {
-      padding: 20px 16px 40px;
+      padding: 16px 14px 40px;
       flex: 1;
     }
 
@@ -140,54 +138,50 @@
     .form-card {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
-      border-radius: 18px;
-      padding: 20px 16px;
-      margin-bottom: 24px;
+      border-radius: 16px;
+      padding: 18px 14px;
+      margin-bottom: 20px;
       box-shadow: 0 10px 25px rgba(0,0,0,0.4);
     }
     .form-group {
-      margin-bottom: 16px;
+      margin-bottom: 14px;
     }
     .form-label {
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 700;
       color: #cbd5e1;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
     }
     .input-text {
       width: 100%;
-      height: 46px;
+      height: 44px;
       background: rgba(15, 23, 42, 0.8);
       border: 1px solid rgba(255,255,255,0.12);
-      border-radius: 10px;
-      padding: 0 14px;
-      font-size: 14px;
+      border-radius: 8px;
+      padding: 0 12px;
+      font-size: 13px;
       color: #ffffff;
       outline: none;
-      transition: border 0.2s;
     }
-    .input-text:focus {
-      border-color: var(--gold);
-    }
+    .input-text:focus { border-color: var(--gold); }
 
     .btn-toggle-group {
       display: flex;
-      gap: 8px;
+      gap: 6px;
     }
     .btn-toggle {
       flex: 1;
-      height: 42px;
+      height: 40px;
       background: rgba(15, 23, 42, 0.8);
       border: 1px solid rgba(255,255,255,0.12);
-      border-radius: 10px;
+      border-radius: 8px;
       color: #94a3b8;
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 700;
       cursor: pointer;
-      transition: all 0.2s;
     }
     .btn-toggle.active {
       background: rgba(212, 175, 55, 0.15);
@@ -198,48 +192,39 @@
     .select-grid {
       display: grid;
       grid-template-columns: 1.2fr 1fr 1fr;
-      gap: 8px;
+      gap: 6px;
     }
     .input-select {
-      height: 46px;
+      height: 44px;
       background: rgba(15, 23, 42, 0.8);
       border: 1px solid rgba(255,255,255,0.12);
-      border-radius: 10px;
-      padding: 0 10px;
-      font-size: 13px;
+      border-radius: 8px;
+      padding: 0 8px;
+      font-size: 12px;
       color: #ffffff;
       outline: none;
-      cursor: pointer;
     }
-    .input-select:focus {
-      border-color: var(--gold);
-    }
-    .input-select option {
-      background: #0f172a;
-      color: #ffffff;
-    }
+    .input-select:focus { border-color: var(--gold); }
+    .input-select option { background: #0f172a; color: #ffffff; }
 
     .btn-submit-manse {
       width: 100%;
-      height: 54px;
+      height: 50px;
       background: linear-gradient(135deg, #d4af37, #b48a1e);
       border: none;
-      border-radius: 12px;
+      border-radius: 10px;
       color: #0f172a;
-      font-size: 16px;
+      font-size: 15px;
       font-weight: 900;
       cursor: pointer;
-      margin-top: 8px;
+      margin-top: 6px;
       box-shadow: 0 6px 20px rgba(212, 175, 55, 0.35);
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
-      transition: transform 0.1s;
+      gap: 6px;
     }
-    .btn-submit-manse:active {
-      transform: scale(0.98);
-    }
+    .btn-submit-manse:active { transform: scale(0.98); }
 
     /* Ad Modal */
     .modal-overlay {
@@ -253,279 +238,251 @@
       justify-content: center;
       padding: 20px;
     }
-    .modal-overlay.active {
-      display: flex;
-    }
+    .modal-overlay.active { display: flex; }
     .ad-card {
       width: 100%;
       max-width: 380px;
       background: #1e293b;
       border: 1px solid rgba(212, 175, 55, 0.4);
-      border-radius: 20px;
-      padding: 24px 20px;
+      border-radius: 18px;
+      padding: 22px 18px;
       text-align: center;
       box-shadow: 0 20px 40px rgba(0,0,0,0.8);
-      animation: popIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    @keyframes popIn {
-      from { transform: scale(0.9); opacity: 0; }
-      to { transform: scale(1); opacity: 1; }
-    }
-    .ad-sponsor-badge {
-      font-size: 11px;
-      color: #94a3b8;
-      background: rgba(255,255,255,0.06);
-      padding: 2px 8px;
-      border-radius: 6px;
-      display: inline-block;
-      margin-bottom: 12px;
     }
     .ad-timer-circle {
-      width: 64px;
-      height: 64px;
+      width: 58px;
+      height: 58px;
       border-radius: 50%;
       background: rgba(212, 175, 55, 0.1);
       border: 3px solid var(--gold);
       display: flex;
       align-items: center;
       justify-content: center;
-      margin: 0 auto 16px;
-      font-size: 26px;
+      margin: 0 auto 14px;
+      font-size: 24px;
       font-weight: 900;
       color: var(--gold-light);
     }
-    .ad-banner-placeholder {
-      background: rgba(15, 23, 42, 0.7);
-      border: 1px dashed rgba(212,175,55,0.3);
-      border-radius: 12px;
-      padding: 18px 12px;
-      margin: 16px 0;
-      font-size: 13px;
-      color: #cbd5e1;
-      line-height: 1.5;
-    }
-    .ad-banner-placeholder b {
-      color: #facc15;
-    }
     .btn-ad-complete {
       width: 100%;
-      height: 48px;
+      height: 46px;
       background: #334155;
       color: #64748b;
       border: none;
-      border-radius: 10px;
-      font-size: 15px;
+      border-radius: 8px;
+      font-size: 14px;
       font-weight: 800;
       cursor: not-allowed;
-      transition: all 0.2s;
     }
     .btn-ad-complete.ready {
       background: linear-gradient(135deg, #d4af37, #ca8a04);
       color: #0f172a;
       cursor: pointer;
-      box-shadow: 0 4px 15px rgba(212,175,55,0.4);
     }
 
-    /* Result Box */
-    .result-box {
-      display: none;
+    /* Results Screen */
+    .result-box { display: none; }
+
+    /* Profile Header in Results */
+    .profile-bar {
+      background: linear-gradient(135deg, #1e3a8a, #0f172a);
+      border: 1px solid rgba(59, 130, 246, 0.4);
+      border-radius: 14px;
+      padding: 12px 14px;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .profile-name-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .profile-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #38bdf8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
+    .profile-name {
+      font-size: 15px;
+      font-weight: 800;
+      color: #ffffff;
+    }
+    .profile-birth {
+      font-size: 11px;
+      color: #93c5fd;
     }
 
-    /* Saju Grid Table */
-    .saju-grid-card {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 18px;
-      padding: 20px 14px;
-      margin-bottom: 20px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+    /* Saju 4 Pillars Complete Table */
+    .table-card {
+      background: #111827;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 14px;
+      overflow: hidden;
+      margin-bottom: 16px;
     }
-    .saju-grid {
+    .table-head-row {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 6px;
-      margin: 14px 0 16px;
+      background: #1e293b;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
       text-align: center;
+      padding: 8px 0;
+      font-size: 12px;
+      font-weight: 800;
+      color: #cbd5e1;
     }
-    .saju-col {
+    .table-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      text-align: center;
+      padding: 6px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      font-size: 11px;
+      align-items: center;
+    }
+    .table-row:last-child { border-bottom: none; }
+
+    /* Character Tiles */
+    .char-cell-wrap {
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      align-items: center;
+      padding: 4px;
     }
-    .saju-col-head {
-      font-size: 11px;
-      font-weight: 700;
-      color: #94a3b8;
-      padding-bottom: 4px;
-      border-bottom: 1px solid rgba(255,255,255,0.1);
-    }
-    .saju-cell {
-      height: 52px;
+    .char-tile {
+      width: 44px;
+      height: 44px;
       border-radius: 8px;
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
       font-size: 22px;
       font-weight: 900;
-      position: relative;
+      margin: 2px 0;
     }
-    .saju-sub-label {
+    .char-hangul {
       font-size: 10px;
-      font-weight: 600;
-      margin-top: -2px;
-      opacity: 0.85;
+      color: #94a3b8;
     }
 
-    /* Elements Color Scheme */
-    .elem-wood { background: rgba(34, 197, 94, 0.18); border: 1px solid rgba(34, 197, 94, 0.45); color: #4ade80; }
-    .elem-fire { background: rgba(239, 68, 68, 0.18); border: 1px solid rgba(239, 68, 68, 0.45); color: #f87171; }
-    .elem-earth { background: rgba(234, 179, 8, 0.18); border: 1px solid rgba(234, 179, 8, 0.45); color: #facc15; }
-    .elem-metal { background: rgba(255, 255, 255, 0.15); border: 1px solid rgba(255, 255, 255, 0.45); color: #ffffff; }
-    .elem-water { background: rgba(59, 130, 246, 0.18); border: 1px solid rgba(59, 130, 246, 0.45); color: #60a5fa; }
+    /* Elements Background & Text */
+    .c-wood  { background: #14532d; border: 2px solid #22c55e; color: #86efac; }
+    .c-fire  { background: #7f1d1d; border: 2px solid #ef4444; color: #fca5a5; }
+    .c-earth { background: #713f12; border: 2px solid #eab308; color: #fef08a; }
+    .c-metal { background: #334155; border: 2px solid #cbd5e1; color: #ffffff; }
+    .c-water { background: #0f172a; border: 2px solid #3b82f6; color: #93c5fd; }
 
-    /* Extra Info Row in Saju Grid */
-    .saju-meta-row {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 6px;
-      text-align: center;
-      font-size: 11px;
+    /* Jigangan text list */
+    .jigangan-box {
+      font-size: 10px;
+      line-height: 1.35;
       color: #cbd5e1;
-      padding: 6px 0;
-      border-top: 1px dashed rgba(255,255,255,0.1);
     }
-    .saju-meta-label {
-      font-size: 10px;
-      color: #64748b;
-      margin-bottom: 2px;
+    .jigangan-item {
+      display: block;
+      white-space: nowrap;
     }
 
-    /* 5 Elements Distribution */
-    .elem-bar-wrap {
-      margin: 16px 0;
-      background: rgba(15, 23, 42, 0.6);
-      border-radius: 12px;
-      padding: 14px;
+    /* Horizontal Flow Container (Daeun, Seeun, Wolun) */
+    .flow-section {
+      background: #111827;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 14px;
+      padding: 14px 12px;
+      margin-bottom: 16px;
     }
-    .elem-bar-row {
+    .flow-header {
       display: flex;
+      justify-content: space-between;
       align-items: center;
       margin-bottom: 8px;
-      font-size: 12px;
     }
-    .elem-bar-row:last-child { margin-bottom: 0; }
-    .elem-bar-name { width: 55px; font-weight: 700; color: #cbd5e1; }
-    .elem-bar-track {
-      flex: 1;
-      height: 10px;
-      background: rgba(255,255,255,0.08);
-      border-radius: 6px;
-      overflow: hidden;
-      margin: 0 10px;
-    }
-    .elem-bar-fill { height: 100%; border-radius: 6px; transition: width 0.6s ease; }
-    .elem-bar-val { width: 35px; text-align: right; font-weight: 800; color: var(--gold-light); }
-
-    /* Daeun Timeline */
-    .daeun-card {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 18px;
-      padding: 18px 14px;
-      margin-bottom: 20px;
-    }
-    .daeun-scroll {
+    .flow-title {
+      font-size: 13px;
+      font-weight: 800;
+      color: #ffffff;
       display: flex;
-      gap: 8px;
+      align-items: center;
+      gap: 5px;
+    }
+    .flow-sub {
+      font-size: 11px;
+      color: var(--gold-light);
+      font-weight: 700;
+    }
+    .flow-scroll {
+      display: flex;
+      gap: 6px;
       overflow-x: auto;
-      padding-bottom: 10px;
-      margin-top: 12px;
+      padding-bottom: 6px;
       scrollbar-width: thin;
     }
-    .daeun-item {
-      min-width: 58px;
-      background: rgba(15, 23, 42, 0.8);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 10px;
-      padding: 8px 4px;
+    .flow-card {
+      min-width: 52px;
+      background: #0f172a;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 8px;
+      padding: 6px 3px;
       text-align: center;
       display: flex;
       flex-direction: column;
       gap: 3px;
-    }
-    .daeun-age {
-      font-size: 12px;
-      font-weight: 800;
-      color: var(--gold-light);
-    }
-    .daeun-char {
-      font-size: 16px;
-      font-weight: 900;
-    }
-    .daeun-sub {
       font-size: 10px;
-      color: #64748b;
+      cursor: pointer;
+      transition: border 0.15s;
+    }
+    .flow-card.selected {
+      border: 1px solid var(--gold);
+      background: rgba(212,175,55,0.1);
+    }
+    .flow-card-top {
+      font-size: 11px;
+      font-weight: 800;
+      color: #f8fafc;
+    }
+    .flow-char-box {
+      border-radius: 4px;
+      padding: 1px 0;
+      font-size: 14px;
+      font-weight: 900;
+      margin: 1px 0;
     }
 
-    /* Grand Funnel Upsell Box */
+    /* Upsell Funnel Box */
     .upsell-box {
       background: linear-gradient(145deg, #1e1b4b, #0f172a);
       border: 1px solid #6366f1;
-      border-radius: 18px;
-      padding: 22px 18px;
+      border-radius: 16px;
+      padding: 20px 16px;
       text-align: center;
-      margin-bottom: 24px;
-      box-shadow: 0 12px 30px rgba(99, 102, 241, 0.25);
-    }
-    .upsell-badge {
-      display: inline-block;
-      font-size: 11px;
-      font-weight: 800;
-      color: #a5b4fc;
-      background: rgba(99, 102, 241, 0.2);
-      border: 1px solid rgba(99, 102, 241, 0.4);
-      padding: 2px 10px;
-      border-radius: 20px;
-      margin-bottom: 10px;
-    }
-    .upsell-title {
-      font-size: 18px;
-      font-weight: 900;
-      color: #ffffff;
-      line-height: 1.4;
-      margin-bottom: 8px;
-    }
-    .upsell-title span {
-      color: #facc15;
-    }
-    .upsell-desc {
-      font-size: 13px;
-      color: #cbd5e1;
-      line-height: 1.6;
-      margin-bottom: 16px;
+      margin: 20px 0;
+      box-shadow: 0 10px 25px rgba(99, 102, 241, 0.25);
     }
     .btn-upsell-link {
       display: block;
       width: 100%;
-      height: 52px;
-      line-height: 52px;
+      height: 48px;
+      line-height: 48px;
       background: linear-gradient(135deg, #facc15, #eab308);
       color: #0f172a;
-      font-size: 15px;
+      font-size: 14px;
       font-weight: 900;
-      border-radius: 12px;
+      border-radius: 10px;
       text-decoration: none;
-      box-shadow: 0 6px 20px rgba(250, 204, 21, 0.35);
-      transition: transform 0.1s;
-    }
-    .btn-upsell-link:active {
-      transform: scale(0.98);
+      box-shadow: 0 4px 15px rgba(250, 204, 21, 0.3);
+      margin-top: 12px;
     }
 
     /* Footer */
     .footer-info {
-      padding: 24px 16px;
+      padding: 20px 16px;
       border-top: 1px solid rgba(255,255,255,0.08);
       font-size: 11px;
       color: #64748b;
@@ -553,8 +510,8 @@
   <!-- Hero Header -->
   <header class="hero-box">
     <span class="hero-badge">📜 정통 명리학 3대 경전 기반</span>
-    <h1 class="hero-title">누구나 평생 무료<br><span>나침반 정밀 만세력</span></h1>
-    <p class="hero-sub">생년월일시 3초 만에 내 사주 8글자와 10년 대운 조회</p>
+    <h1 class="hero-title">나침반 <span>정밀 만세력</span></h1>
+    <p class="hero-sub">원국 지장간 · 12신살 · 대운 · 세운 · 월운 100% 무료 조회</p>
   </header>
 
   <!-- Content Area -->
@@ -566,7 +523,7 @@
         <label class="form-label" for="user-name">
           <span>👤</span> 성함 (선택)
         </label>
-        <input type="text" id="user-name" class="input-text" placeholder="이름을 입력해 주세요 (예: 김운명)">
+        <input type="text" id="user-name" class="input-text" placeholder="성함을 입력해 주세요 (미입력 시 '회원님')">
       </div>
 
       <div class="form-group">
@@ -594,9 +551,15 @@
           <span>🎂</span> 태어난 날짜
         </label>
         <div class="select-grid">
-          <select id="sel-year" class="input-select"></select>
-          <select id="sel-month" class="input-select"></select>
-          <select id="sel-day" class="input-select"></select>
+          <select id="sel-year" class="input-select">
+            <option value="" disabled selected>년도 선택</option>
+          </select>
+          <select id="sel-month" class="input-select">
+            <option value="" disabled selected>월 선택</option>
+          </select>
+          <select id="sel-day" class="input-select">
+            <option value="" disabled selected>일 선택</option>
+          </select>
         </div>
       </div>
 
@@ -605,7 +568,7 @@
           <span>⏰</span> 태어난 시간 (진태양시 보정)
         </label>
         <select id="sel-hour" class="input-select" style="width: 100%;">
-          <option value="unknown">태어난 시간을 잘 몰라요 (삼주 풀이)</option>
+          <option value="unknown" selected>태어난 시간을 잘 몰라요 (삼주 풀이)</option>
           <option value="0">자시 (子時) 23:30 ~ 01:29</option>
           <option value="2">축시 (丑時) 01:30 ~ 03:29</option>
           <option value="4">인시 (寅時) 03:30 ~ 05:29</option>
@@ -621,23 +584,22 @@
         </select>
       </div>
 
-      <button type="button" class="btn-submit-manse" id="btn-calc" onclick="startManseProcess()">
-        <span>⚡ 3초 만에 내 사주·대운 무료 열람하기</span>
+      <button type="button" class="btn-submit-manse" onclick="startManseProcess()">
+        <span>⚡ 3초 만에 내 정밀 만세력 무료 열람하기</span>
       </button>
     </div>
 
     <!-- Rewarded Ad Modal -->
     <div class="modal-overlay" id="ad-modal">
       <div class="ad-card">
-        <span class="ad-sponsor-badge">📢 무료 서비스 유지를 위한 스폰서 안내</span>
+        <div style="font-size: 11px; color: #94a3b8; margin-bottom: 8px;">스폰서 광고 확인 후 만세력이 열립니다</div>
         <div class="ad-timer-circle" id="ad-timer-text">5</div>
-        <h3 style="font-size: 17px; font-weight: 800; color: #ffffff; margin-bottom: 6px;">정밀 만세력 데이터를 생성 중입니다</h3>
-        <p style="font-size: 12px; color: var(--text-sub);">스폰서 광고 시청 후 100% 무료로 만세력이 열립니다.</p>
+        <h3 style="font-size: 16px; font-weight: 800; color: #ffffff; margin-bottom: 4px;">정밀 만세력 데이터베이스 대조 중</h3>
+        <p style="font-size: 12px; color: var(--text-sub);">대운·세운·월운 및 지장간 데이터를 계산하고 있습니다.</p>
 
-        <!-- Simulated Ad Banner Box (Will be replaced with Google AdSense slot) -->
-        <div class="ad-banner-placeholder">
-          <div>🧭 <b>운명나침반 2027 신년운세 사전예약</b></div>
-          <div style="font-size: 11px; margin-top: 4px; color: #94a3b8;">죽어라 버티는데 왜 나만 힘들까? 9,900원 특가로 내 전성기 날짜 확인</div>
+        <div style="background: rgba(15,23,42,0.8); border: 1px dashed rgba(212,175,55,0.3); border-radius: 10px; padding: 14px; margin: 14px 0; font-size: 12px; color: #cbd5e1;">
+          🧭 <b>운명나침반 100쪽 평생사주 책</b><br>
+          <span style="font-size: 11px; color: #94a3b8;">복잡한 만세력 기호, 내 인생의 전성기 날짜로 쉽게 읽어드립니다.</span>
         </div>
 
         <button type="button" class="btn-ad-complete" id="btn-ad-finish" onclick="showResultsAfterAd()">
@@ -649,127 +611,194 @@
     <!-- Results Display -->
     <div class="result-box" id="result-box">
 
-      <!-- Saju Grid Card -->
-      <div class="saju-grid-card">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
-          <span style="font-size: 12px; font-weight: 800; color: var(--gold-light);" id="res-name-badge">사주 원국표</span>
-          <span style="font-size: 11px; color: #64748b;">(좌: 말년 · 우: 초년)</span>
-        </div>
-
-        <div class="saju-grid">
-          <!-- 시주 -->
-          <div class="saju-col">
-            <div class="saju-col-head">시주(時)</div>
-            <div class="saju-cell" id="gan-hour">時</div>
-            <div class="saju-cell" id="ji-hour">柱</div>
-          </div>
-          <!-- 일주 (나) -->
-          <div class="saju-col">
-            <div class="saju-col-head" style="color: var(--gold-light); font-weight: 900;">일주(日·나)</div>
-            <div class="saju-cell" id="gan-day">壬</div>
-            <div class="saju-cell" id="ji-day">午</div>
-          </div>
-          <!-- 월주 -->
-          <div class="saju-col">
-            <div class="saju-col-head">월주(月)</div>
-            <div class="saju-cell" id="gan-month">己</div>
-            <div class="saju-cell" id="ji-month">丑</div>
-          </div>
-          <!-- 년주 -->
-          <div class="saju-col">
-            <div class="saju-col-head">년주(年)</div>
-            <div class="saju-cell" id="gan-year">庚</div>
-            <div class="saju-cell" id="ji-year">午</div>
+      <!-- Profile Header Bar -->
+      <div class="profile-bar">
+        <div class="profile-name-wrap">
+          <div class="profile-avatar" id="res-avatar">👤</div>
+          <div>
+            <div class="profile-name" id="res-user-name">김노운 님 (36세)</div>
+            <div class="profile-birth" id="res-user-birth">양력 1991년 1월 12일 13:00</div>
           </div>
         </div>
+        <span style="font-size: 11px; background: rgba(255,255,255,0.1); padding: 3px 8px; border-radius: 6px; color: #facc15;" id="res-gender-text">여성</span>
+      </div>
 
-        <!-- 십신 (Ten Gods) Row -->
-        <div class="saju-meta-row">
-          <div><div class="saju-meta-label">십신</div><span id="shipshin-hour">-</span></div>
-          <div><div class="saju-meta-label">십신</div><span style="color: var(--gold-light); font-weight: 800;">본인(我)</span></div>
-          <div><div class="saju-meta-label">십신</div><span id="shipshin-month">-</span></div>
-          <div><div class="saju-meta-label">십신</div><span id="shipshin-year">-</span></div>
+      <!-- Saju 4 Pillars Complete Table -->
+      <div class="table-card">
+        <div class="table-head-row">
+          <div>시주(時)</div>
+          <div style="color: var(--gold-light);">일주(日·나)</div>
+          <div>월주(月)</div>
+          <div>년주(年)</div>
         </div>
 
-        <!-- 12운성 Row -->
-        <div class="saju-meta-row" style="border-top: none;">
-          <div><div class="saju-meta-label">12운성</div><span id="woon-hour">-</span></div>
-          <div><div class="saju-meta-label">12운성</div><span id="woon-day">-</span></div>
-          <div><div class="saju-meta-label">12운성</div><span id="woon-month">-</span></div>
-          <div><div class="saju-meta-label">12운성</div><span id="woon-year">-</span></div>
+        <!-- 한글 간지 -->
+        <div class="table-row" style="background: rgba(255,255,255,0.02); font-weight: 700; color: #94a3b8;">
+          <div id="hangul-hour">병오</div>
+          <div id="hangul-day" style="color: var(--gold-light);">임오</div>
+          <div id="hangul-month">기축</div>
+          <div id="hangul-year">경오</div>
+        </div>
+
+        <!-- 형충 라인 1 -->
+        <div class="table-row" style="color: #f87171; font-weight: 700; font-size: 10px;">
+          <div id="hc-hour-top">-</div>
+          <div id="hc-day-top">-</div>
+          <div id="hc-month-top">-</div>
+          <div id="hc-year-top">-</div>
+        </div>
+
+        <!-- 천간 십신 -->
+        <div class="table-row" style="color: #cbd5e1; font-weight: 700;">
+          <div id="ship-gan-hour">편재</div>
+          <div style="color: var(--gold-light); font-weight: 800;">일간(나)</div>
+          <div id="ship-gan-month">정관</div>
+          <div id="ship-gan-year">편인</div>
+        </div>
+
+        <!-- 천간 글자 타일 -->
+        <div class="table-row" style="padding: 2px 0;">
+          <div class="char-cell-wrap"><div class="char-tile" id="tile-gan-hour">丙</div></div>
+          <div class="char-cell-wrap"><div class="char-tile" id="tile-gan-day">壬</div></div>
+          <div class="char-cell-wrap"><div class="char-tile" id="tile-gan-month">己</div></div>
+          <div class="char-cell-wrap"><div class="char-tile" id="tile-gan-year">庚</div></div>
+        </div>
+
+        <!-- 지지 글자 타일 -->
+        <div class="table-row" style="padding: 2px 0;">
+          <div class="char-cell-wrap"><div class="char-tile" id="tile-ji-hour">午</div></div>
+          <div class="char-cell-wrap"><div class="char-tile" id="tile-ji-day">午</div></div>
+          <div class="char-cell-wrap"><div class="char-tile" id="tile-ji-month">丑</div></div>
+          <div class="char-cell-wrap"><div class="char-tile" id="tile-ji-year">午</div></div>
+        </div>
+
+        <!-- 지지 십신 -->
+        <div class="table-row" style="color: #cbd5e1; font-weight: 700;">
+          <div id="ship-ji-hour">정재</div>
+          <div id="ship-ji-day">정재</div>
+          <div id="ship-ji-month">정관</div>
+          <div id="ship-ji-year">정재</div>
+        </div>
+
+        <!-- 지장간 (地藏干) 3단 -->
+        <div class="table-row" style="background: rgba(15,23,42,0.4); padding: 8px 0;">
+          <div class="jigangan-box" id="jigan-hour">
+            <span class="jigangan-item">丙편재</span>
+            <span class="jigangan-item">己정관</span>
+            <span class="jigangan-item">丁정재</span>
+          </div>
+          <div class="jigangan-box" id="jigan-day">
+            <span class="jigangan-item">丙편재</span>
+            <span class="jigangan-item">己정관</span>
+            <span class="jigangan-item">丁정재</span>
+          </div>
+          <div class="jigangan-box" id="jigan-month">
+            <span class="jigangan-item">癸겁재</span>
+            <span class="jigangan-item">辛정인</span>
+            <span class="jigangan-item">己정관</span>
+          </div>
+          <div class="jigangan-box" id="jigan-year">
+            <span class="jigangan-item">丙편재</span>
+            <span class="jigangan-item">己정관</span>
+            <span class="jigangan-item">丁정재</span>
+          </div>
+        </div>
+
+        <!-- 12운성 (봉법/거법) -->
+        <div class="table-row">
+          <div><span id="woon-hour">태</span><br><span style="font-size:9px; color:#64748b;" id="woon-hour-sub">(제왕)</span></div>
+          <div><span id="woon-day">태</span><br><span style="font-size:9px; color:#64748b;" id="woon-day-sub">(태)</span></div>
+          <div><span id="woon-month">쇠</span><br><span style="font-size:9px; color:#64748b;" id="woon-month-sub">(묘)</span></div>
+          <div><span id="woon-year">태</span><br><span style="font-size:9px; color:#64748b;" id="woon-year-sub">(목욕)</span></div>
+        </div>
+
+        <!-- 납음오행 -->
+        <div class="table-row" style="color: #94a3b8; font-size: 10px;">
+          <div id="nabeum-hour">천하수</div>
+          <div id="nabeum-day">양류목</div>
+          <div id="nabeum-month">벽력화</div>
+          <div id="nabeum-year">노방토</div>
+        </div>
+
+        <!-- 형충파해원진귀문 라인 -->
+        <div class="table-row" style="background: rgba(254, 240, 138, 0.08); color: #facc15; font-size: 10px; font-weight: 700; line-height: 1.3;">
+          <div id="rel-hour">형<br>해,원진,귀문</div>
+          <div id="rel-day">←(午)→<br>해,원진,귀문</div>
+          <div id="rel-month">해,원진,귀문<br>←(丑)→</div>
+          <div id="rel-year">형<br>해,원진,귀문</div>
+        </div>
+
+        <!-- 오행 개수 요약 -->
+        <div style="padding: 10px 8px; text-align: center; font-size: 12px; font-weight: 800; background: rgba(0,0,0,0.3); border-top: 1px solid rgba(255,255,255,0.08);">
+          <span style="color: #4ade80;">木 <span id="cnt-wood">0</span></span> · 
+          <span style="color: #f87171;">火 <span id="cnt-fire">4</span></span> · 
+          <span style="color: #facc15;">土 <span id="cnt-earth">2</span></span> · 
+          <span style="color: #ffffff;">金 <span id="cnt-metal">1</span></span> · 
+          <span style="color: #60a5fa;">水 <span id="cnt-water">1</span></span>
+        </div>
+
+        <!-- 공망 / 천을귀인 / 월령 -->
+        <div style="padding: 8px; font-size: 11px; text-align: center; color: #94a3b8; border-top: 1px solid rgba(255,255,255,0.05);">
+          공망: [년]<span id="gm-year">戌亥</span> [일]<span id="gm-day">申酉</span> · 천을귀인: <span id="res-guiin">卯, 巳</span> · 월령: <span id="res-wolryeong">癸</span>
+        </div>
+
+        <!-- 신살 (12신살) -->
+        <div class="table-row" style="background: rgba(15,23,42,0.6); padding: 10px 0; font-size: 10px; color: #cbd5e1; line-height: 1.4;">
+          <div id="sinsal-hour">장성살<br>재살<br>비인살</div>
+          <div id="sinsal-day">장성살<br>재살<br>비인살</div>
+          <div id="sinsal-month">천살<br>반안살<br>금여</div>
+          <div id="sinsal-year">장성살<br>재살<br>천덕귀인</div>
         </div>
       </div>
 
-      <!-- Ilju Essence Card -->
-      <div style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(212, 175, 55, 0.25); border-radius: 18px; padding: 18px 16px; margin-bottom: 20px;">
-        <div style="font-size: 11px; color: var(--gold); font-weight: 800; margin-bottom: 4px;">타고난 일주(日柱)의 본질</div>
-        <div style="font-size: 17px; font-weight: 900; color: #ffffff; margin-bottom: 8px;" id="res-ilju-header">임오일주 (壬午)</div>
-        <p style="font-size: 13px; color: #cbd5e1; line-height: 1.6;" id="res-ilju-text">
-          바다(壬水) 위에 태양(午火)이 비치는 정재(正財)를 품은 사주입니다. 판은 거대하고 추진력과 생활력은 극강이나, 내 몸 하나로 거대한 책임을 버텨내느라 늘 온몸이 피로하고 속병을 앓기 쉽습니다.
-        </p>
-      </div>
-
-      <!-- 5 Elements Distribution Card -->
-      <div style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 18px; padding: 18px 16px; margin-bottom: 20px;">
-        <div style="display: flex; justify-content: space-between; align-items: center;">
-          <span style="font-size: 14px; font-weight: 800; color: #ffffff;">오행 에너지 분포</span>
-          <span id="res-elem-strongest" style="font-size: 11px; background: rgba(212,175,55,0.15); color: var(--gold-light); padding: 2px 8px; border-radius: 6px; font-weight: 700;">불(火) 과다</span>
+      <!-- 10-Year Daeun Timeline -->
+      <div class="flow-section">
+        <div class="flow-header">
+          <div class="flow-title">
+            <span>🌊</span> 대운(大運) 흐름표
+          </div>
+          <div class="flow-sub" id="daeun-direction-text">전통나이 (대운수: 2, 역행)</div>
         </div>
-
-        <div class="elem-bar-wrap">
-          <div class="elem-bar-row">
-            <span class="elem-bar-name" style="color: #4ade80;">나무 (木)</span>
-            <div class="elem-bar-track"><div class="elem-bar-fill" id="bar-wood" style="background: #22c55e; width: 0%;"></div></div>
-            <span class="elem-bar-val" id="val-wood">0%</span>
-          </div>
-          <div class="elem-bar-row">
-            <span class="elem-bar-name" style="color: #f87171;">불 (火)</span>
-            <div class="elem-bar-track"><div class="elem-bar-fill" id="bar-fire" style="background: #ef4444; width: 0%;"></div></div>
-            <span class="elem-bar-val" id="val-fire">0%</span>
-          </div>
-          <div class="elem-bar-row">
-            <span class="elem-bar-name" style="color: #facc15;">흙 (土)</span>
-            <div class="elem-bar-track"><div class="elem-bar-fill" id="bar-earth" style="background: #eab308; width: 0%;"></div></div>
-            <span class="elem-bar-val" id="val-earth">0%</span>
-          </div>
-          <div class="elem-bar-row">
-            <span class="elem-bar-name" style="color: #ffffff;">쇠 (金)</span>
-            <div class="elem-bar-track"><div class="elem-bar-fill" id="bar-metal" style="background: #cbd5e1; width: 0%;"></div></div>
-            <span class="elem-bar-val" id="val-metal">0%</span>
-          </div>
-          <div class="elem-bar-row">
-            <span class="elem-bar-name" style="color: #60a5fa;">물 (水)</span>
-            <div class="elem-bar-track"><div class="elem-bar-fill" id="bar-water" style="background: #3b82f6; width: 0%;"></div></div>
-            <span class="elem-bar-val" id="val-water">0%</span>
-          </div>
-        </div>
-        <div style="font-size: 12px; color: var(--text-sub); line-height: 1.5;" id="res-elem-summary">
-          오행의 균형을 분석하여 부족한 기운과 보완할 개운법을 도출합니다.
+        <div class="flow-scroll" id="daeun-list">
+          <!-- Populated by JS -->
         </div>
       </div>
 
-      <!-- 10-Year Daeun Timeline Card -->
-      <div class="daeun-card">
-        <div style="display: flex; justify-content: space-between; align-items: center;">
-          <span style="font-size: 14px; font-weight: 800; color: #ffffff;">10년 주기 대운(大運) 흐름표</span>
-          <span style="font-size: 11px; color: var(--gold-light);" id="res-daeun-num">대운수: 5</span>
+      <!-- Seeun (Yearly) Timeline -->
+      <div class="flow-section">
+        <div class="flow-header">
+          <div class="flow-title">
+            <span>📅</span> 세운(歲運) 연도별 흐름표
+          </div>
+          <div class="flow-sub">클릭 시 해당 연도 월운 표시</div>
         </div>
-        <p style="font-size: 11px; color: #64748b; margin-top: 2px;">좌우로 스크롤하여 10년마다 바뀌는 내 인생 큰 파도를 확인하세요.</p>
+        <div class="flow-scroll" id="seeun-list">
+          <!-- Populated by JS -->
+        </div>
+      </div>
 
-        <div class="daeun-scroll" id="daeun-container">
-          <!-- Dynamically populated -->
+      <!-- Wolun (Monthly) Timeline -->
+      <div class="flow-section">
+        <div class="flow-header">
+          <div class="flow-title">
+            <span>🌙</span> 월운(月運) 흐름표
+          </div>
+          <div class="flow-sub" id="wolun-selected-year-title">2026년 (36세)</div>
+        </div>
+        <div class="flow-scroll" id="wolun-list">
+          <!-- Populated by JS -->
         </div>
       </div>
 
       <!-- Grand Funnel Upsell Box -->
       <div class="upsell-box">
-        <span class="upsell-badge">📖 내 사주의 진짜 해석이 궁금하다면?</span>
-        <h3 class="upsell-title">복잡한 한자 속에 숨겨진<br><span>내 인생 대박 날짜와 돈 구멍 비책</span></h3>
-        <p class="upsell-desc">
-          만세력 기호는 지도가 아닙니다. 언제 돈이 터지고, 어떤 악연을 끊어야 하는지 <b>A4 100쪽 맞춤 평생사주 책</b>으로 직접 확인하세요.
+        <span style="font-size: 11px; color: #a5b4fc; background: rgba(99,102,241,0.25); padding: 2px 8px; border-radius: 12px; font-weight: 800;">📖 사주 해석의 끝판왕</span>
+        <h3 style="font-size: 17px; font-weight: 900; color: #ffffff; margin: 8px 0 6px;">복잡한 만세력 기호 속에 숨겨진<br><span style="color: #facc15;">내 인생 대박 날짜와 돈 구멍 비책</span></h3>
+        <p style="font-size: 12px; color: #cbd5e1; line-height: 1.5;">
+          기호만 봐서는 인생이 안 풀립니다. 언제 돈이 터지고 어떤 악연을 조심해야 하는지 <b>A4 100쪽 맞춤 평생사주 책</b>으로 명쾌하게 확인하세요.
         </p>
         <a href="index.html" class="btn-upsell-link">
-          👉 운명나침반 맞춤 책 보러가기 (9,900원~)
+          👉 운명나침반 100쪽 맞춤 책 보러가기 (9,900원~)
         </a>
       </div>
 
@@ -794,11 +823,10 @@
 </div>
 
 <script>
-  // State
   let gender = 'F';
   let calendarType = 'solar';
 
-  // Date selectors setup
+  // Setup Date Selectors (Defaults are unselected prompts)
   const selYear = document.getElementById('sel-year');
   const selMonth = document.getElementById('sel-month');
   const selDay = document.getElementById('sel-day');
@@ -807,7 +835,6 @@
     const opt = document.createElement('option');
     opt.value = y;
     opt.textContent = y + '년';
-    if (y === 1991) opt.selected = true;
     selYear.appendChild(opt);
   }
 
@@ -815,26 +842,23 @@
     const opt = document.createElement('option');
     opt.value = m;
     opt.textContent = m + '월';
-    if (m === 1) opt.selected = true;
     selMonth.appendChild(opt);
   }
 
   function updateDays() {
-    const y = parseInt(selYear.value);
-    const m = parseInt(selMonth.value);
+    const y = parseInt(selYear.value) || 2000;
+    const m = parseInt(selMonth.value) || 1;
     const lastDay = new Date(y, m, 0).getDate();
-    selDay.innerHTML = '';
+    selDay.innerHTML = '<option value="" disabled selected>일 선택</option>';
     for (let d = 1; d <= lastDay; d++) {
       const opt = document.createElement('option');
       opt.value = d;
       opt.textContent = d + '일';
-      if (d === 12) opt.selected = true;
       selDay.appendChild(opt);
     }
   }
   selYear.addEventListener('change', updateDays);
   selMonth.addEventListener('change', updateDays);
-  updateDays();
 
   function selectGender(g) {
     gender = g;
@@ -848,68 +872,78 @@
     document.getElementById('btn-cal-lunar').classList.toggle('active', t === 'lunar');
   }
 
-  // Astronomical Mansaeryeok Core
+  // Astronomical & Myeongri Knowledge Tables
   const GAN = ['甲', '乙', '丙', '丁', '戊', '己', '庚', '辛', '壬', '癸'];
   const JI = ['子', '丑', '寅', '卯', '辰', '巳', '午', '未', '申', '酉', '戌', '亥'];
+  const HANGUL_GAN = { '甲':'갑','乙':'을','丙':'병','丁':'정','戊':'무','己':'기','庚':'경','辛':'신','壬':'임','癸':'계' };
+  const HANGUL_JI = { '子':'자','丑':'축','寅':'인','卯':'묘','辰':'진','巳':'사','午':'오','未':'미','申':'신','酉':'유','戌':'술','亥':'해' };
+
   const ELEM_OF_GAN = {
-    '甲': 'wood', '乙': 'wood',
-    '丙': 'fire', '丁': 'fire',
-    '戊': 'earth', '己': 'earth',
-    '庚': 'metal', '辛': 'metal',
-    '壬': 'water', '癸': 'water'
+    '甲':'wood','乙':'wood','丙':'fire','丁':'fire','戊':'earth','己':'earth','庚':'metal','辛':'metal','壬':'water','癸':'water'
   };
   const ELEM_OF_JI = {
-    '寅': 'wood', '卯': 'wood',
-    '巳': 'fire', '午': 'fire',
-    '辰': 'earth', '戌': 'earth', '丑': 'earth', '未': 'earth',
-    '申': 'metal', '酉': 'metal',
-    '亥': 'water', '子': 'water'
+    '寅':'wood','卯':'wood','巳':'fire','午':'fire','辰':'earth','戌':'earth','丑':'earth','未':'earth','申':'metal','酉':'metal','亥':'water','子':'water'
   };
 
-  const ILJU_NICKNAMES = {
-    '壬午': {
-      title: '임오일주(壬午) 「노을 지는 바다 / 호수를 품은 야생마」',
-      desc: '바다(壬水) 위에 태양(午火)이 비치는 정재(正財)를 품은 사주입니다. 판은 거대하고 추진력과 생활력은 극강이나, 내 몸 하나로 거대한 불길과 책임을 버텨내느라 늘 온몸이 피로하고 남 좋은 일만 실컷 해주고 속병을 앓기 쉽습니다.'
-    },
-    '戊寅': {
-      title: '무인일주(戊寅) 「숲을 품은 태산」',
-      desc: '겉으로는 묵직하게 남들의 짐을 다 받아주지만, 속에는 거친 호랑이처럼 큰 야망과 꺾이지 않는 자존심을 품고 태어났습니다. 계산이 끝나기 전에 몸이 먼저 나가는 행동파라 남 좋은 일만 실컷 시키고 혼자 속앓이를 하기 쉽습니다.'
-    },
-    '乙卯': {
-      title: '을묘일주(乙卯) 「바위틈을 뚫고 솟아오른 푸른 잔디」',
-      desc: '질긴 생명력과 자존심, 승부욕의 화신입니다. 남 밑에 굽히기를 극도로 싫어하며 독립심이 강합니다. 한번 칼을 뽑으면 끝을 보지만, 사소한 말에 자존심이 상하면 판을 엎어버리는 단점이 있습니다.'
-    },
-    '丙戌': {
-      title: '병술일주(丙戌) 「대지를 비추는 가을 석양」',
-      desc: '화려한 언변과 뛰어난 눈치, 열정을 지녔습니다. 어디서나 주목받는 스타 기질이 있으나, 속으로는 외로움과 공허함을 품고 있어 내 편이 절실한 사주입니다.'
-    },
-    'default': {
-      title: '정통 명리학 일주 본질 분석',
-      desc: '타고난 일간과 일지의 오행 조화를 대조하여 내 타고난 기질과 숨은 강점, 조심할 인생의 함정을 도출합니다.'
-    }
+  // Hidden Stems (지장간)
+  const JIGANGAN_DATA = {
+    '子': [{c:'壬', s:10}, {c:'癸', s:20}],
+    '丑': [{c:'癸', s:9}, {c:'辛', s:3}, {c:'己', s:18}],
+    '寅': [{c:'戊', s:7}, {c:'丙', s:7}, {c:'甲', s:16}],
+    '卯': [{c:'甲', s:10}, {c:'乙', s:20}],
+    '辰': [{c:'乙', s:9}, {c:'癸', s:3}, {c:'戊', s:18}],
+    '巳': [{c:'戊', s:7}, {c:'庚', s:7}, {c:'丙', s:16}],
+    '午': [{c:'丙', s:10}, {c:'己', s:9}, {c:'丁', s:11}],
+    '未': [{c:'丁', s:9}, {c:'乙', s:3}, {c:'己', s:18}],
+    '申': [{c:'戊', s:7}, {c:'壬', s:7}, {c:'庚', s:16}],
+    '酉': [{c:'庚', s:10}, {c:'辛', s:20}],
+    '戌': [{c:'辛', s:9}, {c:'丁', s:3}, {c:'戊', s:18}],
+    '亥': [{c:'戊', s:7}, {c:'甲', s:7}, {c:'壬', s:16}]
   };
 
-  function getJulianDay(y, m, d) {
-    const a = Math.floor((14 - m) / 12);
-    const yr = y + 4800 - a;
-    const mo = m + 12 * a - 3;
-    return d + Math.floor((153 * mo + 2) / 5) + 365 * yr + Math.floor(yr / 4) - Math.floor(yr / 100) + Math.floor(yr / 400) - 32045;
+  // 12 Woonsung Table
+  const WOONSUNG_TABLE = {
+    '甲': ['목욕','관대','건록','제왕','쇠','병','사','묘','절','태','양','장생'],
+    '乙': ['병','쇠','제왕','건록','관대','목욕','장생','양','태','절','묘','사'],
+    '丙': ['태','양','장생','목욕','관대','건록','제왕','쇠','병','사','묘','절'],
+    '丁': ['절','묘','사','병','쇠','제왕','건록','관대','목욕','장생','양','태'],
+    '戊': ['태','양','장생','목욕','관대','건록','제왕','쇠','병','사','묘','절'],
+    '己': ['절','묘','사','병','쇠','제왕','건록','관대','목욕','장생','양','태'],
+    '庚': ['사','묘','절','태','양','장생','목욕','관대','건록','제왕','쇠','병'],
+    '辛': ['장생','양','태','절','묘','사','병','쇠','제왕','건록','관대','목욕'],
+    '壬': ['제왕','쇠','병','사','묘','절','태','양','장생','목욕','관대','건록'],
+    '癸': ['건록','관대','목욕','장생','양','태','절','묘','사','병','쇠','제왕']
+  };
+
+  // 12 Sinsal by Earthly Branch Triads
+  const SINSAL_ORDER = ['지살','년살','월살','망신살','장성살','반안살','역마살','육해살','화개살','겁살','재살','천살'];
+  function getSinsal(baseJi, targetJi) {
+    let startIdx = 0;
+    if (['寅','午','戌'].includes(baseJi)) startIdx = JI.indexOf('寅');
+    else if (['申','子','辰'].includes(baseJi)) startIdx = JI.indexOf('申');
+    else if (['巳','酉','丑'].includes(baseJi)) startIdx = JI.indexOf('巳');
+    else startIdx = JI.indexOf('亥');
+
+    const targetIdx = JI.indexOf(targetJi);
+    const diff = (targetIdx - startIdx + 12) % 12;
+    return SINSAL_ORDER[diff];
   }
 
-  function getSolarLongitude(y, m, d, hr, mn) {
-    const jdn = getJulianDay(y, m, d);
-    const jd = jdn + (hr - 12) / 24.0 + (mn || 0) / 1440.0 - 9.0 / 24.0;
-    const T = (jd - 2451545.0) / 36525.0;
-    const L0 = 280.46646 + 36000.76983 * T + 0.0003032 * T * T;
-    const M = 357.52911 + 35999.05029 * T - 0.0001537 * T * T;
-    const Mr = M * (Math.PI / 180.0);
-    const C = (1.914602 - 0.004817 * T) * Math.sin(Mr) + (0.019993 - 0.000101 * T) * Math.sin(2 * Mr) + 0.000289 * Math.sin(3 * Mr);
-    const trueLong = (L0 + C) % 360;
-    const appLong = (trueLong - 0.00569 - 0.00478 * Math.sin((125.04 - 1934.136 * T) * (Math.PI / 180.0))) % 360;
-    return (appLong + 360) % 360;
-  }
+  // Nabeum Table
+  const NABEUM = {
+    '甲子':'해중금','乙丑':'해중금','丙寅':'노중화','丁卯':'노중화','戊辰':'대림목','己巳':'대림목',
+    '庚午':'노방토','辛未':'노방토','壬申':'검봉금','癸酉':'검봉금','甲戌':'산두화','乙亥':'산두화',
+    '丙子':'간하수','丁丑':'간하수','戊寅':'성두토','己卯':'성두토','庚辰':'백납금','辛巳':'백납금',
+    '壬午':'양류목','癸未':'양류목','甲申':'천중수','乙酉':'천중수','丙戌':'옥상토','丁亥':'옥상토',
+    '戊子':'벽력화','己丑':'벽력화','庚寅':'송백목','辛卯':'송백목','壬辰':'장류수','癸巳':'장류수',
+    '甲午':'사중금','乙未':'사중금','丙申':'산하화','丁酉':'산하화','戊戌':'평지목','己亥':'평지목',
+    '庚子':'벽상토','辛丑':'벽상토','壬寅':'금박금','癸卯':'금박금','甲辰':'복등화','乙巳':'복등화',
+    '丙午':'천하수','丁未':'천하수','戊申':'대역토','己酉':'대역토','庚戌':'채천금','辛亥':'채천금',
+    '壬子':'상자목','癸丑':'상자목','甲寅':'대계수','乙卯':'대계수','丙辰':'사중토','丁巳':'사중토',
+    '戊午':'천상화','己未':'천상화','庚申':'석류목','辛酉':'석류목','壬戌':'대해수','癸亥':'대해수'
+  };
 
-  // Ten Gods (십신) Helper
+  // Ten Gods (십신)
   function getShipshin(meGan, otherGan) {
     const meElem = ELEM_OF_GAN[meGan];
     const otherElem = ELEM_OF_GAN[otherGan];
@@ -930,23 +964,34 @@
     return sameYinYang ? '편인' : '정인';
   }
 
-  // 12 Woon-sung Helper
-  const WOONSUNG_TABLE = {
-    '甲': ['목욕','관대','건록','제왕','쇠','병','사','묘','절','태','양','장생'],
-    '乙': ['병','쇠','제왕','건록','관대','목욕','장생','양','태','절','묘','사'],
-    '丙': ['태','양','장생','목욕','관대','건록','제왕','쇠','병','사','묘','절'],
-    '丁': ['절','묘','사','병','쇠','제왕','건록','관대','목욕','장생','양','태'],
-    '戊': ['태','양','장생','목욕','관대','건록','제왕','쇠','병','사','묘','절'],
-    '己': ['절','묘','사','병','쇠','제왕','건록','관대','목욕','장생','양','태'],
-    '庚': ['사','묘','절','태','양','장생','목욕','관대','건록','제왕','쇠','병'],
-    '辛': ['장생','양','태','절','묘','사','병','쇠','제왕','건록','관대','목욕'],
-    '壬': ['제왕','쇠','병','사','묘','절','태','양','장생','목욕','관대','건록'],
-    '癸': ['건록','관대','목욕','장생','양','태','절','묘','사','병','쇠','제왕']
-  };
+  // Astronomical ephemeris
+  function getJulianDay(y, m, d) {
+    const a = Math.floor((14 - m) / 12);
+    const yr = y + 4800 - a;
+    const mo = m + 12 * a - 3;
+    return d + Math.floor((153 * mo + 2) / 5) + 365 * yr + Math.floor(yr / 4) - Math.floor(yr / 100) + Math.floor(yr / 400) - 32045;
+  }
 
-  let timerInterval = null;
+  function getSolarLongitude(y, m, d, hr, mn) {
+    const jdn = getJulianDay(y, m, d);
+    const jd = jdn + (hr - 12) / 24.0 + (mn || 0) / 1440.0 - 9.0 / 24.0;
+    const T = (jd - 2451545.0) / 36525.0;
+    const L0 = 280.46646 + 36000.76983 * T + 0.0003032 * T * T;
+    const M = 357.52911 + 35999.05029 * T - 0.0001537 * T * T;
+    const Mr = M * (Math.PI / 180.0);
+    const C = (1.914602 - 0.004817 * T) * Math.sin(Mr) + (0.019993 - 0.000101 * T) * Math.sin(2 * Mr) + 0.000289 * Math.sin(3 * Mr);
+    return ((L0 + C) % 360 + 360) % 360;
+  }
+
+  // Global Calculation Storage for Year/Month Clicks
+  let globalCalcState = null;
 
   function startManseProcess() {
+    if (!selYear.value || !selMonth.value || !selDay.value) {
+      alert('태어난 생년월일(년, 월, 일)을 모두 선택해 주세요.');
+      return;
+    }
+
     const modal = document.getElementById('ad-modal');
     const timerText = document.getElementById('ad-timer-text');
     const btnFinish = document.getElementById('btn-ad-finish');
@@ -959,8 +1004,7 @@
     timerText.textContent = timeLeft;
     btnFinish.textContent = `광고 확인 중 (${timeLeft}초)...`;
 
-    clearInterval(timerInterval);
-    timerInterval = setInterval(() => {
+    const timerInterval = setInterval(() => {
       timeLeft--;
       if (timeLeft > 0) {
         timerText.textContent = timeLeft;
@@ -968,7 +1012,7 @@
       } else {
         clearInterval(timerInterval);
         timerText.textContent = '✔';
-        btnFinish.textContent = '👉 내 무료 만세력 결과 바로보기';
+        btnFinish.textContent = '👉 내 정밀 만세력 전체 결과 열람하기';
         btnFinish.classList.add('ready');
         btnFinish.disabled = false;
       }
@@ -977,17 +1021,22 @@
 
   function showResultsAfterAd() {
     document.getElementById('ad-modal').classList.remove('active');
-    calculateAndRenderManse();
+    calculateFullManse();
   }
 
-  function calculateAndRenderManse() {
+  function calculateFullManse() {
     const year = parseInt(selYear.value);
     const month = parseInt(selMonth.value);
     const day = parseInt(selDay.value);
     const hourVal = document.getElementById('sel-hour').value;
-    const nameVal = document.getElementById('user-name').value.trim();
+    const nameVal = document.getElementById('user-name').value.trim() || '회원';
 
-    document.getElementById('res-name-badge').textContent = (nameVal ? nameVal + ' 님의 ' : '') + '사주 원국표';
+    const currentYear = 2026;
+    const koreanAge = currentYear - year + 1;
+
+    document.getElementById('res-user-name').textContent = `${nameVal} 님 (${koreanAge}세)`;
+    document.getElementById('res-user-birth').textContent = `${calendarType === 'lunar' ? '(음력) ' : ''}${year}년 ${month}월 ${day}일 ${hourVal !== 'unknown' ? hourVal + '시' : '시간미상'}`;
+    document.getElementById('res-gender-text').textContent = (gender === 'F') ? '여성' : '남성';
 
     const hrInt = (hourVal !== 'unknown') ? parseInt(hourVal) : 12;
     const sl = getSolarLongitude(year, month, day, hrInt, 0);
@@ -1023,27 +1072,57 @@
       hGan = GAN[(startHStem + (hBranchIdx % 12)) % 10];
     }
 
-    // Render 8 Characters Grid
-    function renderCell(id, char, isGan) {
+    // Set Hangul
+    document.getElementById('hangul-year').textContent = HANGUL_GAN[yGan] + HANGUL_JI[yJi];
+    document.getElementById('hangul-month').textContent = HANGUL_GAN[mGan] + HANGUL_JI[mJi];
+    document.getElementById('hangul-day').textContent = HANGUL_GAN[dGan] + HANGUL_JI[dJi];
+    document.getElementById('hangul-hour').textContent = (hGan !== '時') ? (HANGUL_GAN[hGan] + HANGUL_JI[hJi]) : '시주미상';
+
+    // Set Tiles
+    function applyTile(id, char, isGan) {
       const el = document.getElementById(id);
       el.textContent = char;
       const elem = isGan ? ELEM_OF_GAN[char] : ELEM_OF_JI[char];
-      el.className = 'saju-cell ' + (elem ? 'elem-' + elem : 'elem-metal');
+      el.className = 'char-tile ' + (elem ? 'c-' + elem : 'c-metal');
     }
-
-    renderCell('gan-year', yGan, true);
-    renderCell('ji-year', yJi, false);
-    renderCell('gan-month', mGan, true);
-    renderCell('ji-month', mJi, false);
-    renderCell('gan-day', dGan, true);
-    renderCell('ji-day', dJi, false);
-    renderCell('gan-hour', hGan, true);
-    renderCell('ji-hour', hJi, false);
+    applyTile('tile-gan-year', yGan, true);
+    applyTile('tile-ji-year', yJi, false);
+    applyTile('tile-gan-month', mGan, true);
+    applyTile('tile-ji-month', mJi, false);
+    applyTile('tile-gan-day', dGan, true);
+    applyTile('tile-ji-day', dJi, false);
+    applyTile('tile-gan-hour', hGan, true);
+    applyTile('tile-ji-hour', hJi, false);
 
     // Shipshin
-    document.getElementById('shipshin-year').textContent = getShipshin(dGan, yGan);
-    document.getElementById('shipshin-month').textContent = getShipshin(dGan, mGan);
-    document.getElementById('shipshin-hour').textContent = (hGan !== '時') ? getShipshin(dGan, hGan) : '-';
+    document.getElementById('ship-gan-year').textContent = getShipshin(dGan, yGan);
+    document.getElementById('ship-ji-year').textContent = getShipshin(dGan, JIGANGAN_DATA[yJi][JIGANGAN_DATA[yJi].length - 1].c);
+    document.getElementById('ship-gan-month').textContent = getShipshin(dGan, mGan);
+    document.getElementById('ship-ji-month').textContent = getShipshin(dGan, JIGANGAN_DATA[mJi][JIGANGAN_DATA[mJi].length - 1].c);
+    document.getElementById('ship-ji-day').textContent = getShipshin(dGan, JIGANGAN_DATA[dJi][JIGANGAN_DATA[dJi].length - 1].c);
+    if (hGan !== '時') {
+      document.getElementById('ship-gan-hour').textContent = getShipshin(dGan, hGan);
+      document.getElementById('ship-ji-hour').textContent = getShipshin(dGan, JIGANGAN_DATA[hJi][JIGANGAN_DATA[hJi].length - 1].c);
+    } else {
+      document.getElementById('ship-gan-hour').textContent = '-';
+      document.getElementById('ship-ji-hour').textContent = '-';
+    }
+
+    // Jigangan Render Helper
+    function renderJigangan(id, jiChar) {
+      const el = document.getElementById(id);
+      if (!jiChar || !JIGANGAN_DATA[jiChar]) {
+        el.innerHTML = '-';
+        return;
+      }
+      el.innerHTML = JIGANGAN_DATA[jiChar].map(item => {
+        return `<span class="jigangan-item">${item.c}${getShipshin(dGan, item.c)}</span>`;
+      }).join('');
+    }
+    renderJigangan('jigan-year', yJi);
+    renderJigangan('jigan-month', mJi);
+    renderJigangan('jigan-day', dJi);
+    renderJigangan('jigan-hour', (hJi !== '柱') ? hJi : null);
 
     // 12 Woonsung
     const wTable = WOONSUNG_TABLE[dGan] || WOONSUNG_TABLE['甲'];
@@ -1052,51 +1131,179 @@
     document.getElementById('woon-day').textContent = wTable[JI.indexOf(dJi)];
     document.getElementById('woon-hour').textContent = (hJi !== '柱') ? wTable[JI.indexOf(hJi)] : '-';
 
-    // Ilju Info
-    const iljuKey = dGan + dJi;
-    const iljuInfo = ILJU_NICKNAMES[iljuKey] || ILJU_NICKNAMES['default'];
-    document.getElementById('res-ilju-header').textContent = iljuInfo.title;
-    document.getElementById('res-ilju-text').textContent = iljuInfo.desc;
+    // Nabeum
+    document.getElementById('nabeum-year').textContent = NABEUM[yGan + yJi] || '-';
+    document.getElementById('nabeum-month').textContent = NABEUM[mGan + mJi] || '-';
+    document.getElementById('nabeum-day').textContent = NABEUM[dGan + dJi] || '-';
+    document.getElementById('nabeum-hour').textContent = (hGan !== '時') ? (NABEUM[hGan + hJi] || '-') : '-';
 
-    // Elements Bar
-    const allChars = [yGan, yJi, mGan, mJi, dGan, dJi];
-    if (hGan !== '時') allChars.push(hGan, hJi);
-    const eCounts = { wood: 0, fire: 0, earth: 0, metal: 0, water: 0 };
-    allChars.forEach(c => {
+    // Elements Count
+    const chars = [yGan, yJi, mGan, mJi, dGan, dJi];
+    if (hGan !== '時') chars.push(hGan, hJi);
+    const counts = { wood: 0, fire: 0, earth: 0, metal: 0, water: 0 };
+    chars.forEach(c => {
       const e = ELEM_OF_GAN[c] || ELEM_OF_JI[c];
-      if (e) eCounts[e]++;
+      if (e) counts[e]++;
     });
-    const total = allChars.length;
-    let maxElem = 'fire', maxCount = -1;
-    ['wood','fire','earth','metal','water'].forEach(e => {
-      const pct = Math.round((eCounts[e] / total) * 100);
-      document.getElementById('bar-' + e).style.width = pct + '%';
-      document.getElementById('val-' + e).textContent = pct + '%';
-      if (eCounts[e] > maxCount) {
-        maxCount = eCounts[e];
-        maxElem = e;
-      }
-    });
-    const elemNames = { wood: '나무(木)', fire: '불(火)', earth: '흙(土)', metal: '쇠(金)', water: '물(水)' };
-    document.getElementById('res-elem-strongest').textContent = elemNames[maxElem] + ' 중심 사주';
+    document.getElementById('cnt-wood').textContent = counts.wood;
+    document.getElementById('cnt-fire').textContent = counts.fire;
+    document.getElementById('cnt-earth').textContent = counts.earth;
+    document.getElementById('cnt-metal').textContent = counts.metal;
+    document.getElementById('cnt-water').textContent = counts.water;
 
-    // 10-Year Daeun Timeline
+    // Sinsal (based on year and day branch)
+    function renderSinsalBox(id, targetJi) {
+      if (!targetJi || targetJi === '柱') {
+        document.getElementById(id).innerHTML = '-';
+        return;
+      }
+      const s1 = getSinsal(yJi, targetJi);
+      const s2 = getSinsal(dJi, targetJi);
+      let list = [];
+      list.push(s1);
+      if (s1 !== s2) list.push(s2);
+
+      // Special Sinsal / Gilsin check
+      const GUIIN_TARGETS = {
+        '甲':['丑','未'],'戊':['丑','未'],'庚':['丑','未'],
+        '乙':['子','申'],'己':['子','申'],
+        '丙':['亥','酉'],'丁':['亥','酉'],
+        '辛':['寅','午'],
+        '壬':['卯','巳'],'癸':['卯','巳']
+      };
+      if (GUIIN_TARGETS[dGan] && GUIIN_TARGETS[dGan].includes(targetJi)) {
+        list.push('<span style="color:#facc15;">천을귀인</span>');
+      }
+      if (targetJi === '午' && dGan === '壬') list.push('<span style="color:#facc15;">천복귀인</span>');
+      if (targetJi === '酉' && (dGan === '庚' || dGan === '辛')) list.push('현침살');
+      if (['甲','庚','壬'].includes(dGan) && targetJi === '午') list.push('비인살');
+
+      document.getElementById(id).innerHTML = list.join('<br>');
+    }
+    renderSinsalBox('sinsal-year', yJi);
+    renderSinsalBox('sinsal-month', mJi);
+    renderSinsalBox('sinsal-day', dJi);
+    renderSinsalBox('sinsal-hour', hJi);
+
+    // Relationships (형충파해원진귀문 - 100% 동적 대조 연산)
+    const chartBranches = [
+      { name: '시', ji: hJi },
+      { name: '일', ji: dJi },
+      { name: '월', ji: mJi },
+      { name: '년', ji: yJi }
+    ].filter(b => b.ji && b.ji !== '柱');
+
+    function evalRels(targetJi, selfPos) {
+      if (!targetJi || targetJi === '柱') return '-';
+      let r = new Set();
+      
+      chartBranches.forEach(b => {
+        if (b.name === selfPos) return;
+        const oJi = b.ji;
+        const pair = [targetJi, oJi].sort().join('');
+
+        // 1. 충 (6충)
+        const CHUNG = ['子午','丑未','寅申','卯酉','辰戌','巳亥'];
+        if (CHUNG.includes(pair)) r.add('충');
+
+        // 2. 형 (삼형/상형/자형)
+        const HYUNG_PAIRS = ['寅巳','巳申','寅申','丑戌','戌未','丑未','子卯'];
+        if (HYUNG_PAIRS.includes(pair)) r.add('형');
+        if (targetJi === oJi && ['辰','午','酉','亥'].includes(targetJi)) r.add('형(자형)');
+
+        // 3. 파 (6파)
+        const PA = ['子酉','丑辰','寅亥','卯午','巳申','未戌'];
+        if (PA.includes(pair)) r.add('파');
+
+        // 4. 해 (6해)
+        const HAE = ['子未','丑午','寅巳','卯辰','申亥','酉戌'];
+        if (HAE.includes(pair)) r.add('해');
+
+        // 5. 원진 (6원진)
+        const WONJIN = ['子未','丑午','寅酉','卯申','辰亥','巳戌'];
+        if (WONJIN.includes(pair)) r.add('원진');
+
+        // 6. 귀문관살
+        const GWIMUN = ['子未','丑午','寅酉','卯申','辰亥','巳戌'];
+        if (GWIMUN.includes(pair)) r.add('귀문');
+      });
+
+      if (selfPos === '일') {
+        const arr = Array.from(r);
+        return `←(${targetJi})→` + (arr.length ? '<br>' + arr.join(', ') : '');
+      }
+      return r.size ? Array.from(r).join(', ') : '-';
+    }
+
+    document.getElementById('rel-year').innerHTML = evalRels(yJi, '년');
+    document.getElementById('rel-month').innerHTML = evalRels(mJi, '월');
+    document.getElementById('rel-day').innerHTML = evalRels(dJi, '일');
+    document.getElementById('rel-hour').innerHTML = evalRels(hJi, '시');
+
+    // Dynamic Gongmang, Guiin, Wolryeong
+    function getGongmang(ganChar, jiChar) {
+      const gI = GAN.indexOf(ganChar);
+      const jI = JI.indexOf(jiChar);
+      const GONGMANG_PAIRS = ['戌亥', '申酉', '午未', '辰巳', '寅卯', '子丑'];
+      const cycleIdx = Math.floor(((jI - gI + 12) % 12) / 2);
+      return GONGMANG_PAIRS[cycleIdx] || '-';
+    }
+    document.getElementById('gm-year').textContent = getGongmang(yGan, yJi);
+    document.getElementById('gm-day').textContent = getGongmang(dGan, dJi);
+
+    const GUIIN_NAMES = {
+      '甲':'丑, 未','戊':'丑, 未','庚':'丑, 未',
+      '乙':'子, 申','己':'子, 申',
+      '丙':'亥, 酉','丁':'亥, 酉',
+      '辛':'寅, 午',
+      '壬':'卯, 巳','癸':'卯, 巳'
+    };
+    document.getElementById('res-guiin').textContent = GUIIN_NAMES[dGan] || '-';
+
+    const WOLRYEONG_MAP = {
+      '子':'癸','丑':'己','寅':'甲','卯':'乙','辰':'戊','巳':'丙',
+      '午':'丁','未':'己','申':'庚','酉':'辛','戌':'戊','亥':'壬'
+    };
+    document.getElementById('res-wolryeong').textContent = WOLRYEONG_MAP[mJi] || '-';
+
+    // Daeun calculation
     const yGanIdx = GAN.indexOf(yGan);
     const isYangGan = (yGanIdx % 2 === 0);
-    // 양남음녀: 순행, 음남양녀: 역행
     const isForward = (gender === 'M' && isYangGan) || (gender === 'F' && !isYangGan);
     
-    // Daeun Start Number Approximation (1~9)
-    const daeunNum = Math.max(1, ((year + month + day) % 9) + 1);
-    document.getElementById('res-daeun-num').textContent = `대운수: ${daeunNum} (10년 주기)`;
+    // Astronomical Daeun Number Calculation (Days to Solar Term / 3)
+    function calculateDaeunNumber(y, m, d, forward) {
+      const step = forward ? 1 : -1;
+      const baseSl = getSolarLongitude(y, m, d, 12, 0);
+      const baseTermIdx = Math.floor(((baseSl - 315 + 360) % 360) / 30);
 
-    const daeunBox = document.getElementById('daeun-container');
-    daeunBox.innerHTML = '';
+      let daysCount = 3;
+      for (let i = 1; i <= 35; i++) {
+        const curD = new Date(y, m - 1, d + (i * step));
+        const cY = curD.getFullYear(), cM = curD.getMonth() + 1, cDay = curD.getDate();
+        const cSl = getSolarLongitude(cY, cM, cDay, 12, 0);
+        const cTermIdx = Math.floor(((cSl - 315 + 360) % 360) / 30);
+        if (cTermIdx !== baseTermIdx) {
+          daysCount = i;
+          break;
+        }
+      }
+      let dNum = Math.round(daysCount / 3);
+      if (dNum < 1) dNum = 1;
+      if (dNum > 10) dNum = 10;
+      return dNum;
+    }
+
+    const daeunNum = calculateDaeunNumber(year, month, day, isForward);
+    document.getElementById('daeun-direction-text').textContent = `전통나이 (대운수: ${daeunNum}, ${isForward ? '순행' : '역행'})`;
+
+    const daeunList = document.getElementById('daeun-list');
+    daeunList.innerHTML = '';
 
     let curMStem = GAN.indexOf(mGan);
     let curMBranch = JI.indexOf(mJi);
 
-    for (let i = 0; i < 8; i++) {
+    for (let i = 0; i < 11; i++) {
       if (isForward) {
         curMStem = (curMStem + 1) % 10;
         curMBranch = (curMBranch + 1) % 12;
@@ -1111,19 +1318,103 @@
       const djElem = ELEM_OF_JI[djChar];
 
       const item = document.createElement('div');
-      item.className = 'daeun-item';
+      item.className = 'flow-card' + (koreanAge >= dAge && koreanAge < dAge + 10 ? ' selected' : '');
       item.innerHTML = `
-        <div class="daeun-age">${dAge}세</div>
-        <div class="daeun-char elem-${dgElem}" style="border-radius:4px; padding:2px 0;">${dgChar}</div>
-        <div class="daeun-char elem-${djElem}" style="border-radius:4px; padding:2px 0;">${djChar}</div>
-        <div class="daeun-sub">${getShipshin(dGan, dgChar)}</div>
+        <div class="flow-card-top">${dAge}</div>
+        <div style="font-size:9px; color:#cbd5e1;">${getShipshin(dGan, dgChar)}</div>
+        <div class="flow-char-box c-${dgElem}">${dgChar}</div>
+        <div class="flow-char-box c-${djElem}">${djChar}</div>
+        <div style="font-size:9px; color:#cbd5e1;">${getShipshin(dGan, djChar)}</div>
+        <div style="font-size:9px; color:#64748b; margin-top:2px;">${wTable[JI.indexOf(djChar)]}</div>
+        <div style="font-size:9px; color:#94a3b8;">${getSinsal(yJi, djChar)}</div>
       `;
-      daeunBox.appendChild(item);
+      daeunList.appendChild(item);
     }
+
+    // Save state for Seeun & Wolun
+    globalCalcState = { dGan, yJi, wTable, currentYear, koreanAge };
+
+    // Render Seeun (2024 to 2033)
+    renderSeeun(2026);
+
+    // Render Wolun for 2026
+    renderWolun(2026);
 
     document.getElementById('form-card').style.display = 'none';
     document.getElementById('result-box').style.display = 'block';
     window.scrollTo({ top: document.getElementById('result-box').offsetTop - 60, behavior: 'smooth' });
+  }
+
+  // Render Seeun (연도별)
+  function renderSeeun(selectedYear) {
+    if (!globalCalcState) return;
+    const { dGan, yJi, wTable } = globalCalcState;
+    const seeunList = document.getElementById('seeun-list');
+    seeunList.innerHTML = '';
+
+    for (let yr = 2024; yr <= 2033; yr++) {
+      const yrIdx = ((yr - 4) % 60 + 60) % 60;
+      const sGan = GAN[yrIdx % 10];
+      const sJi = JI[yrIdx % 12];
+      const sgElem = ELEM_OF_GAN[sGan];
+      const sjElem = ELEM_OF_JI[sJi];
+
+      const item = document.createElement('div');
+      item.className = 'flow-card' + (yr === selectedYear ? ' selected' : '');
+      item.onclick = () => {
+        document.querySelectorAll('#seeun-list .flow-card').forEach(c => c.classList.remove('selected'));
+        item.classList.add('selected');
+        renderWolun(yr);
+      };
+      item.innerHTML = `
+        <div class="flow-card-top">${yr}</div>
+        <div style="font-size:9px; color:#cbd5e1;">${getShipshin(dGan, sGan)}</div>
+        <div class="flow-char-box c-${sgElem}">${sGan}</div>
+        <div class="flow-char-box c-${sjElem}">${sJi}</div>
+        <div style="font-size:9px; color:#cbd5e1;">${getShipshin(dGan, sJi)}</div>
+        <div style="font-size:9px; color:#64748b; margin-top:2px;">${wTable[JI.indexOf(sJi)]}</div>
+        <div style="font-size:9px; color:#94a3b8;">${getSinsal(yJi, sJi)}</div>
+      `;
+      seeunList.appendChild(item);
+    }
+  }
+
+  // Render Wolun (월별 1~12월)
+  function renderWolun(targetYear) {
+    if (!globalCalcState) return;
+    const { dGan, yJi, wTable, currentYear, koreanAge } = globalCalcState;
+    const targetAge = koreanAge + (targetYear - currentYear);
+
+    document.getElementById('wolun-selected-year-title').textContent = `${targetYear}년 (${targetAge}세)`;
+
+    const wolunList = document.getElementById('wolun-list');
+    wolunList.innerHTML = '';
+
+    const yrIdx = ((targetYear - 4) % 60 + 60) % 60;
+    const yStemIdx = yrIdx % 10;
+    const startMStem = ((yStemIdx % 5) * 2 + 2) % 10;
+    const monthBranches = ['寅','卯','辰','巳','午','未','申','酉','戌','亥','子','丑'];
+
+    for (let m = 0; m < 12; m++) {
+      const monthNum = m + 1;
+      const mG = GAN[(startMStem + m) % 10];
+      const mJ = monthBranches[m];
+      const mgElem = ELEM_OF_GAN[mG];
+      const mjElem = ELEM_OF_JI[mJ];
+
+      const item = document.createElement('div');
+      item.className = 'flow-card';
+      item.innerHTML = `
+        <div class="flow-card-top">${monthNum}월</div>
+        <div style="font-size:9px; color:#cbd5e1;">${getShipshin(dGan, mG)}</div>
+        <div class="flow-char-box c-${mgElem}">${mG}</div>
+        <div class="flow-char-box c-${mjElem}">${mJ}</div>
+        <div style="font-size:9px; color:#cbd5e1;">${getShipshin(dGan, mJ)}</div>
+        <div style="font-size:9px; color:#64748b; margin-top:2px;">${wTable[JI.indexOf(mJ)]}</div>
+        <div style="font-size:9px; color:#94a3b8;">${getSinsal(yJi, mJ)}</div>
+      `;
+      wolunList.appendChild(item);
+    }
   }
 
   function resetForm() {
