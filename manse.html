@@ -1244,9 +1244,11 @@
     function getGongmang(ganChar, jiChar) {
       const gI = GAN.indexOf(ganChar);
       const jI = JI.indexOf(jiChar);
+      const startJi = (jI - gI + 12) % 12;
+      const XUN_ORDER = [0, 10, 8, 6, 4, 2];
       const GONGMANG_PAIRS = ['戌亥', '申酉', '午未', '辰巳', '寅卯', '子丑'];
-      const cycleIdx = Math.floor(((jI - gI + 12) % 12) / 2);
-      return GONGMANG_PAIRS[cycleIdx] || '-';
+      const idx = XUN_ORDER.indexOf(startJi);
+      return idx !== -1 ? GONGMANG_PAIRS[idx] : '-';
     }
     document.getElementById('gm-year').textContent = getGongmang(yGan, yJi);
     document.getElementById('gm-day').textContent = getGongmang(dGan, dJi);
@@ -1260,13 +1262,17 @@
     };
     document.getElementById('res-guiin').textContent = GUIIN_NAMES[dGan] || '-';
 
-    const WOLRYEONG_MAP = {
+    const MAIN_STEM_OF_JI = {
       '子':'癸','丑':'己','寅':'甲','卯':'乙','辰':'戊','巳':'丙',
       '午':'丁','未':'己','申':'庚','酉':'辛','戌':'戊','亥':'壬'
     };
-    document.getElementById('res-wolryeong').textContent = WOLRYEONG_MAP[mJi] || '-';
 
-    // Daeun calculation
+    function getJiShipshin(meGan, targetJi) {
+      const mainStem = MAIN_STEM_OF_JI[targetJi];
+      return mainStem ? getShipshin(meGan, mainStem) : '-';
+    }
+
+    document.getElementById('res-wolryeong').textContent = MAIN_STEM_OF_JI[mJi] || '-';
     const yGanIdx = GAN.indexOf(yGan);
     const isYangGan = (yGanIdx % 2 === 0);
     const isForward = (gender === 'M' && isYangGan) || (gender === 'F' && !isYangGan);
@@ -1324,7 +1330,7 @@
         <div style="font-size:9px; color:#cbd5e1;">${getShipshin(dGan, dgChar)}</div>
         <div class="flow-char-box c-${dgElem}">${dgChar}</div>
         <div class="flow-char-box c-${djElem}">${djChar}</div>
-        <div style="font-size:9px; color:#cbd5e1;">${getShipshin(dGan, djChar)}</div>
+        <div style="font-size:9px; color:#cbd5e1;">${getJiShipshin(dGan, djChar)}</div>
         <div style="font-size:9px; color:#64748b; margin-top:2px;">${wTable[JI.indexOf(djChar)]}</div>
         <div style="font-size:9px; color:#94a3b8;">${getSinsal(yJi, djChar)}</div>
       `;
@@ -1371,7 +1377,7 @@
         <div style="font-size:9px; color:#cbd5e1;">${getShipshin(dGan, sGan)}</div>
         <div class="flow-char-box c-${sgElem}">${sGan}</div>
         <div class="flow-char-box c-${sjElem}">${sJi}</div>
-        <div style="font-size:9px; color:#cbd5e1;">${getShipshin(dGan, sJi)}</div>
+        <div style="font-size:9px; color:#cbd5e1;">${getJiShipshin(dGan, sJi)}</div>
         <div style="font-size:9px; color:#64748b; margin-top:2px;">${wTable[JI.indexOf(sJi)]}</div>
         <div style="font-size:9px; color:#94a3b8;">${getSinsal(yJi, sJi)}</div>
       `;
@@ -1409,7 +1415,7 @@
         <div style="font-size:9px; color:#cbd5e1;">${getShipshin(dGan, mG)}</div>
         <div class="flow-char-box c-${mgElem}">${mG}</div>
         <div class="flow-char-box c-${mjElem}">${mJ}</div>
-        <div style="font-size:9px; color:#cbd5e1;">${getShipshin(dGan, mJ)}</div>
+        <div style="font-size:9px; color:#cbd5e1;">${getJiShipshin(dGan, mJ)}</div>
         <div style="font-size:9px; color:#64748b; margin-top:2px;">${wTable[JI.indexOf(mJ)]}</div>
         <div style="font-size:9px; color:#94a3b8;">${getSinsal(yJi, mJ)}</div>
       `;
