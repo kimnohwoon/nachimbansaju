@@ -964,6 +964,16 @@
     return sameYinYang ? '편인' : '정인';
   }
 
+  const MAIN_STEM_OF_JI = {
+    '子':'癸','丑':'己','寅':'甲','卯':'乙','辰':'戊','巳':'丙',
+    '午':'丁','未':'己','申':'庚','酉':'辛','戌':'戊','亥':'壬'
+  };
+
+  function getJiShipshin(meGan, targetJi) {
+    const mainStem = MAIN_STEM_OF_JI[targetJi];
+    return mainStem ? getShipshin(meGan, mainStem) : '-';
+  }
+
   // Astronomical ephemeris
   function getJulianDay(y, m, d) {
     const a = Math.floor((14 - m) / 12);
@@ -1261,16 +1271,6 @@
       '壬':'卯, 巳','癸':'卯, 巳'
     };
     document.getElementById('res-guiin').textContent = GUIIN_NAMES[dGan] || '-';
-
-    const MAIN_STEM_OF_JI = {
-      '子':'癸','丑':'己','寅':'甲','卯':'乙','辰':'戊','巳':'丙',
-      '午':'丁','未':'己','申':'庚','酉':'辛','戌':'戊','亥':'壬'
-    };
-
-    function getJiShipshin(meGan, targetJi) {
-      const mainStem = MAIN_STEM_OF_JI[targetJi];
-      return mainStem ? getShipshin(meGan, mainStem) : '-';
-    }
 
     document.getElementById('res-wolryeong').textContent = MAIN_STEM_OF_JI[mJi] || '-';
     const yGanIdx = GAN.indexOf(yGan);
