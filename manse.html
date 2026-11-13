@@ -1,0 +1,1137 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>운명나침반 · 무료 정밀 만세력 & 대운 조회</title>
+  
+  <meta name="description" content="생년월일시만 넣으면 3초 만에 사주 8글자, 10년 대운, 오행 비율, 12운성을 무료로 조회하는 정통 명리학 만세력입니다.">
+  <meta property="og:title" content="운명나침반 · 무료 정밀 만세력 & 대운 조회">
+  <meta property="og:description" content="누구나 평생 무료! 사주 원국 8글자와 10년 대운 타임라인을 3초 만에 확인하세요.">
+  <meta property="og:url" content="https://nachimbansaju.com/manse.html">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #090d16;
+      --card-bg: #111827;
+      --card-border: rgba(212, 175, 55, 0.25);
+      --gold: #d4af37;
+      --gold-light: #fef08a;
+      --gold-dark: #854d0e;
+      --text-main: #f8fafc;
+      --text-sub: #94a3b8;
+      --red: #ef4444;
+      --blue: #3b82f6;
+      --green: #22c55e;
+      --yellow: #eab308;
+      --gray: #64748b;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text-main);
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+      line-height: 1.5;
+    }
+
+    .app-container {
+      width: 100%;
+      max-width: 480px;
+      min-height: 100vh;
+      background: #0d1322;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      box-shadow: 0 0 40px rgba(0,0,0,0.8);
+      border-left: 1px solid rgba(255,255,255,0.05);
+      border-right: 1px solid rgba(255,255,255,0.05);
+    }
+
+    /* Top Nav */
+    .top-nav {
+      height: 56px;
+      padding: 0 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      background: rgba(13, 19, 34, 0.9);
+      backdrop-filter: blur(10px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .top-logo {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+      color: var(--gold-light);
+      font-weight: 800;
+      font-size: 16px;
+    }
+    .top-nav-btn {
+      font-size: 12px;
+      font-weight: 700;
+      color: #0f172a;
+      background: linear-gradient(135deg, #facc15, #ca8a04);
+      padding: 6px 12px;
+      border-radius: 20px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* Hero Banner */
+    .hero-box {
+      padding: 24px 20px 18px;
+      text-align: center;
+      background: radial-gradient(circle at 50% 20%, rgba(212,175,55,0.15), transparent 70%);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .hero-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--gold-light);
+      background: rgba(212,175,55,0.15);
+      border: 1px solid rgba(212,175,55,0.4);
+      padding: 3px 10px;
+      border-radius: 20px;
+      margin-bottom: 8px;
+    }
+    .hero-title {
+      font-size: 22px;
+      font-weight: 900;
+      color: #ffffff;
+      line-height: 1.35;
+      margin-bottom: 6px;
+    }
+    .hero-title span {
+      color: var(--gold);
+    }
+    .hero-sub {
+      font-size: 13px;
+      color: var(--text-sub);
+    }
+
+    /* Content Area */
+    .content-area {
+      padding: 20px 16px 40px;
+      flex: 1;
+    }
+
+    /* Form Card */
+    .form-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 18px;
+      padding: 20px 16px;
+      margin-bottom: 24px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+    }
+    .form-group {
+      margin-bottom: 16px;
+    }
+    .form-label {
+      font-size: 13px;
+      font-weight: 700;
+      color: #cbd5e1;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .input-text {
+      width: 100%;
+      height: 46px;
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 10px;
+      padding: 0 14px;
+      font-size: 14px;
+      color: #ffffff;
+      outline: none;
+      transition: border 0.2s;
+    }
+    .input-text:focus {
+      border-color: var(--gold);
+    }
+
+    .btn-toggle-group {
+      display: flex;
+      gap: 8px;
+    }
+    .btn-toggle {
+      flex: 1;
+      height: 42px;
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 10px;
+      color: #94a3b8;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-toggle.active {
+      background: rgba(212, 175, 55, 0.15);
+      border-color: var(--gold);
+      color: var(--gold-light);
+    }
+
+    .select-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr 1fr;
+      gap: 8px;
+    }
+    .input-select {
+      height: 46px;
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 10px;
+      padding: 0 10px;
+      font-size: 13px;
+      color: #ffffff;
+      outline: none;
+      cursor: pointer;
+    }
+    .input-select:focus {
+      border-color: var(--gold);
+    }
+    .input-select option {
+      background: #0f172a;
+      color: #ffffff;
+    }
+
+    .btn-submit-manse {
+      width: 100%;
+      height: 54px;
+      background: linear-gradient(135deg, #d4af37, #b48a1e);
+      border: none;
+      border-radius: 12px;
+      color: #0f172a;
+      font-size: 16px;
+      font-weight: 900;
+      cursor: pointer;
+      margin-top: 8px;
+      box-shadow: 0 6px 20px rgba(212, 175, 55, 0.35);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: transform 0.1s;
+    }
+    .btn-submit-manse:active {
+      transform: scale(0.98);
+    }
+
+    /* Ad Modal */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.85);
+      backdrop-filter: blur(6px);
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .modal-overlay.active {
+      display: flex;
+    }
+    .ad-card {
+      width: 100%;
+      max-width: 380px;
+      background: #1e293b;
+      border: 1px solid rgba(212, 175, 55, 0.4);
+      border-radius: 20px;
+      padding: 24px 20px;
+      text-align: center;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.8);
+      animation: popIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    @keyframes popIn {
+      from { transform: scale(0.9); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+    .ad-sponsor-badge {
+      font-size: 11px;
+      color: #94a3b8;
+      background: rgba(255,255,255,0.06);
+      padding: 2px 8px;
+      border-radius: 6px;
+      display: inline-block;
+      margin-bottom: 12px;
+    }
+    .ad-timer-circle {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: rgba(212, 175, 55, 0.1);
+      border: 3px solid var(--gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px;
+      font-size: 26px;
+      font-weight: 900;
+      color: var(--gold-light);
+    }
+    .ad-banner-placeholder {
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px dashed rgba(212,175,55,0.3);
+      border-radius: 12px;
+      padding: 18px 12px;
+      margin: 16px 0;
+      font-size: 13px;
+      color: #cbd5e1;
+      line-height: 1.5;
+    }
+    .ad-banner-placeholder b {
+      color: #facc15;
+    }
+    .btn-ad-complete {
+      width: 100%;
+      height: 48px;
+      background: #334155;
+      color: #64748b;
+      border: none;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 800;
+      cursor: not-allowed;
+      transition: all 0.2s;
+    }
+    .btn-ad-complete.ready {
+      background: linear-gradient(135deg, #d4af37, #ca8a04);
+      color: #0f172a;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(212,175,55,0.4);
+    }
+
+    /* Result Box */
+    .result-box {
+      display: none;
+    }
+
+    /* Saju Grid Table */
+    .saju-grid-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 18px;
+      padding: 20px 14px;
+      margin-bottom: 20px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+    }
+    .saju-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+      margin: 14px 0 16px;
+      text-align: center;
+    }
+    .saju-col {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .saju-col-head {
+      font-size: 11px;
+      font-weight: 700;
+      color: #94a3b8;
+      padding-bottom: 4px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    .saju-cell {
+      height: 52px;
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      font-weight: 900;
+      position: relative;
+    }
+    .saju-sub-label {
+      font-size: 10px;
+      font-weight: 600;
+      margin-top: -2px;
+      opacity: 0.85;
+    }
+
+    /* Elements Color Scheme */
+    .elem-wood { background: rgba(34, 197, 94, 0.18); border: 1px solid rgba(34, 197, 94, 0.45); color: #4ade80; }
+    .elem-fire { background: rgba(239, 68, 68, 0.18); border: 1px solid rgba(239, 68, 68, 0.45); color: #f87171; }
+    .elem-earth { background: rgba(234, 179, 8, 0.18); border: 1px solid rgba(234, 179, 8, 0.45); color: #facc15; }
+    .elem-metal { background: rgba(255, 255, 255, 0.15); border: 1px solid rgba(255, 255, 255, 0.45); color: #ffffff; }
+    .elem-water { background: rgba(59, 130, 246, 0.18); border: 1px solid rgba(59, 130, 246, 0.45); color: #60a5fa; }
+
+    /* Extra Info Row in Saju Grid */
+    .saju-meta-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+      text-align: center;
+      font-size: 11px;
+      color: #cbd5e1;
+      padding: 6px 0;
+      border-top: 1px dashed rgba(255,255,255,0.1);
+    }
+    .saju-meta-label {
+      font-size: 10px;
+      color: #64748b;
+      margin-bottom: 2px;
+    }
+
+    /* 5 Elements Distribution */
+    .elem-bar-wrap {
+      margin: 16px 0;
+      background: rgba(15, 23, 42, 0.6);
+      border-radius: 12px;
+      padding: 14px;
+    }
+    .elem-bar-row {
+      display: flex;
+      align-items: center;
+      margin-bottom: 8px;
+      font-size: 12px;
+    }
+    .elem-bar-row:last-child { margin-bottom: 0; }
+    .elem-bar-name { width: 55px; font-weight: 700; color: #cbd5e1; }
+    .elem-bar-track {
+      flex: 1;
+      height: 10px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 6px;
+      overflow: hidden;
+      margin: 0 10px;
+    }
+    .elem-bar-fill { height: 100%; border-radius: 6px; transition: width 0.6s ease; }
+    .elem-bar-val { width: 35px; text-align: right; font-weight: 800; color: var(--gold-light); }
+
+    /* Daeun Timeline */
+    .daeun-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 18px;
+      padding: 18px 14px;
+      margin-bottom: 20px;
+    }
+    .daeun-scroll {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 10px;
+      margin-top: 12px;
+      scrollbar-width: thin;
+    }
+    .daeun-item {
+      min-width: 58px;
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 10px;
+      padding: 8px 4px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .daeun-age {
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--gold-light);
+    }
+    .daeun-char {
+      font-size: 16px;
+      font-weight: 900;
+    }
+    .daeun-sub {
+      font-size: 10px;
+      color: #64748b;
+    }
+
+    /* Grand Funnel Upsell Box */
+    .upsell-box {
+      background: linear-gradient(145deg, #1e1b4b, #0f172a);
+      border: 1px solid #6366f1;
+      border-radius: 18px;
+      padding: 22px 18px;
+      text-align: center;
+      margin-bottom: 24px;
+      box-shadow: 0 12px 30px rgba(99, 102, 241, 0.25);
+    }
+    .upsell-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 800;
+      color: #a5b4fc;
+      background: rgba(99, 102, 241, 0.2);
+      border: 1px solid rgba(99, 102, 241, 0.4);
+      padding: 2px 10px;
+      border-radius: 20px;
+      margin-bottom: 10px;
+    }
+    .upsell-title {
+      font-size: 18px;
+      font-weight: 900;
+      color: #ffffff;
+      line-height: 1.4;
+      margin-bottom: 8px;
+    }
+    .upsell-title span {
+      color: #facc15;
+    }
+    .upsell-desc {
+      font-size: 13px;
+      color: #cbd5e1;
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+    .btn-upsell-link {
+      display: block;
+      width: 100%;
+      height: 52px;
+      line-height: 52px;
+      background: linear-gradient(135deg, #facc15, #eab308);
+      color: #0f172a;
+      font-size: 15px;
+      font-weight: 900;
+      border-radius: 12px;
+      text-decoration: none;
+      box-shadow: 0 6px 20px rgba(250, 204, 21, 0.35);
+      transition: transform 0.1s;
+    }
+    .btn-upsell-link:active {
+      transform: scale(0.98);
+    }
+
+    /* Footer */
+    .footer-info {
+      padding: 24px 16px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      font-size: 11px;
+      color: #64748b;
+      line-height: 1.6;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+<div class="app-container">
+
+  <!-- Top Sticky Nav -->
+  <nav class="top-nav">
+    <a href="index.html" class="top-logo">
+      <span>🧭</span>
+      <span>운명나침반</span>
+    </a>
+    <a href="index.html" class="top-nav-btn">
+      <span>맞춤 책 보기</span>
+      <span>→</span>
+    </a>
+  </nav>
+
+  <!-- Hero Header -->
+  <header class="hero-box">
+    <span class="hero-badge">📜 정통 명리학 3대 경전 기반</span>
+    <h1 class="hero-title">누구나 평생 무료<br><span>나침반 정밀 만세력</span></h1>
+    <p class="hero-sub">생년월일시 3초 만에 내 사주 8글자와 10년 대운 조회</p>
+  </header>
+
+  <!-- Content Area -->
+  <main class="content-area">
+
+    <!-- Input Form Card -->
+    <div class="form-card" id="form-card">
+      <div class="form-group">
+        <label class="form-label" for="user-name">
+          <span>👤</span> 성함 (선택)
+        </label>
+        <input type="text" id="user-name" class="input-text" placeholder="이름을 입력해 주세요 (예: 김운명)">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">
+          <span>⚧</span> 성별 (대운 순행·역행 판정용)
+        </label>
+        <div class="btn-toggle-group">
+          <button type="button" class="btn-toggle active" id="btn-gender-f" onclick="selectGender('F')">여성</button>
+          <button type="button" class="btn-toggle" id="btn-gender-m" onclick="selectGender('M')">남성</button>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">
+          <span>📅</span> 양력 / 음력 구분
+        </label>
+        <div class="btn-toggle-group">
+          <button type="button" class="btn-toggle active" id="btn-cal-solar" onclick="selectCalendar('solar')">양력</button>
+          <button type="button" class="btn-toggle" id="btn-cal-lunar" onclick="selectCalendar('lunar')">음력</button>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">
+          <span>🎂</span> 태어난 날짜
+        </label>
+        <div class="select-grid">
+          <select id="sel-year" class="input-select"></select>
+          <select id="sel-month" class="input-select"></select>
+          <select id="sel-day" class="input-select"></select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="sel-hour">
+          <span>⏰</span> 태어난 시간 (진태양시 보정)
+        </label>
+        <select id="sel-hour" class="input-select" style="width: 100%;">
+          <option value="unknown">태어난 시간을 잘 몰라요 (삼주 풀이)</option>
+          <option value="0">자시 (子時) 23:30 ~ 01:29</option>
+          <option value="2">축시 (丑時) 01:30 ~ 03:29</option>
+          <option value="4">인시 (寅時) 03:30 ~ 05:29</option>
+          <option value="6">묘시 (卯時) 05:30 ~ 07:29</option>
+          <option value="8">진시 (辰時) 07:30 ~ 09:29</option>
+          <option value="10">사시 (巳時) 09:30 ~ 11:29</option>
+          <option value="12">오시 (午時) 11:30 ~ 13:29</option>
+          <option value="14">미시 (未時) 13:30 ~ 15:29</option>
+          <option value="16">신시 (申時) 15:30 ~ 17:29</option>
+          <option value="18">유시 (酉時) 17:30 ~ 19:29</option>
+          <option value="20">술시 (戌時) 19:30 ~ 21:29</option>
+          <option value="22">해시 (亥時) 21:30 ~ 23:29</option>
+        </select>
+      </div>
+
+      <button type="button" class="btn-submit-manse" id="btn-calc" onclick="startManseProcess()">
+        <span>⚡ 3초 만에 내 사주·대운 무료 열람하기</span>
+      </button>
+    </div>
+
+    <!-- Rewarded Ad Modal -->
+    <div class="modal-overlay" id="ad-modal">
+      <div class="ad-card">
+        <span class="ad-sponsor-badge">📢 무료 서비스 유지를 위한 스폰서 안내</span>
+        <div class="ad-timer-circle" id="ad-timer-text">5</div>
+        <h3 style="font-size: 17px; font-weight: 800; color: #ffffff; margin-bottom: 6px;">정밀 만세력 데이터를 생성 중입니다</h3>
+        <p style="font-size: 12px; color: var(--text-sub);">스폰서 광고 시청 후 100% 무료로 만세력이 열립니다.</p>
+
+        <!-- Simulated Ad Banner Box (Will be replaced with Google AdSense slot) -->
+        <div class="ad-banner-placeholder">
+          <div>🧭 <b>운명나침반 2027 신년운세 사전예약</b></div>
+          <div style="font-size: 11px; margin-top: 4px; color: #94a3b8;">죽어라 버티는데 왜 나만 힘들까? 9,900원 특가로 내 전성기 날짜 확인</div>
+        </div>
+
+        <button type="button" class="btn-ad-complete" id="btn-ad-finish" onclick="showResultsAfterAd()">
+          광고 확인 중 (5초)...
+        </button>
+      </div>
+    </div>
+
+    <!-- Results Display -->
+    <div class="result-box" id="result-box">
+
+      <!-- Saju Grid Card -->
+      <div class="saju-grid-card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+          <span style="font-size: 12px; font-weight: 800; color: var(--gold-light);" id="res-name-badge">사주 원국표</span>
+          <span style="font-size: 11px; color: #64748b;">(좌: 말년 · 우: 초년)</span>
+        </div>
+
+        <div class="saju-grid">
+          <!-- 시주 -->
+          <div class="saju-col">
+            <div class="saju-col-head">시주(時)</div>
+            <div class="saju-cell" id="gan-hour">時</div>
+            <div class="saju-cell" id="ji-hour">柱</div>
+          </div>
+          <!-- 일주 (나) -->
+          <div class="saju-col">
+            <div class="saju-col-head" style="color: var(--gold-light); font-weight: 900;">일주(日·나)</div>
+            <div class="saju-cell" id="gan-day">壬</div>
+            <div class="saju-cell" id="ji-day">午</div>
+          </div>
+          <!-- 월주 -->
+          <div class="saju-col">
+            <div class="saju-col-head">월주(月)</div>
+            <div class="saju-cell" id="gan-month">己</div>
+            <div class="saju-cell" id="ji-month">丑</div>
+          </div>
+          <!-- 년주 -->
+          <div class="saju-col">
+            <div class="saju-col-head">년주(年)</div>
+            <div class="saju-cell" id="gan-year">庚</div>
+            <div class="saju-cell" id="ji-year">午</div>
+          </div>
+        </div>
+
+        <!-- 십신 (Ten Gods) Row -->
+        <div class="saju-meta-row">
+          <div><div class="saju-meta-label">십신</div><span id="shipshin-hour">-</span></div>
+          <div><div class="saju-meta-label">십신</div><span style="color: var(--gold-light); font-weight: 800;">본인(我)</span></div>
+          <div><div class="saju-meta-label">십신</div><span id="shipshin-month">-</span></div>
+          <div><div class="saju-meta-label">십신</div><span id="shipshin-year">-</span></div>
+        </div>
+
+        <!-- 12운성 Row -->
+        <div class="saju-meta-row" style="border-top: none;">
+          <div><div class="saju-meta-label">12운성</div><span id="woon-hour">-</span></div>
+          <div><div class="saju-meta-label">12운성</div><span id="woon-day">-</span></div>
+          <div><div class="saju-meta-label">12운성</div><span id="woon-month">-</span></div>
+          <div><div class="saju-meta-label">12운성</div><span id="woon-year">-</span></div>
+        </div>
+      </div>
+
+      <!-- Ilju Essence Card -->
+      <div style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(212, 175, 55, 0.25); border-radius: 18px; padding: 18px 16px; margin-bottom: 20px;">
+        <div style="font-size: 11px; color: var(--gold); font-weight: 800; margin-bottom: 4px;">타고난 일주(日柱)의 본질</div>
+        <div style="font-size: 17px; font-weight: 900; color: #ffffff; margin-bottom: 8px;" id="res-ilju-header">임오일주 (壬午)</div>
+        <p style="font-size: 13px; color: #cbd5e1; line-height: 1.6;" id="res-ilju-text">
+          바다(壬水) 위에 태양(午火)이 비치는 정재(正財)를 품은 사주입니다. 판은 거대하고 추진력과 생활력은 극강이나, 내 몸 하나로 거대한 책임을 버텨내느라 늘 온몸이 피로하고 속병을 앓기 쉽습니다.
+        </p>
+      </div>
+
+      <!-- 5 Elements Distribution Card -->
+      <div style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 18px; padding: 18px 16px; margin-bottom: 20px;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <span style="font-size: 14px; font-weight: 800; color: #ffffff;">오행 에너지 분포</span>
+          <span id="res-elem-strongest" style="font-size: 11px; background: rgba(212,175,55,0.15); color: var(--gold-light); padding: 2px 8px; border-radius: 6px; font-weight: 700;">불(火) 과다</span>
+        </div>
+
+        <div class="elem-bar-wrap">
+          <div class="elem-bar-row">
+            <span class="elem-bar-name" style="color: #4ade80;">나무 (木)</span>
+            <div class="elem-bar-track"><div class="elem-bar-fill" id="bar-wood" style="background: #22c55e; width: 0%;"></div></div>
+            <span class="elem-bar-val" id="val-wood">0%</span>
+          </div>
+          <div class="elem-bar-row">
+            <span class="elem-bar-name" style="color: #f87171;">불 (火)</span>
+            <div class="elem-bar-track"><div class="elem-bar-fill" id="bar-fire" style="background: #ef4444; width: 0%;"></div></div>
+            <span class="elem-bar-val" id="val-fire">0%</span>
+          </div>
+          <div class="elem-bar-row">
+            <span class="elem-bar-name" style="color: #facc15;">흙 (土)</span>
+            <div class="elem-bar-track"><div class="elem-bar-fill" id="bar-earth" style="background: #eab308; width: 0%;"></div></div>
+            <span class="elem-bar-val" id="val-earth">0%</span>
+          </div>
+          <div class="elem-bar-row">
+            <span class="elem-bar-name" style="color: #ffffff;">쇠 (金)</span>
+            <div class="elem-bar-track"><div class="elem-bar-fill" id="bar-metal" style="background: #cbd5e1; width: 0%;"></div></div>
+            <span class="elem-bar-val" id="val-metal">0%</span>
+          </div>
+          <div class="elem-bar-row">
+            <span class="elem-bar-name" style="color: #60a5fa;">물 (水)</span>
+            <div class="elem-bar-track"><div class="elem-bar-fill" id="bar-water" style="background: #3b82f6; width: 0%;"></div></div>
+            <span class="elem-bar-val" id="val-water">0%</span>
+          </div>
+        </div>
+        <div style="font-size: 12px; color: var(--text-sub); line-height: 1.5;" id="res-elem-summary">
+          오행의 균형을 분석하여 부족한 기운과 보완할 개운법을 도출합니다.
+        </div>
+      </div>
+
+      <!-- 10-Year Daeun Timeline Card -->
+      <div class="daeun-card">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <span style="font-size: 14px; font-weight: 800; color: #ffffff;">10년 주기 대운(大運) 흐름표</span>
+          <span style="font-size: 11px; color: var(--gold-light);" id="res-daeun-num">대운수: 5</span>
+        </div>
+        <p style="font-size: 11px; color: #64748b; margin-top: 2px;">좌우로 스크롤하여 10년마다 바뀌는 내 인생 큰 파도를 확인하세요.</p>
+
+        <div class="daeun-scroll" id="daeun-container">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
+
+      <!-- Grand Funnel Upsell Box -->
+      <div class="upsell-box">
+        <span class="upsell-badge">📖 내 사주의 진짜 해석이 궁금하다면?</span>
+        <h3 class="upsell-title">복잡한 한자 속에 숨겨진<br><span>내 인생 대박 날짜와 돈 구멍 비책</span></h3>
+        <p class="upsell-desc">
+          만세력 기호는 지도가 아닙니다. 언제 돈이 터지고, 어떤 악연을 끊어야 하는지 <b>A4 100쪽 맞춤 평생사주 책</b>으로 직접 확인하세요.
+        </p>
+        <a href="index.html" class="btn-upsell-link">
+          👉 운명나침반 맞춤 책 보러가기 (9,900원~)
+        </a>
+      </div>
+
+      <div style="text-align: center; margin-bottom: 30px;">
+        <button type="button" onclick="resetForm()" style="background: transparent; border: 1px solid rgba(255,255,255,0.2); color: #94a3b8; font-size: 13px; padding: 10px 20px; border-radius: 10px; cursor: pointer;">
+          ↺ 다른 사람 사주 무료로 다시 조회하기
+        </button>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- Legal Footer -->
+  <footer class="footer-info">
+    <div><b>운명나침반 사주연구소</b></div>
+    <div style="margin-top: 4px;">대표자: 김노운 | 사업자등록번호: 750-44-01296</div>
+    <div>사업장 소재지: 대전광역시 대덕구 계족로 564, 103호</div>
+    <div style="margin-top: 8px; color: #475569;">© 2026 운명나침반. All rights reserved.</div>
+  </footer>
+
+</div>
+
+<script>
+  // State
+  let gender = 'F';
+  let calendarType = 'solar';
+
+  // Date selectors setup
+  const selYear = document.getElementById('sel-year');
+  const selMonth = document.getElementById('sel-month');
+  const selDay = document.getElementById('sel-day');
+
+  for (let y = 2026; y >= 1930; y--) {
+    const opt = document.createElement('option');
+    opt.value = y;
+    opt.textContent = y + '년';
+    if (y === 1991) opt.selected = true;
+    selYear.appendChild(opt);
+  }
+
+  for (let m = 1; m <= 12; m++) {
+    const opt = document.createElement('option');
+    opt.value = m;
+    opt.textContent = m + '월';
+    if (m === 1) opt.selected = true;
+    selMonth.appendChild(opt);
+  }
+
+  function updateDays() {
+    const y = parseInt(selYear.value);
+    const m = parseInt(selMonth.value);
+    const lastDay = new Date(y, m, 0).getDate();
+    selDay.innerHTML = '';
+    for (let d = 1; d <= lastDay; d++) {
+      const opt = document.createElement('option');
+      opt.value = d;
+      opt.textContent = d + '일';
+      if (d === 12) opt.selected = true;
+      selDay.appendChild(opt);
+    }
+  }
+  selYear.addEventListener('change', updateDays);
+  selMonth.addEventListener('change', updateDays);
+  updateDays();
+
+  function selectGender(g) {
+    gender = g;
+    document.getElementById('btn-gender-f').classList.toggle('active', g === 'F');
+    document.getElementById('btn-gender-m').classList.toggle('active', g === 'M');
+  }
+
+  function selectCalendar(t) {
+    calendarType = t;
+    document.getElementById('btn-cal-solar').classList.toggle('active', t === 'solar');
+    document.getElementById('btn-cal-lunar').classList.toggle('active', t === 'lunar');
+  }
+
+  // Astronomical Mansaeryeok Core
+  const GAN = ['甲', '乙', '丙', '丁', '戊', '己', '庚', '辛', '壬', '癸'];
+  const JI = ['子', '丑', '寅', '卯', '辰', '巳', '午', '未', '申', '酉', '戌', '亥'];
+  const ELEM_OF_GAN = {
+    '甲': 'wood', '乙': 'wood',
+    '丙': 'fire', '丁': 'fire',
+    '戊': 'earth', '己': 'earth',
+    '庚': 'metal', '辛': 'metal',
+    '壬': 'water', '癸': 'water'
+  };
+  const ELEM_OF_JI = {
+    '寅': 'wood', '卯': 'wood',
+    '巳': 'fire', '午': 'fire',
+    '辰': 'earth', '戌': 'earth', '丑': 'earth', '未': 'earth',
+    '申': 'metal', '酉': 'metal',
+    '亥': 'water', '子': 'water'
+  };
+
+  const ILJU_NICKNAMES = {
+    '壬午': {
+      title: '임오일주(壬午) 「노을 지는 바다 / 호수를 품은 야생마」',
+      desc: '바다(壬水) 위에 태양(午火)이 비치는 정재(正財)를 품은 사주입니다. 판은 거대하고 추진력과 생활력은 극강이나, 내 몸 하나로 거대한 불길과 책임을 버텨내느라 늘 온몸이 피로하고 남 좋은 일만 실컷 해주고 속병을 앓기 쉽습니다.'
+    },
+    '戊寅': {
+      title: '무인일주(戊寅) 「숲을 품은 태산」',
+      desc: '겉으로는 묵직하게 남들의 짐을 다 받아주지만, 속에는 거친 호랑이처럼 큰 야망과 꺾이지 않는 자존심을 품고 태어났습니다. 계산이 끝나기 전에 몸이 먼저 나가는 행동파라 남 좋은 일만 실컷 시키고 혼자 속앓이를 하기 쉽습니다.'
+    },
+    '乙卯': {
+      title: '을묘일주(乙卯) 「바위틈을 뚫고 솟아오른 푸른 잔디」',
+      desc: '질긴 생명력과 자존심, 승부욕의 화신입니다. 남 밑에 굽히기를 극도로 싫어하며 독립심이 강합니다. 한번 칼을 뽑으면 끝을 보지만, 사소한 말에 자존심이 상하면 판을 엎어버리는 단점이 있습니다.'
+    },
+    '丙戌': {
+      title: '병술일주(丙戌) 「대지를 비추는 가을 석양」',
+      desc: '화려한 언변과 뛰어난 눈치, 열정을 지녔습니다. 어디서나 주목받는 스타 기질이 있으나, 속으로는 외로움과 공허함을 품고 있어 내 편이 절실한 사주입니다.'
+    },
+    'default': {
+      title: '정통 명리학 일주 본질 분석',
+      desc: '타고난 일간과 일지의 오행 조화를 대조하여 내 타고난 기질과 숨은 강점, 조심할 인생의 함정을 도출합니다.'
+    }
+  };
+
+  function getJulianDay(y, m, d) {
+    const a = Math.floor((14 - m) / 12);
+    const yr = y + 4800 - a;
+    const mo = m + 12 * a - 3;
+    return d + Math.floor((153 * mo + 2) / 5) + 365 * yr + Math.floor(yr / 4) - Math.floor(yr / 100) + Math.floor(yr / 400) - 32045;
+  }
+
+  function getSolarLongitude(y, m, d, hr, mn) {
+    const jdn = getJulianDay(y, m, d);
+    const jd = jdn + (hr - 12) / 24.0 + (mn || 0) / 1440.0 - 9.0 / 24.0;
+    const T = (jd - 2451545.0) / 36525.0;
+    const L0 = 280.46646 + 36000.76983 * T + 0.0003032 * T * T;
+    const M = 357.52911 + 35999.05029 * T - 0.0001537 * T * T;
+    const Mr = M * (Math.PI / 180.0);
+    const C = (1.914602 - 0.004817 * T) * Math.sin(Mr) + (0.019993 - 0.000101 * T) * Math.sin(2 * Mr) + 0.000289 * Math.sin(3 * Mr);
+    const trueLong = (L0 + C) % 360;
+    const appLong = (trueLong - 0.00569 - 0.00478 * Math.sin((125.04 - 1934.136 * T) * (Math.PI / 180.0))) % 360;
+    return (appLong + 360) % 360;
+  }
+
+  // Ten Gods (십신) Helper
+  function getShipshin(meGan, otherGan) {
+    const meElem = ELEM_OF_GAN[meGan];
+    const otherElem = ELEM_OF_GAN[otherGan];
+    const meIdx = GAN.indexOf(meGan);
+    const otherIdx = GAN.indexOf(otherGan);
+    const sameYinYang = (meIdx % 2) === (otherIdx % 2);
+
+    if (meElem === otherElem) return sameYinYang ? '비견' : '겁재';
+    if ((meElem === 'wood' && otherElem === 'fire') || (meElem === 'fire' && otherElem === 'earth') || (meElem === 'earth' && otherElem === 'metal') || (meElem === 'metal' && otherElem === 'water') || (meElem === 'water' && otherElem === 'wood')) {
+      return sameYinYang ? '식신' : '상관';
+    }
+    if ((meElem === 'wood' && otherElem === 'earth') || (meElem === 'fire' && otherElem === 'metal') || (meElem === 'earth' && otherElem === 'water') || (meElem === 'metal' && otherElem === 'wood') || (meElem === 'water' && otherElem === 'fire')) {
+      return sameYinYang ? '편재' : '정재';
+    }
+    if ((meElem === 'wood' && otherElem === 'metal') || (meElem === 'fire' && otherElem === 'water') || (meElem === 'earth' && otherElem === 'wood') || (meElem === 'metal' && otherElem === 'fire') || (meElem === 'water' && otherElem === 'earth')) {
+      return sameYinYang ? '편관' : '정관';
+    }
+    return sameYinYang ? '편인' : '정인';
+  }
+
+  // 12 Woon-sung Helper
+  const WOONSUNG_TABLE = {
+    '甲': ['목욕','관대','건록','제왕','쇠','병','사','묘','절','태','양','장생'],
+    '乙': ['병','쇠','제왕','건록','관대','목욕','장생','양','태','절','묘','사'],
+    '丙': ['태','양','장생','목욕','관대','건록','제왕','쇠','병','사','묘','절'],
+    '丁': ['절','묘','사','병','쇠','제왕','건록','관대','목욕','장생','양','태'],
+    '戊': ['태','양','장생','목욕','관대','건록','제왕','쇠','병','사','묘','절'],
+    '己': ['절','묘','사','병','쇠','제왕','건록','관대','목욕','장생','양','태'],
+    '庚': ['사','묘','절','태','양','장생','목욕','관대','건록','제왕','쇠','병'],
+    '辛': ['장생','양','태','절','묘','사','병','쇠','제왕','건록','관대','목욕'],
+    '壬': ['제왕','쇠','병','사','묘','절','태','양','장생','목욕','관대','건록'],
+    '癸': ['건록','관대','목욕','장생','양','태','절','묘','사','병','쇠','제왕']
+  };
+
+  let timerInterval = null;
+
+  function startManseProcess() {
+    const modal = document.getElementById('ad-modal');
+    const timerText = document.getElementById('ad-timer-text');
+    const btnFinish = document.getElementById('btn-ad-finish');
+
+    modal.classList.add('active');
+    btnFinish.classList.remove('ready');
+    btnFinish.disabled = true;
+
+    let timeLeft = 5;
+    timerText.textContent = timeLeft;
+    btnFinish.textContent = `광고 확인 중 (${timeLeft}초)...`;
+
+    clearInterval(timerInterval);
+    timerInterval = setInterval(() => {
+      timeLeft--;
+      if (timeLeft > 0) {
+        timerText.textContent = timeLeft;
+        btnFinish.textContent = `광고 확인 중 (${timeLeft}초)...`;
+      } else {
+        clearInterval(timerInterval);
+        timerText.textContent = '✔';
+        btnFinish.textContent = '👉 내 무료 만세력 결과 바로보기';
+        btnFinish.classList.add('ready');
+        btnFinish.disabled = false;
+      }
+    }, 1000);
+  }
+
+  function showResultsAfterAd() {
+    document.getElementById('ad-modal').classList.remove('active');
+    calculateAndRenderManse();
+  }
+
+  function calculateAndRenderManse() {
+    const year = parseInt(selYear.value);
+    const month = parseInt(selMonth.value);
+    const day = parseInt(selDay.value);
+    const hourVal = document.getElementById('sel-hour').value;
+    const nameVal = document.getElementById('user-name').value.trim();
+
+    document.getElementById('res-name-badge').textContent = (nameVal ? nameVal + ' 님의 ' : '') + '사주 원국표';
+
+    const hrInt = (hourVal !== 'unknown') ? parseInt(hourVal) : 12;
+    const sl = getSolarLongitude(year, month, day, hrInt, 0);
+
+    // 1. Year Pillar
+    const sYear = (month <= 2 && sl < 315) ? year - 1 : year;
+    const yearIdx = ((sYear - 4) % 60 + 60) % 60;
+    const yGan = GAN[yearIdx % 10];
+    const yJi = JI[yearIdx % 12];
+
+    // 2. Month Pillar
+    const shifted = (sl - 315 + 360) % 360;
+    const mOffset = Math.floor(shifted / 30);
+    const monthBranches = ['寅','卯','辰','巳','午','未','申','酉','戌','亥','子','丑'];
+    const mJi = monthBranches[mOffset];
+    const yStemIdx = yearIdx % 10;
+    const startMStem = ((yStemIdx % 5) * 2 + 2) % 10;
+    const mGan = GAN[(startMStem + mOffset) % 10];
+
+    // 3. Day Pillar
+    const jdn = getJulianDay(year, month, day);
+    const dayIdx = ((jdn + 49) % 60 + 60) % 60;
+    const dGan = GAN[dayIdx % 10];
+    const dJi = JI[dayIdx % 12];
+
+    // 4. Hour Pillar
+    let hGan = '時', hJi = '柱';
+    if (hourVal !== 'unknown') {
+      const hBranchIdx = Math.floor(((parseInt(hourVal) + 1) % 24) / 2);
+      hJi = JI[hBranchIdx % 12];
+      const dStemIdx = dayIdx % 10;
+      const startHStem = (dStemIdx % 5) * 2;
+      hGan = GAN[(startHStem + (hBranchIdx % 12)) % 10];
+    }
+
+    // Render 8 Characters Grid
+    function renderCell(id, char, isGan) {
+      const el = document.getElementById(id);
+      el.textContent = char;
+      const elem = isGan ? ELEM_OF_GAN[char] : ELEM_OF_JI[char];
+      el.className = 'saju-cell ' + (elem ? 'elem-' + elem : 'elem-metal');
+    }
+
+    renderCell('gan-year', yGan, true);
+    renderCell('ji-year', yJi, false);
+    renderCell('gan-month', mGan, true);
+    renderCell('ji-month', mJi, false);
+    renderCell('gan-day', dGan, true);
+    renderCell('ji-day', dJi, false);
+    renderCell('gan-hour', hGan, true);
+    renderCell('ji-hour', hJi, false);
+
+    // Shipshin
+    document.getElementById('shipshin-year').textContent = getShipshin(dGan, yGan);
+    document.getElementById('shipshin-month').textContent = getShipshin(dGan, mGan);
+    document.getElementById('shipshin-hour').textContent = (hGan !== '時') ? getShipshin(dGan, hGan) : '-';
+
+    // 12 Woonsung
+    const wTable = WOONSUNG_TABLE[dGan] || WOONSUNG_TABLE['甲'];
+    document.getElementById('woon-year').textContent = wTable[JI.indexOf(yJi)];
+    document.getElementById('woon-month').textContent = wTable[JI.indexOf(mJi)];
+    document.getElementById('woon-day').textContent = wTable[JI.indexOf(dJi)];
+    document.getElementById('woon-hour').textContent = (hJi !== '柱') ? wTable[JI.indexOf(hJi)] : '-';
+
+    // Ilju Info
+    const iljuKey = dGan + dJi;
+    const iljuInfo = ILJU_NICKNAMES[iljuKey] || ILJU_NICKNAMES['default'];
+    document.getElementById('res-ilju-header').textContent = iljuInfo.title;
+    document.getElementById('res-ilju-text').textContent = iljuInfo.desc;
+
+    // Elements Bar
+    const allChars = [yGan, yJi, mGan, mJi, dGan, dJi];
+    if (hGan !== '時') allChars.push(hGan, hJi);
+    const eCounts = { wood: 0, fire: 0, earth: 0, metal: 0, water: 0 };
+    allChars.forEach(c => {
+      const e = ELEM_OF_GAN[c] || ELEM_OF_JI[c];
+      if (e) eCounts[e]++;
+    });
+    const total = allChars.length;
+    let maxElem = 'fire', maxCount = -1;
+    ['wood','fire','earth','metal','water'].forEach(e => {
+      const pct = Math.round((eCounts[e] / total) * 100);
+      document.getElementById('bar-' + e).style.width = pct + '%';
+      document.getElementById('val-' + e).textContent = pct + '%';
+      if (eCounts[e] > maxCount) {
+        maxCount = eCounts[e];
+        maxElem = e;
+      }
+    });
+    const elemNames = { wood: '나무(木)', fire: '불(火)', earth: '흙(土)', metal: '쇠(金)', water: '물(水)' };
+    document.getElementById('res-elem-strongest').textContent = elemNames[maxElem] + ' 중심 사주';
+
+    // 10-Year Daeun Timeline
+    const yGanIdx = GAN.indexOf(yGan);
+    const isYangGan = (yGanIdx % 2 === 0);
+    // 양남음녀: 순행, 음남양녀: 역행
+    const isForward = (gender === 'M' && isYangGan) || (gender === 'F' && !isYangGan);
+    
+    // Daeun Start Number Approximation (1~9)
+    const daeunNum = Math.max(1, ((year + month + day) % 9) + 1);
+    document.getElementById('res-daeun-num').textContent = `대운수: ${daeunNum} (10년 주기)`;
+
+    const daeunBox = document.getElementById('daeun-container');
+    daeunBox.innerHTML = '';
+
+    let curMStem = GAN.indexOf(mGan);
+    let curMBranch = JI.indexOf(mJi);
+
+    for (let i = 0; i < 8; i++) {
+      if (isForward) {
+        curMStem = (curMStem + 1) % 10;
+        curMBranch = (curMBranch + 1) % 12;
+      } else {
+        curMStem = (curMStem - 1 + 10) % 10;
+        curMBranch = (curMBranch - 1 + 12) % 12;
+      }
+      const dAge = daeunNum + (i * 10);
+      const dgChar = GAN[curMStem];
+      const djChar = JI[curMBranch];
+      const dgElem = ELEM_OF_GAN[dgChar];
+      const djElem = ELEM_OF_JI[djChar];
+
+      const item = document.createElement('div');
+      item.className = 'daeun-item';
+      item.innerHTML = `
+        <div class="daeun-age">${dAge}세</div>
+        <div class="daeun-char elem-${dgElem}" style="border-radius:4px; padding:2px 0;">${dgChar}</div>
+        <div class="daeun-char elem-${djElem}" style="border-radius:4px; padding:2px 0;">${djChar}</div>
+        <div class="daeun-sub">${getShipshin(dGan, dgChar)}</div>
+      `;
+      daeunBox.appendChild(item);
+    }
+
+    document.getElementById('form-card').style.display = 'none';
+    document.getElementById('result-box').style.display = 'block';
+    window.scrollTo({ top: document.getElementById('result-box').offsetTop - 60, behavior: 'smooth' });
+  }
+
+  function resetForm() {
+    document.getElementById('form-card').style.display = 'block';
+    document.getElementById('result-box').style.display = 'none';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+</script>
+
+</body>
+</html>
