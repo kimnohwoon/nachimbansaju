@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=420, initial-scale=1.0">
+  <title>카톡 감동 후기 썸네일</title>
+  <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    body {
+      background-color: #abc1d1;
+      width: 400px;
+      padding: 16px 14px 18px 14px;
+      overflow: hidden;
+    }
+    .header-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+      padding-left: 2px;
+    }
+    .avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 14px;
+      background: #e2e8f0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 19px;
+    }
+    .sender-name {
+      font-size: 13px;
+      font-weight: 700;
+      color: #334155;
+    }
+
+    .msg-wrap {
+      display: flex;
+      align-items: flex-end;
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+    .bubble-white {
+      background: #ffffff;
+      color: #111827;
+      padding: 14px 15px;
+      border-radius: 16px;
+      border-top-left-radius: 3px;
+      font-size: 14.5px;
+      font-weight: 500;
+      line-height: 1.55;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+      letter-spacing: -0.3px;
+      width: 325px;
+    }
+    .bubble-white strong {
+      font-weight: 700;
+      color: #0f172a;
+    }
+    .time-text {
+      font-size: 10px;
+      color: #475569;
+      margin-bottom: 2px;
+      white-space: nowrap;
+    }
+
+    .reply-wrap {
+      display: flex;
+      justify-content: flex-end;
+      align-items: flex-end;
+      gap: 6px;
+      padding-left: 50px;
+    }
+    .bubble-yellow {
+      background: #fee500;
+      color: #111827;
+      padding: 12px 14px;
+      border-radius: 16px;
+      border-top-right-radius: 3px;
+      font-size: 13.5px;
+      font-weight: 500;
+      line-height: 1.5;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+      letter-spacing: -0.3px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Customer Header -->
+  <div class="header-row">
+    <div class="avatar">👩‍💼</div>
+    <div class="sender-name">지은 님</div>
+  </div>
+
+  <!-- Customer Message -->
+  <div class="msg-wrap">
+    <div class="bubble-white">
+      선생님… 방금 보내주신 40쪽 맞춤 리포트 다 읽고 혼자 펑펑 울었어요ㅠㅠ<br><br>
+      여태 다른 철학관 다니면서 “팔자가 세다, 그냥 네가 참고 살아라” 소리만 듣고 매일 밤 가슴 쥐어뜯으며 살았거든요..<br><br>
+      근데 제 사주에 불이 많아 속에 천불이 끓었던 이유랑, 남편과의 갈등, 남 모르게 속앓이했던 것까지 소름 돋게 다 짚어주시니까.. 단순한 사주가 아니라 제 지난 세월을 다 위로받은 기분이에요ㅠㅠ<br><br>
+      특히 2027년 정미년에 대운 바뀌면서 문서 잡는다는 날짜랑, 제 이름으로 등기치라는 현실적인 조언 가슴에 깊이 새기겠습니다!<br><br>
+      보내주신 pdf 폰에 저장해 두고 힘들 때마다 몇 번씩 꺼내볼게요. 선생님 만나서 다시 살아갈 용기가 생겼습니다. 정성스러운 풀이 정말 감사합니다 선생님!! 복 많이 받으세요🙇‍♀️
+    </div>
+    <span class="time-text">오후 2:38</span>
+  </div>
+
+  <!-- Master Reply Preview (Peeking at bottom) -->
+  <div class="reply-wrap">
+    <span class="time-text">오후 2:41</span>
+    <div class="bubble-yellow">
+      지은 님, 그동안 얼마나 무거운 짐을 혼자 짊어지고 버텨오셨을지 글자 하나하나에 다 묻어나더군요.. 이제 그 험한 자갈밭은 다 지나왔으니 내년부터…
+    </div>
+  </div>
+
+</body>
+</html>
