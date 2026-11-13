@@ -1161,39 +1161,106 @@
     document.getElementById('cnt-metal').textContent = counts.metal;
     document.getElementById('cnt-water').textContent = counts.water;
 
-    // Sinsal (based on year and day branch)
-    function renderSinsalBox(id, targetJi) {
+    // Sinsal & Guiin (년지·일지 기준 12신살 + 6대 귀인 + 길신 전수 동적 연산)
+    const CHEONEUL_MAP = {
+      '甲':['丑','未'],'戊':['丑','未'],'庚':['丑','未'],
+      '乙':['子','申'],'己':['子','申'],
+      '丙':['亥','酉'],'丁':['亥','酉'],
+      '辛':['寅','午'],
+      '壬':['卯','巳'],'癸':['卯','巳']
+    };
+    const CHEONDEOK_MAP = {
+      '子':'巳','丑':'庚','寅':'丁','卯':'申',
+      '辰':'壬','巳':'辛','午':'亥','未':'甲',
+      '申':'癸','酉':'寅','戌':'丙','亥':'乙'
+    };
+    const WOLDEOK_MAP = {
+      '寅':'丙','午':'丙','戌':'丙',
+      '申':'壬','子':'壬','辰':'壬',
+      '巳':'庚','酉':'庚','丑':'庚',
+      '亥':'甲','卯':'甲','未':'甲'
+    };
+    const MUNCHANG_MAP = {
+      '甲':'巳','乙':'午','丙':'申','丁':'酉','戊':'申',
+      '己':'酉','庚':'亥','辛':'子','壬':'寅','癸':'卯'
+    };
+    const CHEONBOK_MAP = {
+      '甲':'酉','乙':'申','丙':'子','丁':'亥','戊':'卯',
+      '己':'寅','庚':'午','辛':'巳','壬':'午','癸':'巳'
+    };
+    const TAEGEUK_MAP = {
+      '甲':['子','午'],'乙':['子','午'],
+      '丙':['卯','酉'],'丁':['卯','酉'],
+      '戊':['辰','戌','丑','未'],'己':['辰','戌','丑','未'],
+      '庚':['寅','亥'],'辛':['寅','亥'],
+      '壬':['巳','申'],'癸':['巳','申']
+    };
+    const GEUMYEO_MAP = {
+      '甲':'辰','乙':'巳','丙':'未','丁':'申','戊':'未',
+      '己':'申','庚':'戌','辛':'亥','壬':'丑','癸':'寅'
+    };
+    const BIIN_MAP = {
+      '甲':'酉','乙':'戌','丙':'子','丁':'丑','戊':'子',
+      '己':'丑','庚':'卯','辛':'辰','壬':'午','癸':'未'
+    };
+    const HYEONCHIM_CHARS = ['甲','辛','壬','癸','申','卯','午'];
+
+    function renderSinsalBox(id, targetGan, targetJi) {
       if (!targetJi || targetJi === '柱') {
         document.getElementById(id).innerHTML = '-';
         return;
       }
+      let list = [];
       const s1 = getSinsal(yJi, targetJi);
       const s2 = getSinsal(dJi, targetJi);
-      let list = [];
       list.push(s1);
       if (s1 !== s2) list.push(s2);
 
-      // Special Sinsal / Gilsin check
-      const GUIIN_TARGETS = {
-        '甲':['丑','未'],'戊':['丑','未'],'庚':['丑','未'],
-        '乙':['子','申'],'己':['子','申'],
-        '丙':['亥','酉'],'丁':['亥','酉'],
-        '辛':['寅','午'],
-        '壬':['卯','巳'],'癸':['卯','巳']
-      };
-      if (GUIIN_TARGETS[dGan] && GUIIN_TARGETS[dGan].includes(targetJi)) {
-        list.push('<span style="color:#facc15;">천을귀인</span>');
+      // 천을귀인 (일간 기준 지지)
+      if (CHEONEUL_MAP[dGan] && CHEONEUL_MAP[dGan].includes(targetJi)) {
+        list.push('<span style="color:#facc15; font-weight:700;">천을귀인</span>');
       }
-      if (targetJi === '午' && dGan === '壬') list.push('<span style="color:#facc15;">천복귀인</span>');
-      if (targetJi === '酉' && (dGan === '庚' || dGan === '辛')) list.push('현침살');
-      if (['甲','庚','壬'].includes(dGan) && targetJi === '午') list.push('비인살');
+      // 천덕귀인 (월지 기준: 천간 또는 지지에 해당 글자)
+      const cDeok = CHEONDEOK_MAP[mJi];
+      if (cDeok && (targetGan === cDeok || targetJi === cDeok)) {
+        list.push('<span style="color:#facc15; font-weight:700;">천덕귀인</span>');
+      }
+      // 월덕귀인 (월지 삼합 기준 천간)
+      const wDeok = WOLDEOK_MAP[mJi];
+      if (wDeok && targetGan === wDeok) {
+        list.push('<span style="color:#facc15; font-weight:700;">월덕귀인</span>');
+      }
+      // 천복귀인 (일간 기준 지지)
+      if (CHEONBOK_MAP[dGan] === targetJi) {
+        list.push('<span style="color:#facc15; font-weight:700;">천복귀인</span>');
+      }
+      // 태극귀인 (일간 기준 지지)
+      if (TAEGEUK_MAP[dGan] && TAEGEUK_MAP[dGan].includes(targetJi)) {
+        list.push('<span style="color:#facc15; font-weight:700;">태극귀인</span>');
+      }
+      // 문창귀인 (일간 기준 지지)
+      if (MUNCHANG_MAP[dGan] === targetJi) {
+        list.push('<span style="color:#facc15; font-weight:700;">문창귀인</span>');
+      }
+      // 금여 (일간 기준 지지)
+      if (GEUMYEO_MAP[dGan] === targetJi) {
+        list.push('<span style="color:#facc15; font-weight:700;">금여</span>');
+      }
+      // 비인살 (일간 기준 지지)
+      if (BIIN_MAP[dGan] === targetJi) {
+        list.push('비인살');
+      }
+      // 현침살 (천간 또는 지지)
+      if (HYEONCHIM_CHARS.includes(targetGan) || HYEONCHIM_CHARS.includes(targetJi)) {
+        list.push('현침살');
+      }
 
       document.getElementById(id).innerHTML = list.join('<br>');
     }
-    renderSinsalBox('sinsal-year', yJi);
-    renderSinsalBox('sinsal-month', mJi);
-    renderSinsalBox('sinsal-day', dJi);
-    renderSinsalBox('sinsal-hour', hJi);
+    renderSinsalBox('sinsal-year', yGan, yJi);
+    renderSinsalBox('sinsal-month', mGan, mJi);
+    renderSinsalBox('sinsal-day', dGan, dJi);
+    renderSinsalBox('sinsal-hour', hGan, hJi);
 
     // Relationships (형충파해원진귀문 - 100% 동적 대조 연산)
     const chartBranches = [
