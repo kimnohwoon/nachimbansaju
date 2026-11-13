@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=380, initial-scale=1.0">
+  <title>진짜 카카오톡 후기 캡처</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Pretendard", "Malgun Gothic", sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    body {
+      background-color: #a9bdce;
+      width: 380px;
+      margin: 0;
+      padding: 16px 14px 20px 14px;
+    }
+
+    /* 카드 1 */
+    .chat-block {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 30px;
+    }
+
+    .nickname {
+      font-size: 13px;
+      font-weight: 400;
+      color: #3b4d5e;
+      margin-left: 2px;
+      margin-bottom: 6px;
+      letter-spacing: -0.3px;
+    }
+
+    .bubble-wrap {
+      position: relative;
+      display: inline-block;
+      max-width: 96%;
+    }
+
+    /* 진짜 카카오톡 말풍선 */
+    .kakao-bubble {
+      position: relative;
+      background: #ffffff;
+      color: #111111;
+      padding: 11px 13px;
+      border-radius: 12px;
+      border-top-left-radius: 0px;
+      font-size: 14.5px;
+      line-height: 1.5;
+      letter-spacing: -0.35px;
+      word-break: break-all;
+      box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+    }
+
+    /* 카카오톡 특유의 말풍선 뾰족한 꼬리 (왼쪽 상단) */
+    .kakao-tail {
+      position: absolute;
+      top: 0;
+      left: -6px;
+      width: 6px;
+      height: 10px;
+    }
+
+    /* 연속된 두 번째 말풍선 (꼬리 없음) */
+    .second-row {
+      display: flex;
+      align-items: flex-end;
+      gap: 5px;
+      margin-top: 5px;
+    }
+
+    .kakao-bubble-sub {
+      background: #ffffff;
+      color: #111111;
+      padding: 9px 13px;
+      border-radius: 12px;
+      font-size: 14.5px;
+      line-height: 1.4;
+      letter-spacing: -0.35px;
+      box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+      display: inline-block;
+    }
+
+    .time-stamp {
+      font-size: 10.5px;
+      color: #556677;
+      margin-bottom: 2px;
+      white-space: nowrap;
+      letter-spacing: -0.2px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 1번 후기 (나른한 니니즈 - 인생/신년/PDF) -->
+  <div class="chat-block" id="review1">
+    <div class="nickname">나른한 니니즈</div>
+    <div class="bubble-wrap">
+      <!-- 카톡 꼬리 SVG -->
+      <svg class="kakao-tail" viewBox="0 0 6 10">
+        <path d="M6 0 C3 0 0 2 0 4.5 C0 7 3 9 6 10 L6 0 Z" fill="#ffffff"/>
+      </svg>
+      <div class="kakao-bubble">
+        상담 받고 정말 마음이 안정됐어요..<br>
+        그동안 너무 불안하고 답답한 상황이었는데 혼자서는 해결방법을 못찾겠더라구요ㅠㅠ<br>
+        풀이내용 읽으면서 하나씩 이해되고 풀리고 앞으로 뭐부터 해야할지 조금씩 알것같았어요<br>
+        pdf자료라서 언제든 다시 볼수있는 것도 좋았습니당<br>
+        엄청 세세하고 많은 양으로 풀이해줘서 감탄했어요<br>
+        앞으로도 답답할 때가 있으면 또 상담받고 싶어요💕
+      </div>
+    </div>
+    <div class="second-row">
+      <div class="kakao-bubble-sub">진짜 넘넘 감사합니당ㅠㅠ</div>
+      <span class="time-stamp">오후 2:00</span>
+    </div>
+  </div>
+
+  <!-- 2번 후기 (누워있는 죠르디 - 원인 분석/위로) -->
+  <div class="chat-block" id="review2">
+    <div class="nickname">누워있는 죠르디</div>
+    <div class="bubble-wrap">
+      <svg class="kakao-tail" viewBox="0 0 6 10">
+        <path d="M6 0 C3 0 0 2 0 4.5 C0 7 3 9 6 10 L6 0 Z" fill="#ffffff"/>
+      </svg>
+      <div class="kakao-bubble">
+        상담받고 정말 마음이 편안해졌습니다. 다른 곳에서도 사주를 봤지만 답답함이 풀리지 않더라구요.. 마지막이라는 생각으로 운명나침반 상담을 신청했어요. 정말 잘한 것 같아요.<br><br>
+        요즘 사람들과 자꾸 트러블이 생기고 결과가 안 나와서 힘들었는데, 상담 받고 나서 근본적인 원인을 알게 되니 마음이 정말 가벼워졌어요.<br><br>
+        다른 곳은 그냥 "좋다"만 말씀해주셨는데, 여기는 왜 막히는지, 왜 반복되는지 구체적으로 짚어주시더라구요. 앞으로는 저 자신도 더 돌보면서 살아야겠습니다. 감사합니다 선생님.
+      </div>
+    </div>
+    <div style="display: flex; justify-content: flex-start; margin-top: 4px; margin-left: auto;">
+      <span class="time-stamp" style="margin-left: 4px;">오후 4:18</span>
+    </div>
+  </div>
+
+  <!-- 3번 후기 (춤추는 니니즈 - 결혼/궁합) -->
+  <div class="chat-block" id="review3">
+    <div class="nickname">춤추는 니니즈</div>
+    <div class="bubble-wrap">
+      <svg class="kakao-tail" viewBox="0 0 6 10">
+        <path d="M6 0 C3 0 0 2 0 4.5 C0 7 3 9 6 10 L6 0 Z" fill="#ffffff"/>
+      </svg>
+      <div class="kakao-bubble">
+        결혼 준비하면서 예비신랑이랑 궁합이 어떨지 너무 궁금해서 궁합으로 신청했어요! 여태 봤던 사주랑은 차원이 달랐습니다👍<br><br>
+        상담받고 나니까 저희 둘의 성향이랑 서로 맞는 부분, 조심해야 할 부분들을 너무 정확하게 짚어주셔서 깜짝 놀랐어요ㅋㅋ<br><br>
+        특히 결혼생활에서 어떤 점들을 주의하면 좋을지, 서로 어떻게 배려하면 더 행복할 수 있는지까지 구체적으로 알려주셔서 도움이 많이 되는것 같아요.
+      </div>
+    </div>
+    <div style="display: flex; justify-content: flex-start; margin-top: 4px;">
+      <span class="time-stamp" style="margin-left: auto;">오후 7:32</span>
+    </div>
+  </div>
+
+</body>
+</html>
