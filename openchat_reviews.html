@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=400, initial-scale=1.0">
+  <title>오픈채팅 후기 캡처</title>
+  <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    body {
+      background-color: #2b3945;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 30px;
+      padding: 30px 10px;
+    }
+
+    .kakao-card {
+      width: 380px;
+      background-color: #b2c7da;
+      padding: 24px 18px 24px 16px;
+      border-radius: 4px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .nickname {
+      font-size: 13.5px;
+      font-weight: 500;
+      color: #3b4e60;
+      margin-bottom: 7px;
+      margin-left: 2px;
+    }
+
+    .bubble-group {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 6px;
+      width: 100%;
+    }
+
+    .bubble {
+      background: #ffffff;
+      color: #111111;
+      padding: 14px 16px;
+      border-radius: 14px;
+      border-top-left-radius: 2px;
+      font-size: 15px;
+      font-weight: 400;
+      line-height: 1.52;
+      letter-spacing: -0.3px;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+      width: 100%;
+      word-break: break-all;
+    }
+
+    .bubble-bottom-row {
+      display: flex;
+      align-items: flex-end;
+      gap: 6px;
+      width: 100%;
+    }
+
+    .bubble-small {
+      background: #ffffff;
+      color: #111111;
+      padding: 11px 15px;
+      border-radius: 14px;
+      border-top-left-radius: 2px;
+      font-size: 15px;
+      font-weight: 400;
+      line-height: 1.4;
+      letter-spacing: -0.3px;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+      display: inline-block;
+    }
+
+    .time {
+      font-size: 10.5px;
+      color: #4b5e70;
+      white-space: nowrap;
+      margin-bottom: 2px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 카드 1: 인생·신년운세·PDF 대만족 (나른한 니니즈) -->
+  <div class="kakao-card" id="card1">
+    <div class="nickname">나른한 니니즈</div>
+    <div class="bubble-group">
+      <div class="bubble">
+        상담 받고 정말 마음이 안정됐어요..<br>
+        그동안 너무 불안하고 답답한 상황이었는데 혼자서는 해결방법을 못찾겠더라구요ㅠㅠ<br>
+        풀이내용 읽으면서 하나씩 이해되고 풀리고 앞으로 뭐부터 해야할지 조금씩 알것같았어요<br>
+        pdf자료라서 언제든 다시 볼수있는 것도 좋았습니당<br>
+        엄청 세세하고 많은 양으로 풀이해줘서 감탄했어요<br>
+        앞으로도 답답할 때가 있으면 또 상담받고 싶어요💕
+      </div>
+      <div class="bubble-bottom-row">
+        <div class="bubble-small">진짜 넘넘 감사합니당ㅠㅠ</div>
+        <div class="time">오후 2:00</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 카드 2: 근본 원인 분석과 위로 (누워있는 죠르디) -->
+  <div class="kakao-card" id="card2">
+    <div class="nickname">누워있는 죠르디</div>
+    <div class="bubble-group">
+      <div class="bubble-bottom-row">
+        <div class="bubble" style="width: auto; flex: 1;">
+          상담받고 정말 마음이 편안해졌습니다. 다른 곳에서도 사주를 봤지만 답답함이 풀리지 않더라구요.. 마지막이라는 생각으로 운명나침반 상담을 신청했어요. 정말 잘한 것 같아요.<br><br>
+          요즘 사람들과 자꾸 트러블이 생기고 결과가 안 나와서 힘들었는데, 상담 받고 나서 근본적인 원인을 알게 되니 마음이 정말 가벼워졌어요.<br><br>
+          다른 곳은 그냥 "좋다"만 말씀해주셨는데, 여기는 왜 막히는지, 왜 반복되는지 구체적으로 짚어주시더라구요. 앞으로는 저 자신도 더 돌보면서 살아야겠습니다. 감사합니다 선생님.
+        </div>
+        <div class="time">오후 4:18</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 카드 3: 결혼·궁합 (춤추는 니니즈) -->
+  <div class="kakao-card" id="card3">
+    <div class="nickname">춤추는 니니즈</div>
+    <div class="bubble-group">
+      <div class="bubble-bottom-row">
+        <div class="bubble" style="width: auto; flex: 1;">
+          결혼 준비하면서 예비신랑이랑 궁합이 어떨지 너무 궁금해서 궁합으로 신청했어요! 여태 봤던 사주랑은 차원이 달랐습니다👍<br><br>
+          상담받고 나니까 저희 둘의 성향이랑 서로 맞는 부분, 조심해야 할 부분들을 너무 정확하게 짚어주셔서 깜짝 놀랐어요ㅋㅋ<br><br>
+          특히 결혼생활에서 어떤 점들을 주의하면 좋을지, 서로 어떻게 배려하면 더 행복할 수 있는지까지 구체적으로 알려주셔서 도움이 많이 되는것 같아요.
+        </div>
+        <div class="time">오후 7:32</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 카드 4: 속 시원한 정리 (고구마 먹는 춘식이) -->
+  <div class="kakao-card" id="card4">
+    <div class="nickname">고구마 먹는 춘식이</div>
+    <div class="bubble-group">
+      <div class="bubble-bottom-row">
+        <div class="bubble" style="width: auto; flex: 1;">
+          와 너무 깔끔하게 정리해주셔 정말 감사해요ㅠㅠㅠㅠ 선생님 덕분에 마음 잘 정리할 수 있을 것 같아요!! 그동안 갑갑했던게 시원하게 내려갔어요!
+        </div>
+        <div class="time">오전 11:45</div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
