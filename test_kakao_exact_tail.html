@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+body { background: #a9bdce; padding: 30px; }
+.bubble-box {
+  position: relative;
+  background: #ffffff;
+  border-radius: 12px;
+  /* notice: border-top-left-radius is 0 because our SVG draws the rounded shoulder and beak! */
+  border-top-left-radius: 0;
+  padding: 12px 14px;
+  width: 320px;
+  font-family: -apple-system, sans-serif;
+  font-size: 14.5px;
+  line-height: 1.5;
+  box-shadow: 0 1px 1px rgba(0,0,0,0.05);
+}
+.kakao-tail-corner {
+  position: absolute;
+  top: 0;
+  left: -7px;
+  width: 22px;
+  height: 16px;
+  display: block;
+}
+</style>
+</head>
+<body>
+<div class="bubble-box">
+  <svg class="kakao-tail-corner" viewBox="0 0 22 16">
+    <!-- Path: Tip at (0, 3.5), valley at (9, 7.5), shoulder curves up to (22, 0), bottom to (4, 16) -->
+    <path d="M 0,3.5 
+             C 1.5,7 2.8,11 3.8,16 
+             L 22,16 
+             L 22,0 
+             C 17,0 13,1.8 9.2,5.2 
+             C 6.2,8 3,4 0,3.5 Z" fill="#ffffff"/>
+  </svg>
+  상담 받고 정말 마음이 안정됐어요..<br>
+  그동안 너무 불안하고 답답한 상황이었는데 혼자서는 해결방법을 못찾겠더라구요ㅠㅠ
+</div>
+</body>
+</html>
