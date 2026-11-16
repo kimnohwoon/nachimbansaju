@@ -12,6 +12,11 @@
   <meta property="og:title" content="운명나침반 · 나침반 정밀 만세력">
   <meta property="og:description" content="지장간·12신살부터 대운·세운·월운까지 한눈에 보는 정통 만세력">
   <meta property="og:url" content="https://nachimbansaju.com/manse.html">
+  <meta property="og:image" content="https://nachimbansaju.com/assets/og-manse.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://nachimbansaju.com/assets/og-manse.png">
+
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='%230d1322' stroke='%23d4af37' stroke-width='2'/%3E%3Ctext x='16' y='22' font-size='16' text-anchor='middle' fill='%23facc15'%3E%E2%9C%A6%3C/text%3E%3C/svg%3E">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -483,6 +488,90 @@
       margin-top: 12px;
     }
 
+    /* Share / Viral Box */
+    .share-box {
+      background: linear-gradient(145deg, #1a2338, #0f172a);
+      border: 1px solid rgba(212, 175, 55, 0.55);
+      border-radius: 16px;
+      padding: 16px 14px 14px;
+      margin: 20px 0 0;
+      text-align: center;
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.45);
+    }
+    .share-title {
+      font-size: 14px;
+      font-weight: 900;
+      color: #ffffff;
+      margin-bottom: 4px;
+      line-height: 1.35;
+    }
+    .share-sub {
+      font-size: 11px;
+      color: var(--gold-light);
+      font-weight: 700;
+      line-height: 1.4;
+      margin-bottom: 12px;
+    }
+    .btn-share {
+      display: block;
+      width: 100%;
+      height: 46px;
+      background: linear-gradient(135deg, #facc15, #d4af37);
+      color: #0f172a;
+      font-size: 14px;
+      font-weight: 900;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(250, 204, 21, 0.28);
+    }
+    .btn-share:active { transform: translateY(1px); }
+    .btn-share-copy {
+      display: block;
+      width: 100%;
+      height: 38px;
+      margin-top: 8px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(212, 175, 55, 0.45);
+      border-radius: 10px;
+      color: #facc15;
+      font-size: 12px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+    .share-note {
+      font-size: 10px;
+      color: #94a3b8;
+      margin-top: 9px;
+      line-height: 1.5;
+    }
+
+    /* Copy / share toast (share card 안에 펼쳐지는 인라인 알림) */
+    .share-toast {
+      background: rgba(15, 23, 42, 0.97);
+      border: 1px solid transparent;
+      color: #f8fafc;
+      font-size: 12px;
+      font-weight: 700;
+      line-height: 1.4;
+      padding: 0 12px;
+      border-radius: 10px;
+      opacity: 0;
+      max-height: 0;
+      overflow: hidden;
+      margin-top: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease, max-height 0.2s ease, padding 0.2s ease, margin-top 0.2s ease;
+      text-align: center;
+    }
+    .share-toast.show {
+      opacity: 1;
+      max-height: 80px;
+      padding: 9px 12px;
+      margin-top: 10px;
+      border-color: var(--gold);
+    }
+
     /* Footer */
     .footer-info {
       padding: 20px 16px;
@@ -793,6 +882,16 @@
         </div>
       </div>
 
+      <!-- Share / Viral Box -->
+      <div class="share-box" id="share-box">
+        <div class="share-title">📤 내 사주 결과, 친구한테 보여주기</div>
+        <div class="share-sub" id="share-sub">임오일주 · 큰 바다처럼 넓게 담아내고 멀리 보는 사주</div>
+        <button type="button" class="btn-share" id="btn-share" onclick="shareSajuResult()">📤 내 결과 친구한테 공유하기</button>
+        <button type="button" class="btn-share-copy" id="btn-share-copy" onclick="copyShareLink()">🔗 링크만 복사</button>
+        <div class="share-note">생년월일시는 담기지 않아요. 링크를 받은 친구는 자기 사주를 무료로 조회할 수 있어요.</div>
+        <div class="share-toast" id="share-toast" role="status" aria-live="polite"></div>
+      </div>
+
       <!-- Grand Funnel Upsell Box -->
       <div class="upsell-box">
         <span style="font-size: 11px; color: #f87171; background: rgba(239,68,68,0.25); padding: 3px 10px; border-radius: 12px; font-weight: 800;">🔥 2027 정미년(丁未年) 신년운세</span>
@@ -831,6 +930,8 @@
 <script>
   let gender = 'F';
   let calendarType = 'solar';
+  let sharePayload = null;
+  let shareToastTimer = null;
 
   // Setup Date Selectors (Defaults are unselected prompts)
   const selYear = document.getElementById('sel-year');
@@ -1093,6 +1194,13 @@
     document.getElementById('hangul-month').textContent = HANGUL_GAN[mGan] + HANGUL_JI[mJi];
     document.getElementById('hangul-day').textContent = HANGUL_GAN[dGan] + HANGUL_JI[dJi];
     document.getElementById('hangul-hour').textContent = (hGan !== '時') ? (HANGUL_GAN[hGan] + HANGUL_JI[hJi]) : '시주미상';
+
+    // Share payload (일주·일간 특징만 담고 생년월일시는 담지 않음)
+    sharePayload = {
+      ilju: HANGUL_GAN[dGan] + HANGUL_JI[dJi] + '일주',
+      trait: ILGAN_SHARE_TRAIT[dGan] || '타고난 기질이 또렷한 사주'
+    };
+    document.getElementById('share-sub').textContent = `${sharePayload.ilju} · ${sharePayload.trait}`;
 
     // Set Tiles
     function applyTile(id, char, isGan) {
@@ -1499,7 +1607,89 @@
   function resetForm() {
     document.getElementById('form-card').style.display = 'block';
     document.getElementById('result-box').style.display = 'none';
+    hideShareToast();
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  /* ===== 사주 결과 공유 (프라이버시: 생년월일시·이름 없이 일주 특징만) ===== */
+  const SHARE_URL = 'https://nachimbansaju.com/manse.html';
+  const SHARE_COPY_MSG = '복사됐어요! 카톡에 붙여넣기 해보세요';
+
+  const ILGAN_SHARE_TRAIT = {
+    '甲': '곧게 뻗어 앞장서 길을 여는 사주',
+    '乙': '유연하게 감겨 어디서든 살아나는 사주',
+    '丙': '한낮의 태양처럼 밝게 사람을 끌어당기는 사주',
+    '丁': '촛불 같은 온기로 곁을 밝히는 사주',
+    '戊': '산처럼 든든하게 사람을 받아주는 사주',
+    '己': '기름진 밭처럼 남을 키워내는 사주',
+    '庚': '단단한 쇠처럼 결단 빠르고 의리 있는 사주',
+    '辛': '잘 벼려진 보석처럼 섬세하고 깔끔한 사주',
+    '壬': '큰 바다처럼 넓게 담아내고 멀리 보는 사주',
+    '癸': '이슬비처럼 스며들어 사람을 살리는 사주'
+  };
+
+  function buildShareText() {
+    if (!sharePayload) return '';
+    return `내 사주는 ${sharePayload.ilju}, ${sharePayload.trait}래요! 무료 만세력인데 귀인·대운까지 꽤 잘 맞아서 공유해요 👉 ${SHARE_URL}`;
+  }
+
+  function copyToClipboard(text) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      return navigator.clipboard.writeText(text);
+    }
+    return new Promise((resolve, reject) => {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.setAttribute('readonly', '');
+      ta.style.position = 'fixed';
+      ta.style.top = '-1000px';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      let ok = false;
+      try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+      document.body.removeChild(ta);
+      ok ? resolve() : reject(new Error('copy_failed'));
+    });
+  }
+
+  function showShareToast(msg) {
+    const el = document.getElementById('share-toast');
+    if (!el) return;
+    el.textContent = msg;
+    el.classList.add('show');
+    if (shareToastTimer) clearTimeout(shareToastTimer);
+    shareToastTimer = setTimeout(hideShareToast, 2600);
+  }
+
+  function hideShareToast() {
+    const el = document.getElementById('share-toast');
+    if (el) el.classList.remove('show');
+    if (shareToastTimer) { clearTimeout(shareToastTimer); shareToastTimer = null; }
+  }
+
+  function fallbackCopyShare(text, okMsg) {
+    copyToClipboard(text)
+      .then(() => showShareToast(okMsg))
+      .catch(() => showShareToast('자동 복사가 안 됐어요. 결과 링크를 길게 눌러 복사해 주세요.'));
+  }
+
+  function shareSajuResult() {
+    const text = buildShareText();
+    if (!text) return;
+    if (navigator.share) {
+      navigator.share({ title: '운명나침반 무료 만세력', text: text })
+        .catch((err) => {
+          if (err && (err.name === 'AbortError' || err.name === 'NotAllowedError')) return;
+          fallbackCopyShare(text, SHARE_COPY_MSG);
+        });
+      return;
+    }
+    fallbackCopyShare(text, SHARE_COPY_MSG);
+  }
+
+  function copyShareLink() {
+    fallbackCopyShare(SHARE_URL, '링크가 복사됐어요! 카톡에 붙여넣기 해보세요');
   }
 </script>
 
