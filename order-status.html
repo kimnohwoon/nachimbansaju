@@ -180,7 +180,7 @@
         <span id="rec-product">2027 신년운세 완전판 PDF 책</span>
       </div>
       <div class="receipt-row">
-        <span class="receipt-label">주문 번호</span>
+        <span class="receipt-label">결제 번호</span>
         <span id="rec-orderid">-</span>
       </div>
       <div class="receipt-row">
@@ -206,10 +206,25 @@
 
   <script>
     const params = new URLSearchParams(window.location.search);
-    const status = params.get('status');
-    const orderId = params.get('orderId') || 'ORD_' + Math.floor(Date.now() / 1000);
-    const productKey = params.get('product') || 'newyear';
-    const amount = params.get('amount') || '9900';
+    // 포트원 V2 리다이렉트: paymentId / 실패 시 code·message·pgCode·pgMessage
+    const paymentId = params.get('paymentId') || params.get('payment_id') || '';
+    const errorCode = params.get('code');
+    const errorMessage = params.get('message');
+    const pgMessage = params.get('pgMessage');
+
+    // 결제 요청 시 저장해 둔 주문 내용을 paymentId로 찾아 복원합니다.
+    let order = null;
+    if (paymentId) {
+      try {
+        const raw = localStorage.getItem('nb_order_' + paymentId);
+        if (raw) order = JSON.parse(raw);
+      } catch (e) {
+        console.warn('Order lookup failed:', e);
+      }
+    }
+
+    const productKey = (order && order.product) || params.get('product') || 'newyear';
+    const amount = (order && order.amount) || params.get('amount') || '9900';
 
     const prodNames = {
       newyear: '2027 신년운세 완전판 PDF 책',
@@ -221,22 +236,26 @@
     const pName = prodNames[productKey] || '2027 신년운세 완전판 PDF 책';
 
     document.getElementById('rec-product').textContent = pName;
-    document.getElementById('rec-orderid').textContent = orderId.slice(0, 16);
+    document.getElementById('rec-orderid').textContent = paymentId ? paymentId.slice(0, 20) : '-';
     document.getElementById('rec-amount').textContent = Number(amount).toLocaleString() + '원';
     document.getElementById('rec-time').textContent = new Date().toLocaleString('ko-KR');
 
-    if (status === 'fail') {
+    if (errorCode || params.get('status') === 'fail') {
       document.getElementById('status-icon').className = 'icon-badge fail';
       document.getElementById('status-icon').textContent = '✕';
       document.getElementById('status-title').textContent = '결제가 완료되지 않았습니다';
       document.getElementById('status-sub').textContent = '결제가 취소되었거나 카드 승인 중 문제가 발생했습니다.';
+      if (errorMessage || pgMessage) {
+        document.querySelector('.notice-box').innerHTML = '💡 <b>안내</b><br>' + (pgMessage || errorMessage) +
+          '<br>결제가 실제로 승인된 것 같으면 카카오톡 1:1 상담실에 주문번호를 남겨주세요.';
+      }
       document.getElementById('btn-download').style.display = 'none';
     }
 
     function downloadSajuPdf() {
       alert('할머니의 정밀 맞춤 사주 보고서를 생성 중입니다.\n생성된 파일이 기기에 자동 다운로드됩니다.');
       // Create a clean printable summary or guide
-      const content = `[운명나침반 정밀 사주 지침서]\n상품: ${pName}\n주문번호: ${orderId}\n결제금액: ${Number(amount).toLocaleString()}원\n\n할머니의 말씀: '말 못 할 가슴앓이 혼자 삭이느라 얼마나 고단했니...'\n정밀 분석 보고서 및 1회 무료 질문 AS는 카카오톡 1:1 상담실(https://open.kakao.com/o/sfdOLuWi)에서 주문번호를 말씀해주시면 즉시 지원됩니다.`;
+      const content = `[운명나침반 정밀 사주 지침서]\n상품: ${pName}\n결제번호: ${paymentId || '-'}\n결제금액: ${Number(amount).toLocaleString()}원\n\n할머니의 말씀: '말 못 할 가슴앓이 혼자 삭이느라 얼마나 고단했니...'\n정밀 분석 보고서 및 1회 무료 질문 AS는 카카오톡 1:1 상담실(https://open.kakao.com/o/sfdOLuWi)에서 결제번호를 말씀해주시면 즉시 지원됩니다.`;
       const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
       const a = document.createElement('a');
       a.href = URL.createObjectURL(blob);

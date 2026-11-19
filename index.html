@@ -14,7 +14,8 @@
   <meta property="og:description" content="200년 명리학 3대 경전(적천수·자평진전·궁통보감) 원전 대조. 열심히 산 죄밖에 없는데 자꾸만 무너질 때, 남몰래 혼자 울었던 네 여덟 글자를 폅니다. 2027 신년운세 & 대운 맞춤 사주 책">
   <meta property="og:image" content="https://nachimbansaju.com/assets/halmoni.jpg">
   <link rel="preload" as="image" href="assets/halmoni.jpg">
-  <script src="https://js.tosspayments.com/v1/payment"></script>
+  <!-- PortOne(포트원) V2 브라우저 SDK · KG이니시스 결제창 -->
+  <script src="https://cdn.portone.io/v2/browser-sdk.js"></script>
   <script>
   // Legal Modals Logic
   const legalData = {
@@ -30,7 +31,7 @@
       body: '<h4 style="color: #facc15; margin-bottom: 6px;">1. 수집하는 개인정보 항목</h4>회사는 사주 분석 리포트 제작 및 배송(다운로드)을 위해 아래와 같은 개인정보를 수집합니다.<br>- 필수항목: 성함(또는 닉네임), 생년월일(양력/음력), 태어난 시간, 성별, 이메일 주소, 결제 기록<br><br>' +
             '<h4 style="color: #facc15; margin-bottom: 6px;">2. 개인정보의 수집 및 이용 목적</h4>- 맞춤 사주 PDF 리포트 분석 및 즉시 다운로드 제공<br>- 주문 확인 및 고객센터 문의(카카오톡 상담) 응대<br>- 전자상거래법에 따른 거래 기록 보존<br><br>' +
             '<h4 style="color: #facc15; margin-bottom: 6px;">3. 개인정보의 보유 및 파기</h4>- 전자상거래 등에서의 소비자보호에 관한 법률에 따라 계약 또는 청약철회 등에 관한 기록은 5년간 보관 후 지체 없이 영구 파기합니다.<br>- 무료 풀이를 위해 입력된 생년월일 정보는 결과 생성 직후 별도 데이터베이스에 영구 저장하지 않습니다.<br><br>' +
-            '<h4 style="color: #facc15; margin-bottom: 6px;">4. 개인정보의 제3자 제공</h4>회사는 이용자의 개인정보를 제3자에게 무단 제공하거나 위탁하지 않습니다. 단, 결제 처리를 위해 결제대행사((주)케이지이니시스)에 필수 결제정보가 암호화되어 제공됩니다.'
+            '<h4 style="color: #facc15; margin-bottom: 6px;">4. 개인정보의 제3자 제공 및 처리위탁</h4>회사는 이용자의 개인정보를 제3자에게 무단 제공하지 않습니다. 다만 결제 처리와 결제 시스템 운영을 위해 아래 업체에 필수 결제정보를 암호화하여 제공·위탁합니다.<br>- <b>주식회사 포트원(PortOne)</b> : 결제 시스템 운영 및 결제 연동 대행 (위탁업무: 결제 요청 중계, 결제 상태 관리)<br>- <b>(주)케이지이니시스</b> : 신용카드 등 결제 처리 (위탁업무: 결제 승인, 결제정보 처리)<br>회사는 위탁 계약 시 개인정보 보호 관련 법령에 따라 개인정보가 안전하게 관리되도록 필요한 사항을 규정하고 있으며, 위탁 업무의 내용이나 수탁자가 변경되면 본 방침을 통해 공개합니다.'
     },
     refund: {
       title: '환불 및 취소 정책',
@@ -930,8 +931,8 @@
       margin-top: 10px;
     }
 
-    /* Toss Checkout Button */
-    .btn-checkout-toss {
+    /* Payment Checkout Button (PortOne · KG이니시스) */
+    .btn-checkout-pg {
       display: flex;
       align-items: center;
       justify-content: center;
@@ -952,7 +953,7 @@
       transition: all 0.2s ease;
       animation: checkoutPulse 2.5s infinite;
     }
-    .btn-checkout-toss:hover {
+    .btn-checkout-pg:hover {
       background: linear-gradient(135deg, #1d4ed8, #1e40af);
       transform: translateY(-2px);
       box-shadow: 0 6px 24px rgba(37, 99, 235, 0.6);
@@ -1990,8 +1991,8 @@
         </div>
       </div>
 
-      <!-- Toss Checkout Button -->
-      <button type="button" class="btn-checkout-toss" id="res-btn-checkout" onclick="triggerTossCheckout()">
+      <!-- PortOne · KG이니시스 Checkout Button -->
+      <button type="button" class="btn-checkout-pg" id="res-btn-checkout" onclick="triggerPortOneCheckout()">
         <span style="font-size: 16px;">💳</span>
         <span id="res-btn-checkout-text">2027 신년운세 즉시 결제하기 (9,900원)</span>
       </button>
@@ -2052,7 +2053,7 @@
       <div>사업자등록번호: 750-44-01296 (일반과세자)</div>
       <div>통신판매업 신고번호: 제 2026-대전동구-0546 호</div>
       <div>고객센터: 010-9645-2397 · 카카오톡 1:1 상담실</div>
-      <div>결제대행: (주)케이지이니시스 에스크로 안전결제 시스템</div>
+      <div>결제대행: 주식회사 포트원(PortOne) · (주)케이지이니시스</div>
       
       <div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.08); display: flex; gap: 10px; font-size: 11px; flex-wrap: wrap;">
         <a href="javascript:void(0)" onclick="openLegalModal('terms')" style="color: #cbd5e1; text-decoration: underline;">이용약관</a>
@@ -2356,42 +2357,85 @@
     }
   }
 
-  function triggerTossCheckout() {
+  // ── PortOne V2 · KG이니시스 결제 ───────────────────────────────
+  // storeId·channelKey는 포트원 관리자콘솔 > 결제연동 > 연동 정보의 값입니다.
+  // 현재는 테스트 채널(MID INIpayTest)이며, 실연동 승인 후 실연동 채널 키로 교체합니다.
+  const PORTONE_STORE_ID = 'store-df80848e-8602-427b-a8b5-49b64ae10e83';
+  const PORTONE_CHANNEL_KEY = 'channel-key-d95b4dbe-d5dd-45cc-ad68-f32fe99fd816';
+  const ORDER_STORAGE_PREFIX = 'nb_order_';
+
+  function createPaymentId(productKey) {
+    return 'nb-' + productKey + '-' + Date.now() + '-' + Math.random().toString(36).substring(2, 8);
+  }
+
+  function triggerPortOneCheckout() {
     const p = PRODUCT_DATA[currentProductKey] || PRODUCT_DATA['newyear'];
-    
-    if (typeof TossPayments === 'undefined') {
-      alert('토스페이먼츠 결제 모듈을 불러오는 중입니다. 잠시 후 다시 시도해 주세요.');
+
+    if (typeof PortOne === 'undefined' || !window.PortOne) {
+      alert('결제 모듈을 불러오는 중입니다. 잠시 후 다시 시도해 주세요.');
       return;
     }
 
+    const emailInput = document.getElementById('user-email');
+    const userEmail = emailInput ? emailInput.value.trim() : '';
+    const phoneInput = document.getElementById('user-phone');
+    const userPhone = phoneInput ? phoneInput.value.replace(/[^0-9-]/g, '') : '';
+    const nameInput = document.getElementById('user-name');
+    const userName = (nameInput && nameInput.value.trim()) || '운명나침반 손님';
+
+    const paymentId = createPaymentId(currentProductKey);
+
+    // 결제 완료 후 order-status.html에서 주문 내용을 복원하기 위해 저장합니다.
     try {
-      // 토스페이먼츠 클라이언트 키 (공개 키)
-      // 실결제 계약 승인 후 live_ck_ 키로 변경 시 실결제 전환
-      const clientKey = 'test_ck_c19xVs74LdGyev3n9pjppfyLIqZHxgzA40';
-      const tossPayments = TossPayments(clientKey);
-
-      const orderId = 'ORD_' + Date.now() + '_' + Math.random().toString(36).substring(2, 6);
-      const emailInput = document.getElementById('user-email');
-      const userEmail = emailInput ? emailInput.value.trim() : '';
-
-      tossPayments.requestPayment('카드', {
+      localStorage.setItem(ORDER_STORAGE_PREFIX + paymentId, JSON.stringify({
+        product: currentProductKey,
+        productName: p.name,
         amount: p.price,
-        orderId: orderId,
-        orderName: '운명나침반 ' + p.name,
-        customerName: '운명나침반 손님',
-        customerEmail: userEmail || undefined,
-        successUrl: window.location.origin + '/order-status.html?status=success&product=' + currentProductKey + '&amount=' + p.price + '&orderId=' + orderId,
-        failUrl: window.location.origin + '/order-status.html?status=fail&orderId=' + orderId,
-      }).catch(function (error) {
-        if (error.code !== 'USER_CANCEL') {
-          console.warn('Toss Payment Error:', error);
-          alert(error.message || '결제창 호출 중 문제가 발생했습니다.');
-        }
-      });
-    } catch (err) {
-      console.error('Checkout error:', err);
-      alert('결제창을 실행하지 못했습니다: ' + err.message);
+        email: userEmail,
+        createdAt: new Date().toISOString()
+      }));
+    } catch (e) {
+      console.warn('Order storage unavailable:', e);
     }
+
+    const checkoutBtn = document.getElementById('res-btn-checkout');
+    if (checkoutBtn) checkoutBtn.disabled = true;
+
+    PortOne.requestPayment({
+      storeId: PORTONE_STORE_ID,
+      channelKey: PORTONE_CHANNEL_KEY,
+      paymentId: paymentId,
+      orderName: '운명나침반 ' + p.name,
+      totalAmount: p.price,
+      currency: 'CURRENCY_KRW',
+      payMethod: 'CARD',
+      customer: {
+        fullName: userName,
+        email: userEmail || undefined,
+        phoneNumber: userPhone || undefined
+      },
+      // 서버 검증 시 상품 정보 대조용
+      customData: { product: currentProductKey, amount: p.price },
+      redirectUrl: window.location.origin + '/order-status.html',
+      // PC·모바일 모두 리다이렉트 한 흐름으로 결제 결과를 받습니다.
+      forceRedirect: true
+    }).then(function (response) {
+      if (checkoutBtn) checkoutBtn.disabled = false;
+      if (!response) return;
+      if (response.code) {
+        if (response.code !== 'USER_CANCEL') {
+          alert(response.message || '결제가 완료되지 않았습니다.');
+        }
+        return;
+      }
+      if (response.paymentId) {
+        window.location.href = '/order-status.html?paymentId=' + encodeURIComponent(response.paymentId);
+      }
+    }).catch(function (error) {
+      if (checkoutBtn) checkoutBtn.disabled = false;
+      console.warn('PortOne Payment Error:', error);
+      alert((error && error.message) || '결제창 호출 중 문제가 발생했습니다.');
+    });
   }
 
   document.querySelectorAll('.product-tab-item').forEach(item => {
