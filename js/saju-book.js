@@ -387,7 +387,7 @@
       var head = document.createElement('div');
       head.className = 'page-head';
       head.innerHTML = '<span class="ph-brand">운명나침반 · 정밀 사주 책</span><span class="ph-name">' +
-        esc(this.calc.input.name ? this.calc.input.name + ' 님' : '') + '</span>';
+        esc(this.headName || (this.calc.input.name ? this.calc.input.name + ' 님' : '')) + '</span>';
       page.appendChild(head);
       var foot = document.createElement('div');
       foot.className = 'page-foot';
@@ -431,8 +431,8 @@
     return d;
   };
 
-  Book.prototype.chapter = function (num, title, sub) {
-    return this.block((num ? '<div class="ch-num">제 ' + num + ' 장</div>' : '') +
+  Book.prototype.chapter = function (num, title, sub, unit) {
+    return this.block((num ? '<div class="ch-num">제 ' + num + ' ' + (unit || '장') + '</div>' : '') +
       '<h2 class="ch-title">' + title + '</h2>' +
       (sub ? '<div class="ch-sub">' + sub + '</div>' : '<div class="ch-sub"></div>'), 'ch-head');
   };
@@ -490,8 +490,12 @@
 
   // ── 책 본문 ───────────────────────────────────────────────────
   function build(calc, orderIn) {
-    var b = new Book(calc, orderIn);
     var order = orderIn || {};
+    // 39,900원 '2인 사주 & 평생 궁합 완전판': 상대방 사주가 함께 넘어오면 2인 책으로 분기한다.
+    if (order.partnerCalc && order.partnerCalc.ok !== false && order.partnerCalc.pillars) {
+      return buildCouple(calc, order);
+    }
+    var b = new Book(calc, orderIn);
     var name = calc.input.name || '회원';
     var il = ILGAN[calc.ilgan] || ILGAN['甲'];
     var productName = order.productName || '맞춤 사주 PDF 책';
@@ -1347,6 +1351,1410 @@
       '이 책의 마지막 장에 적어둔 세 가지 중 하나만 이번 주에 해보시면, 그 한 번이 다음 계절의 씨앗이 됩니다.\n\n' +
       '어려운 시기가 오면 이 책을 다시 펼쳐 제6장의 대운과 제9장의 조심할 시기를 보세요. 계절은 반드시 바뀝니다. ' +
       '그때까지 몸과 마음을 잘 챙기시길 바랍니다.';
+  }
+
+  // ══════════════════════════════════════════════════════════════
+  //  2인 궁합 책 (39,900원 '2인 사주 & 평생 궁합 완전판')
+  //  - 두 사람의 원국을 각각 계산한 결과(SajuEngine.compute)를 받아
+  //    오행 보완·일간/일지 합충형파해·세운 교차·화해 날짜를 실제로 계산해
+  //    상품 목차(제1부~제7부)와 같은 순서로 책을 만든다.
+  // ══════════════════════════════════════════════════════════════
+  var NEXT_ELEM = { wood: 'fire', fire: 'earth', earth: 'metal', metal: 'water', water: 'wood' };
+  var CTRL_ELEM = { wood: 'earth', fire: 'metal', earth: 'water', metal: 'wood', water: 'fire' };
+
+  function elemRelOf(a, b) {
+    if (!a || !b) return '';
+    if (a === b) return 'same';
+    if (NEXT_ELEM[a] === b) return 'a2b';       // 내 기운이 상대를 살림
+    if (NEXT_ELEM[b] === a) return 'b2a';       // 상대 기운이 나를 살림
+    if (CTRL_ELEM[a] === b) return 'aWin';      // 내 기운이 상대를 누름
+    return 'bWin';
+  }
+
+  function hasKw(list, kw) {
+    return !!list && list.some(function (x) { return String(x).indexOf(kw) >= 0; });
+  }
+
+  function clampScore(v, lo, hi) {
+    return Math.max(lo || 25, Math.min(hi || 97, Math.round(v)));
+  }
+
+  var SPOUSE_TRAIT = {
+    wood: '배우자 자리에 나무의 기운이 있어, 곧고 성실하며 자기 기준이 뚜렷한 사람과 인연이 깊습니다. 서로의 방식을 존중하지 않으면 자존심 대결이 됩니다.',
+    fire: '배우자 자리에 불의 기운이 있어, 밝고 표현이 분명한 사람에게 끌립니다. 관계가 뜨거운 만큼 식는 속도도 빠르니 일상을 함께 만드는 노력이 필요합니다.',
+    earth: '배우자 자리에 흙의 기운이 있어, 듬직하고 생활을 챙기는 사람과 인연이 깊습니다. 안정적이지만 변화를 싫어하는 점이 답답하게 느껴질 수 있습니다.',
+    metal: '배우자 자리에 쇠의 기운이 있어, 단정하고 원칙이 분명한 사람에게 끌립니다. 서로의 기준이 부딪히면 말이 날카로워지니 표현을 다스려야 합니다.',
+    water: '배우자 자리에 물의 기운이 있어, 생각이 깊고 감정이 섬세한 사람과 인연이 깊습니다. 조용한 만큼 속을 알기 어려워 오해가 쌓이기 쉽습니다.'
+  };
+
+  // A(나)의 일간이 B(상대)의 일간을 어떤 십성으로 보는가 → 관계의 태도
+  var SIPSIN_TO_PARTNER = {
+    '비견': '동지이자 경쟁자로 봅니다. 말이 통하고 편안하지만, 결정 앞에서는 서로 양보하지 않습니다.',
+    '겁재': '강하게 끌리면서도 주도권을 빼앗길까 경계합니다. 함께 있으면 속도가 붙지만 지출도 함께 늘어납니다.',
+    '식신': '편안하게 돌봐주고 싶은 사람으로 봅니다. 함께 있으면 말이 많아지고 생활이 느슨해지기 쉽습니다.',
+    '상관': '내가 키워낸 결과물처럼 느껴 자랑하고 싶고, 동시에 잔소리가 늘어납니다. 애정이 간섭으로 보이기 쉬운 자리입니다.',
+    '편재': '바깥에서 만난 인연처럼 설레고 챙겨주고 싶은 마음이 큽니다. 다만 구속받는 것을 싫어합니다.',
+    '정재': '내 사람, 내 살림으로 여깁니다. 책임을 지려 하고, 그 책임이 무거워지면 서운함으로 남습니다.',
+    '편관': '나를 긴장시키는 사람입니다. 존경과 부담이 함께 있고, 가까워질수록 말투가 딱딱해집니다.',
+    '정관': '나를 바르게 세워주는 사람으로 봅니다. 신뢰가 크고, 그만큼 기대도 커져 실망도 커집니다.',
+    '편인': '나를 말 없이 알아줄 것 같은 사람으로 봅니다. 그래서 확인을 생략하고 혼자 결론을 내리기 쉽습니다.',
+    '정인': '나를 감싸주는 사람으로 봅니다. 의지하고 싶어지고, 그 의지가 상대를 지치게 만듭니다.'
+  };
+
+  var REL_MEAN = {
+    '육합': '육합(六合)은 서로 다른 두 기운이 하나로 묶이는 합입니다. 처음 만났을 때의 "이 사람이다" 싶은 느낌이 오래가는 자리이고, 함께 있을 때 생활의 리듬이 자연스럽게 맞물립니다. 대신 한쪽이 다른 쪽의 기운에 흡수되기 쉬워, 시간이 지나면 한 사람만 참는 구조가 될 수 있습니다.',
+    '삼합': '삼합(半合)은 같은 목적을 가진 사람들이 힘을 모으는 합입니다. 취미·일·돈처럼 바깥의 목표를 함께할 때 시너지가 크고, 둘이 있으면 실제로 일이 굴러갑니다. 목표가 사라지면 관계의 온도도 함께 내려가는 것이 약점입니다.',
+    '충': '충(沖)은 정면으로 마주 보는 자리입니다. 서로에게 없는 것을 정확히 건드려 강하게 끌리지만, 그 자극이 곧 부딪힘으로 바뀝니다. 이 관계의 과제는 "맞는 사람을 만나기"가 아니라 "부딪히는 방식을 정하기"입니다.',
+    '형': '형(刑)은 서로의 방식을 강하게 되묻는 자리입니다. 예의·태도·말투가 자주 문제가 되고, 사소한 서운함이 오래 남습니다. 감정이 올라오기 전에 사실만 말하는 훈련이 이 자리를 눅여줍니다.',
+    '파': '파(破)는 겉으로는 맞는 듯하다가 결정적인 순간에 어긋나는 자리입니다. 큰 싸움은 없는데 중요한 고비마다 타이밍이 어긋나, 서로 "운이 없다"고 느끼게 됩니다.',
+    '해': '해(害)는 직접 부딪히지 않고 곁에서 서운함을 만드는 자리입니다. 가족·친구·직장처럼 두 사람 바깥의 사람이 자주 문제의 원인이 됩니다.',
+    '자형': '자형(自刑)은 같은 글자가 겹쳐 스스로를 옥죄는 자리입니다. 상대를 탓하기 전에 두 사람 모두 혼자 결론을 내리고 혼자 상처받는 습관을 봐야 합니다.'
+  };
+
+  var ELEM_CLASH_PAIR = {
+    wood: ['명분과 자존심 싸움', '두 사람 모두 목(木) 기운이 강해 옳고 그름을 따지는 대화가 길어집니다. 한 번 시작된 논쟁은 "누가 맞는가"로 흘러가고, 지고 나서도 마음이 남습니다.', '대화를 시작할 때 결론을 정해두지 말고, 30분이 지나면 그날은 접는 규칙을 정하세요.'],
+    fire: ['감정의 온도가 먼저 오르는 집', '두 사람 모두 화(火) 기운이 강해 말이 감정보다 먼저 나갑니다. 싸움의 시작은 사소한데, 끝은 늘 상처로 남습니다.', '"지금 화가 났어"까지만 말하고 10분을 멈추는 약속 하나가 이 집의 절반을 구합니다.'],
+    earth: ['걱정과 책임이 겹겹이 쌓이는 집', '두 사람 모두 토(土) 기운이 강해 서로를 위해 참는 일이 많습니다. 그 참음이 말로 나오지 않아 서운함으로 굳습니다.', '참은 일을 그날 한 문장으로 말하는 규칙이 필요합니다. "괜찮아"는 금지어로 정해두세요.'],
+    metal: ['기준과 원칙이 날카로운 집', '두 사람 모두 금(金) 기운이 강해 작은 실수도 정확히 짚어냅니다. 서로가 평가받는 느낌을 받고, 말수가 줄어듭니다.', '하루에 한 번은 고칠 점 대신 고마운 점을 말하는 시간을 두세요.'],
+    water: ['생각이 깊어 마음이 먼저 멀어지는 집', '두 사람 모두 수(水) 기운이 강해 싸우지 않습니다. 대신 말이 줄고 각자 정리하는 시간이 길어지며, 어느 날 갑자기 거리가 벌어져 있습니다.', '일주일에 한 번, 결론 없는 대화 30분을 정해두세요. 정리가 아니라 말을 꺼내는 시간입니다.']
+  };
+
+  var DEFICIT = {
+    wood: {
+      lack: '자기 계획을 세우고 밀고 나가는 뼈대',
+      now: '무엇을 원하는지 먼저 꺼내지 않고, 주어진 일정과 상대의 계획에 몸을 맡깁니다. 결정을 미루는 것이 배려처럼 보이지만, 속으로는 계속 계산하고 있습니다.',
+      need: '"나는 이렇게 하고 싶다"를 먼저 말해주는 사람',
+      fill: '물어보는 방식이 아니라 함께 표를 그려보세요. 다음 달 계획을 같이 적고, 그가 고른 항목에 표시를 해주면 말보다 빨리 채워집니다.'
+    },
+    fire: {
+      lack: '좋아한다는 것을 드러내는 표현과 열기',
+      now: '마음이 있어도 먼저 말하지 않고, 상대가 알아주기를 기다립니다. 서운해도 "왜 몰라"로 끝나고, 정작 필요한 말은 하지 못합니다.',
+      need: '자기 감정을 말로 먼저 꺼내는 사람',
+      fill: '먼저 표현하고, 그가 작게라도 따라오면 크게 반응해 주세요. 표현이 안전하다는 경험이 쌓여야 그도 말을 꺼냅니다.'
+    },
+    earth: {
+      lack: '약속과 생활을 지탱하는 기반, 안정',
+      now: '흔들려도 괜찮은 척하고, 불안하다는 말을 하지 않습니다. 생활의 규칙을 먼저 요구하지 못해 늘 상대의 리듬에 맞춰 삽니다.',
+      need: '정해진 시간과 반복되는 약속을 지켜주는 사람',
+      fill: '거창한 이벤트보다 같은 시간의 식사·산책이 효과적입니다. 지키는 모습을 보이면 그가 처음으로 자기 요구를 꺼냅니다.'
+    },
+    metal: {
+      lack: '끊고 마무리하는 결단',
+      now: '끊어야 할 것을 끊지 못하고 미룹니다. 싫은 일도 일단 받아들이고, 관계가 상해도 정리를 못 해 오래 끌고 갑니다.',
+      need: '선을 그어도 관계가 끊기지 않는다는 것을 보여주는 사람',
+      fill: '"그건 어려워"라고 말해도 다음 날 평소처럼 대하는 것이 핵심입니다. 거절이 안전하다는 경험이 그의 결단을 대신 자라게 합니다.'
+    },
+    water: {
+      lack: '쉬고 흘려보내는 유연함',
+      now: '지쳐도 멈추지 못하고, 감정을 밖으로 흘리지 못해 안에 쌓습니다. 힘들다는 말 대신 갑자기 무기력해지는 방식으로 신호를 보냅니다.',
+      need: '멈춰도 괜찮다고 말해주고, 실제로 쉬게 해주는 사람',
+      fill: '쉬는 시간을 함께 정하고 그 시간에는 일 이야기를 꺼내지 마세요. 그가 아무것도 안 하는 날을 지켜봐 주는 것이 가장 큰 보충입니다.'
+    }
+  };
+
+  function num2(n) { return Number(n).toLocaleString('ko-KR'); }
+
+  // 받침 유무에 따라 목적격 조사를 고른다. (예: '뼈대를' / '안정을')
+  function josaEul(word) {
+    var s = String(word || '').trim();
+    var last = s.slice(-1);
+    var code = last.charCodeAt(0);
+    if (!(code >= 0xAC00 && code <= 0xD7A3)) return '을(를)';
+    return ((code - 0xAC00) % 28 !== 0) ? '을' : '를';
+  }
+
+  function koDate(d) {
+    var wd = ['일', '월', '화', '수', '목', '금', '토'][d.getDay()];
+    return (d.getMonth() + 1) + '월 ' + d.getDate() + '일(' + wd + ')';
+  }
+
+  // ── 두 사람 관계 분석 ───────────────────────────────────────────
+  function coupleAnalysis(A, B) {
+    var eng = global.SajuEngine;
+    var EO = ['wood', 'fire', 'earth', 'metal', 'water'];
+    var r = {
+      ganRel: eng.ganRelation(A.ilgan, B.ilgan),
+      jiRel: eng.compatOf(A.ilji, B.ilji),
+      ganElemRel: elemRelOf(eng.ELEM_OF_GAN[A.ilgan], eng.ELEM_OF_GAN[B.ilgan]),
+      aSeesB: eng.getShipshin(A.ilgan, B.ilgan),
+      bSeesA: eng.getShipshin(B.ilgan, A.ilgan),
+      cross: [],
+      byElem: []
+    };
+
+    // 일지 이외의 지지 교차 (년·월·시)
+    A.pillars.forEach(function (pa) {
+      if (pa.key === 'day' || !pa.ji) return;
+      B.pillars.forEach(function (pb) {
+        if (pb.key === 'day' || !pb.ji) return;
+        var rel = eng.compatOf(pa.ji, pb.ji);
+        if (!rel.length) return;
+        r.cross.push({
+          a: pa.pos + '주 ' + pa.ji,
+          b: pb.pos + '주 ' + pb.ji,
+          rel: rel,
+          text: rel.join('·')
+        });
+      });
+    });
+
+    // 천간 교차 (일간 이외)
+    r.crossGan = [];
+    A.pillars.forEach(function (pa) {
+      if (pa.key === 'day' || !pa.gan) return;
+      B.pillars.forEach(function (pb) {
+        if (pb.key === 'day' || !pb.gan) return;
+        var rel = eng.ganRelation(pa.gan, pb.gan);
+        if (!rel.length || rel[0] === '같은 천간') return;
+        r.crossGan.push({ a: pa.pos + '간 ' + pa.gan, b: pb.pos + '간 ' + pb.gan, text: rel.join('·') });
+      });
+    });
+
+    EO.forEach(function (e) {
+      var a = A.counts[e] || 0;
+      var b = B.counts[e] || 0;
+      var state = 'ok';
+      if (a === 0 && b === 0) state = 'bothZero';
+      else if (a <= 1 && b >= 2) state = 'bFillsA';
+      else if (b <= 1 && a >= 2) state = 'aFillsB';
+      else if (a >= 3 && b >= 3) state = 'heavyOverlap';
+      else if (a >= 2 && b >= 2) state = 'overlap';
+      r.byElem.push({ e: e, a: a, b: b, state: state });
+    });
+    r.fillA = r.byElem.filter(function (x) { return x.state === 'bFillsA'; }).map(function (x) { return x.e; });   // B가 A를 채움
+    r.fillB = r.byElem.filter(function (x) { return x.state === 'aFillsB'; }).map(function (x) { return x.e; });   // A가 B를 채움
+    r.overlap = r.byElem.filter(function (x) { return x.state === 'overlap' || x.state === 'heavyOverlap'; }).map(function (x) { return x.e; });
+    r.bothZero = r.byElem.filter(function (x) { return x.state === 'bothZero'; }).map(function (x) { return x.e; });
+    r.commonMissing = EO.filter(function (e) { return (A.counts[e] || 0) <= 1 && (B.counts[e] || 0) <= 1; });
+
+    // ── 점수 ──
+    var attr = 52;
+    if (hasKw(r.ganRel, '천간합')) attr += 20;
+    else if (hasKw(r.ganRel, '같은 천간')) attr += 8;
+    else if (r.ganElemRel === 'a2b' || r.ganElemRel === 'b2a') attr += 10;
+    else if (r.ganElemRel === 'aWin' || r.ganElemRel === 'bWin') attr += 4;
+    if (hasKw(r.ganRel, '천간충')) attr += 7;
+    if (hasKw(r.jiRel, '육합')) attr += 16;
+    if (hasKw(r.jiRel, '삼합')) attr += 10;
+    if (hasKw(r.jiRel, '충')) attr += 5;
+    if (hasKw(r.jiRel, '형')) attr += 2;
+    if (hasKw(r.jiRel, '파')) attr -= 3;
+    if (hasKw(r.jiRel, '해')) attr -= 1;
+    if (['식신', '상관', '편재', '정재'].indexOf(r.aSeesB) >= 0) attr += 4;
+    if (['식신', '상관', '편재', '정재'].indexOf(r.bSeesA) >= 0) attr += 4;
+
+    var stab = 56;
+    if (hasKw(r.jiRel, '충')) stab -= 20;
+    if (hasKw(r.jiRel, '형')) stab -= 8;
+    if (hasKw(r.jiRel, '파')) stab -= 7;
+    if (hasKw(r.jiRel, '해')) stab -= 5;
+    if (hasKw(r.jiRel, '육합')) stab += 14;
+    if (hasKw(r.jiRel, '삼합')) stab += 8;
+    var bothStrong = A.strength.supportPct >= 55 && B.strength.supportPct >= 55;
+    var bothWeak = A.strength.supportPct < 45 && B.strength.supportPct < 45;
+    var gap = Math.abs(A.strength.supportPct - B.strength.supportPct);
+    if (bothStrong) stab -= 8;
+    if (bothWeak) stab -= 4;
+    if (!bothStrong && !bothWeak && gap >= 10) stab += 7;
+    if (gap >= 25) stab -= 7;
+    if (A.sipsinCounts['비겁'] >= 3 && B.sipsinCounts['비겁'] >= 3) stab -= 7;
+    var crossChung = r.cross.filter(function (c) { return c.text.indexOf('충') >= 0; }).length;
+    var crossHap = r.cross.filter(function (c) { return c.text.indexOf('합') >= 0; }).length;
+    stab -= Math.min(8, crossChung * 4);
+    stab += Math.min(6, crossHap * 3);
+
+    var bal = 50;
+    bal += r.fillA.length * 6 + r.fillB.length * 6;
+    bal -= r.overlap.length * 5;
+    bal -= r.bothZero.length * 7;
+    if (A.elements.missing.indexOf(eng.ELEM_OF_GAN[B.ilgan]) >= 0) bal += 6;
+    if (B.elements.missing.indexOf(eng.ELEM_OF_GAN[A.ilgan]) >= 0) bal += 6;
+    if (A.elements.over.indexOf(eng.ELEM_OF_GAN[B.ilgan]) >= 0) bal -= 4;
+    if (B.elements.over.indexOf(eng.ELEM_OF_GAN[A.ilgan]) >= 0) bal -= 4;
+
+    var daily = 55;
+    var jaeA = A.sipsinCounts['재성'], jaeB = B.sipsinCounts['재성'];
+    daily -= Math.min(9, Math.abs(jaeA - jaeB) * 3);
+    if (jaeA === 0 && jaeB === 0) daily -= 6;
+    var sikA = A.sipsinCounts['식상'], sikB = B.sipsinCounts['식상'];
+    var gwanA = A.sipsinCounts['관성'], gwanB = B.sipsinCounts['관성'];
+    if (sikA >= 3 && sikB >= 3) daily -= 6;
+    if ((sikA >= 3 && gwanB >= 3) || (sikB >= 3 && gwanA >= 3)) daily -= 6;
+    if ((A.sipsinCounts['인성'] >= 3 && sikB >= 3) || (B.sipsinCounts['인성'] >= 3 && sikA >= 3)) daily += 4;
+    var inA = A.sipsinCounts['인성'], inB = B.sipsinCounts['인성'];
+    if (inA >= 3 && inB >= 3) daily -= 4;
+
+    var timing = 55;
+    var crossYears = yearCross(A, B);
+    crossYears.forEach(function (y) {
+      if (y.bad >= 2) timing -= 6;
+      else if (y.good >= 2) timing += 5;
+      if (y.daeunShift) timing -= 3;
+    });
+    [A, B].forEach(function (C, i) {
+      var other = i === 0 ? B : A;
+      var cur = C.daeun.list.filter(function (d) { return d.current; })[0];
+      if (!cur) return;
+      if (other.elements.missing.indexOf(cur.ganElem) >= 0) timing += 4;
+      if (other.elements.over.indexOf(cur.jiElem) >= 0) timing -= 3;
+    });
+
+    r.score = {
+      attraction: clampScore(attr, 25, 98),
+      stability: clampScore(stab, 25, 96),
+      balance: clampScore(bal, 20, 97),
+      daily: clampScore(daily, 25, 92),
+      timing: clampScore(timing, 25, 92)
+    };
+    r.score.total = clampScore(
+      r.score.attraction * 0.24 + r.score.stability * 0.30 + r.score.balance * 0.24 +
+      r.score.daily * 0.11 + r.score.timing * 0.11, 20, 97
+    );
+    r.verdict = verdictOf(r.score.total);
+    r.yearCross = crossYears;
+    return r;
+  }
+
+  function verdictOf(t) {
+    if (t >= 82) return { head: '천생연분형 — 잘 맞는 것을 넘어 서로를 키우는 인연', body: '다섯 항목이 고르게 높습니다. 이 관계의 위험은 어긋남이 아니라 안심입니다. 서로가 알아서 해줄 것이라 믿고 표현을 줄이는 순간, 좋은 궁합이 조용히 식습니다.' };
+    if (t >= 72) return { head: '상생형 — 노력한 만큼 정확히 돌아오는 인연', body: '끌림과 안정이 함께 있고, 부족한 곳은 서로 채워집니다. 다만 한 항목이 눈에 띄게 낮다면 그 자리가 반복되는 싸움의 통로가 됩니다. 아래 진단에서 낮은 항목을 먼저 보세요.' };
+    if (t >= 62) return { head: '보완형 — 다르기에 오래 가는 인연', body: '두 사람의 기운이 겹치기보다 어긋나게 짜여 있습니다. 그래서 처음엔 서로가 낯설고, 시간이 지나면 상대에게 없는 것을 자기 것으로 만듭니다. 이해보다 합의가 빠른 커플입니다.' };
+    if (t >= 52) return { head: '조율형 — 습관을 정하면 편해지는 인연', body: '끌림은 분명하지만 생활의 리듬과 감정의 속도가 다릅니다. 이 관계는 사랑의 크기보다 규칙의 수가 결과를 바꿉니다. 아래 갈등 촉발 버튼과 화해 날짜를 달력처럼 쓰세요.' };
+    return { head: '거리 조절형 — 가까울수록 다치는 인연', body: '두 사람의 강한 기운이 정면에서 부딪히는 구조입니다. 관계를 끊으라는 뜻이 아니라, 간격과 규칙을 먼저 정해야 오래 갈 수 있다는 뜻입니다. 돈·생활·가족의 경계를 문서로 남기는 것이 이 궁합의 핵심입니다.' };
+  }
+
+  var SCORE_LABEL = {
+    attraction: '끌림', stability: '안정', balance: '보완', daily: '생활', timing: '시기'
+  };
+
+  function yearCross(A, B) {
+    var eng = global.SajuEngine;
+    var out = [];
+    for (var y = 2026; y <= 2031; y++) {
+      var sa = A.seun.filter(function (x) { return x.year === y; })[0];
+      var sb = B.seun.filter(function (x) { return x.year === y; })[0];
+      if (!sa || !sb) continue;
+      var ra = eng.compatOf(A.ilji, sa.ji);
+      var rb = eng.compatOf(B.ilji, sb.ji);
+      var ga = eng.ganRelation(A.ilgan, sa.gan);
+      var gb = eng.ganRelation(B.ilgan, sb.gan);
+      var bad = 0, good = 0;
+      if (hasKw(ra, '충')) bad++;
+      if (hasKw(rb, '충')) bad++;
+      if (hasKw(ga, '천간충')) bad++;
+      if (hasKw(gb, '천간충')) bad++;
+      if (hasKw(ra, '육합') || hasKw(ra, '삼합')) good++;
+      if (hasKw(rb, '육합') || hasKw(rb, '삼합')) good++;
+      if (hasKw(ga, '천간합')) good++;
+      if (hasKw(gb, '천간합')) good++;
+      var shiftA = A.daeun.list.some(function (d) { return d.startYear === y; });
+      var shiftB = B.daeun.list.some(function (d) { return d.startYear === y; });
+      var verdict = bad >= 2 ? '양쪽 흔들' : (bad === 1 ? '한쪽 흔들' : (good >= 2 ? '관계 결속' : (good === 1 ? '완만한 해' : '평이한 해')));
+      out.push({
+        year: y, gan: sa.gan, ji: sa.ji,
+        relA: ra.length ? ra.join('·') : '-', relB: rb.length ? rb.join('·') : '-',
+        ganA: ga.length ? ga.join('·') : '-', ganB: gb.length ? gb.join('·') : '-',
+        bad: bad, good: good, verdict: verdict,
+        daeunShift: (shiftA || shiftB), shiftWho: shiftA && shiftB ? '두 사람 모두' : (shiftA ? A.input.name || '첫 번째 분' : (shiftB ? B.input.name || '두 번째 분' : ''))
+      });
+    }
+    return out;
+  }
+
+  // ── 화해 날짜 계산 ─────────────────────────────────────────────
+  function reconcileDates(A, B, from, span) {
+    var eng = global.SajuEngine;
+    var out = [];
+    var base = from ? new Date(from.getFullYear(), from.getMonth(), from.getDate()) : new Date();
+    var days = span || 60;
+    for (var i = 1; i <= days; i++) {
+      var d = new Date(base.getFullYear(), base.getMonth(), base.getDate() + i);
+      var dp = eng.dayPillar(d.getFullYear(), d.getMonth() + 1, d.getDate());
+      var sc = 50, plus = [], minus = [];
+      [[A, 'A'], [B, 'B']].forEach(function (pair) {
+        var C = pair[0];
+        var rel = eng.compatOf(C.ilji, dp.ji);
+        var grel = eng.ganRelation(C.ilgan, dp.gan);
+        if (hasKw(rel, '육합')) { sc += 14; plus.push('일지 육합'); }
+        if (hasKw(rel, '삼합')) { sc += 8; plus.push('삼합'); }
+        if (hasKw(rel, '충')) { sc -= 18; minus.push('일지 충'); }
+        if (hasKw(rel, '형')) { sc -= 9; minus.push('형'); }
+        if (hasKw(rel, '파')) { sc -= 7; minus.push('파'); }
+        if (hasKw(rel, '해')) { sc -= 4; minus.push('해'); }
+        if (hasKw(grel, '천간합')) { sc += 6; plus.push('천간합'); }
+        if (hasKw(grel, '천간충')) { sc -= 8; minus.push('천간충'); }
+        if (C.elements.missing.indexOf(dp.jiElem) >= 0) { sc += 3; }
+      });
+      if (A.elements.missing.indexOf(dp.jiElem) >= 0 && B.elements.missing.indexOf(dp.jiElem) >= 0) sc += 5;
+      if (A.elements.over.indexOf(dp.jiElem) >= 0 && B.elements.over.indexOf(dp.jiElem) >= 0) sc -= 4;
+      out.push({ date: d, dp: dp, score: clampScore(sc, 5, 99), plus: plus, minus: minus });
+    }
+    return out;
+  }
+
+  function pickDates(all, n, minGap, diversify) {
+    var sorted = all.slice().sort(function (a, b) { return b.score - a.score; });
+    var picked = [];
+    function farEnough(x) {
+      return picked.every(function (p) { return Math.abs(p.date - x.date) / 86400000 >= (minGap || 5); });
+    }
+    if (diversify) {
+      // 같은 관계(삼합만 세 개)로 몰리지 않도록 관계 종류별 최고점을 먼저 고른다.
+      var seen = {};
+      sorted.forEach(function (x) {
+        if (picked.length >= n) return;
+        var t = (x.plus && x.plus[0]) || 'none';
+        if (seen[t]) return;
+        if (!farEnough(x)) return;
+        seen[t] = 1;
+        picked.push(x);
+      });
+    }
+    sorted.forEach(function (x) {
+      if (picked.length >= n) return;
+      if (picked.indexOf(x) >= 0) return;
+      if (!farEnough(x)) return;
+      picked.push(x);
+    });
+    return picked.sort(function (a, b) { return a.date - b.date; });
+  }
+
+  // ── 표 만들기 ──────────────────────────────────────────────────
+  function coupleCompareTable(A, B, nA, nB) {
+    var eng = global.SajuEngine;
+    function p4(C) {
+      return C.pillars.map(function (p) { return (p.gan || '·') + (p.ji || '·'); }).join('  ');
+    }
+    function elNames(list) {
+      return list.length ? list.map(function (e) { return ELEM_KR[e]; }).join(', ') : '없음';
+    }
+    var rows = [
+      ['사주 원국', p4(A), p4(B)],
+      ['일주', A.ilju + ' · ' + (ILGAN[A.ilgan] || {}).title.split(' ')[0], B.ilju + ' · ' + (ILGAN[B.ilgan] || {}).title.split(' ')[0]],
+      ['일간', A.ilgan + ' — ' + ELEM_KR[eng.ELEM_OF_GAN[A.ilgan]], B.ilgan + ' — ' + ELEM_KR[eng.ELEM_OF_GAN[B.ilgan]]],
+      ['일지(배우자궁)', A.ilji + ' · ' + A.sipsin.day.ji, B.ilji + ' · ' + B.sipsin.day.ji],
+      ['강약', A.strength.label + ' (내 편 ' + A.strength.supportPct + '%)', B.strength.label + ' (내 편 ' + B.strength.supportPct + '%)'],
+      ['많은 기운', elNames(A.elements.over), elNames(B.elements.over)],
+      ['비어 있는 기운', elNames(A.elements.zero), elNames(B.elements.zero)],
+      ['공망', A.gongmang, B.gongmang]
+    ];
+    return '<table class="mini-table wide couple-table"><thead><tr><th>구분</th><th>' + esc(nA) + '</th><th>' + esc(nB) + '</th></tr></thead><tbody>' +
+      rows.map(function (r) { return '<tr><td class="row-head">' + r[0] + '</td><td>' + esc(r[1]) + '</td><td>' + esc(r[2]) + '</td></tr>'; }).join('') +
+      '</tbody></table>';
+  }
+
+  function pairElementBar(A, B) {
+    var rows = '';
+    ['wood', 'fire', 'earth', 'metal', 'water'].forEach(function (e) {
+      var pa = A.percents[e] || 0, pb = B.percents[e] || 0;
+      rows += '<div class="bar-row dual">' +
+        '<div class="bar-name">' + ELEM_KR[e] + '</div>' +
+        '<div class="bar-stack">' +
+        '<div class="bar-track"><div class="bar-fill ' + ELEM_CLASS[e] + '" style="width:' + (pa > 0 ? Math.max(pa, 3) : 0) + '%"></div></div>' +
+        '<div class="bar-track"><div class="bar-fill ' + ELEM_CLASS[e] + '" style="width:' + (pb > 0 ? Math.max(pb, 3) : 0) + '%"></div></div>' +
+        '</div>' +
+        '<div class="bar-val">' + A.counts[e] + ' · ' + B.counts[e] + '</div>' +
+        '</div>';
+    });
+    return rows;
+  }
+
+  function scoreTable(r) {
+    var rows = ['attraction', 'stability', 'balance', 'daily', 'timing'].map(function (k) {
+      var v = r.score[k];
+      return '<tr><td>' + SCORE_LABEL[k] + '</td><td class="center"><b>' + v + '</b></td><td class="score-mean">' + scoreComment(r, k) + '</td></tr>';
+    }).join('');
+    rows += '<tr class="cur"><td><b>종합 궁합</b></td><td class="center"><b>' + r.score.total + '</b></td><td class="score-mean">' + esc(r.verdict.head.split(' — ')[0]) + '</td></tr>';
+    return '<table class="grid-table score-table2"><thead><tr><th>항목</th><th>점수</th><th>이 관계에서의 의미</th></tr></thead><tbody>' + rows + '</tbody></table>';
+  }
+
+  function scoreComment(r, key) {
+    var v = r.score[key];
+    if (key === 'attraction') {
+      if (v >= 72) return '말하지 않아도 통하는 부분이 있고, 처음부터 강하게 끌리는 구조입니다.';
+      if (v >= 58) return '끌림은 충분하지만 먼저 표현하는 쪽이 있어야 관계가 움직입니다.';
+      return '서로에게 쉽게 끌리는 편이 아닙니다. 시간과 반복된 만남이 관계를 만듭니다.';
+    }
+    if (key === 'stability') {
+      if (v >= 72) return '큰 마찰 없이 생활이 자리잡는 구조입니다. 안심하고 표현을 줄이지 마세요.';
+      if (v >= 55) return '영역을 나누는 규칙이 있으면 오래 갑니다.';
+      return '같은 문제가 반복되는 구조입니다. 감정보다 규칙을 먼저 정해야 합니다.';
+    }
+    if (key === 'balance') {
+      if (v >= 72) return '서로에게 없는 기운을 채워주는 자리가 많아, 오래 갈수록 편안해집니다.';
+      if (v >= 55) return '한쪽이 주로 채워주는 구조입니다. 받는 쪽의 표현이 필요합니다.';
+      return '둘 다 비어 있는 기운이 많습니다. 상대에게 기대하지 말고 함께 메워야 합니다.';
+    }
+    if (key === 'daily') {
+      if (v >= 72) return '돈과 말, 생활의 리듬이 잘 맞습니다.';
+      if (v >= 55) return '생활 규칙을 한두 개 정하면 크게 어긋나지 않습니다.';
+      return '돈과 생활 방식의 기준이 다릅니다. 계좌와 역할을 미리 나누세요.';
+    }
+    if (v >= 72) return '앞으로의 세운이 두 사람에게 함께 힘을 보탭니다.';
+    if (v >= 55) return '흔들리는 해에 큰 결정을 겹치지 않으면 무난합니다.';
+    return '앞으로 몇 년 안에 두 사람이 함께 흔들리는 해가 있습니다. 큰 결정을 분산하세요.';
+  }
+
+  // ── 2인 책 본문 ────────────────────────────────────────────────
+  function buildCouple(calcA, orderIn) {
+    var B = orderIn.partnerCalc;
+    var A = calcA;
+    var eng = global.SajuEngine;
+    var order = orderIn || {};
+    var nameA = A.input.name || '첫 번째 분';
+    var nameB = B.input.name || '두 번째 분';
+    var ilA = ILGAN[A.ilgan] || ILGAN['甲'];
+    var ilB = ILGAN[B.ilgan] || ILGAN['甲'];
+    var r = coupleAnalysis(A, B);
+    var today = new Date();
+    var todayStr = today.getFullYear() + '년 ' + (today.getMonth() + 1) + '월 ' + today.getDate() + '일';
+    var productName = order.productName || '2인 사주 & 평생 궁합 완전판 PDF 책';
+
+    var b = new Book(A, order);
+    b.headName = nameA + ' · ' + nameB;
+
+    // ── 표지 ──
+    var cover = b.addPage({ noFrame: true, cls: 'cover' });
+    cover.innerHTML =
+      '<div class="cover-wrap">' +
+      '<div class="cover-brand">運命羅針盤</div>' +
+      '<div class="cover-line"></div>' +
+      '<div class="cover-kicker">2인 사주 · 평생 궁합 정밀 리포트</div>' +
+      '<div class="cover-title">' + esc(nameA) + ' 님 × ' + esc(nameB) + ' 님<br>두 사람의 여덟 글자</div>' +
+      '<div class="cover-ilju">' + A.ilju + '일주 · ' + ilA.title + ' &nbsp;/&nbsp; ' + B.ilju + '일주 · ' + ilB.title + '</div>' +
+      '<div class="strip-pair">' +
+      '<div class="strip-person"><div class="strip-label">' + esc(nameA) + '</div>' + stripTable(A) + '</div>' +
+      '<div class="strip-person"><div class="strip-label">' + esc(nameB) + '</div>' + stripTable(B) + '</div>' +
+      '</div>' +
+      '<div class="cover-badge">' + esc(productName) + '</div>' +
+      '<div class="cover-quote">궁합은 두 사람이 맞는지 보는 일이 아니라,<br>어디서 부딪히고 어떻게 풀어야 하는지를 아는 일입니다.</div>' +
+      '<div class="cover-info">' +
+      '<div><span>' + esc(nameA) + '</span>' + esc(birthLabel(A)) + '</div>' +
+      '<div><span>' + esc(nameB) + '</span>' + esc(birthLabel(B)) + '</div>' +
+      '<div><span>종합 궁합</span>' + r.score.total + '점 · ' + esc(r.verdict.head.split(' — ')[0]) + '</div>' +
+      '<div><span>발행</span>' + todayStr + '</div>' +
+      '</div>' +
+      '<div class="cover-foot">운명나침반 · nachimbansaju.com<br>이 책은 결제하신 주문에 한해 발행된 맞춤 리포트입니다.</div>' +
+      '</div>';
+
+    // ── 목차 ──
+    var toc = b.addPage();
+    toc.innerHTML =
+      '<h2 class="page-title">목차</h2>' +
+      '<div class="toc">' +
+      '<div class="toc-row"><span>제1부</span>첫 번째 분의 타고난 본질과 숨겨진 속마음 분석</div>' +
+      '<div class="toc-row"><span>제2부</span>두 번째 분의 타고난 본질과 숨겨진 속마음 분석</div>' +
+      '<div class="toc-row"><span>제3부</span>두 사람의 오행 합(合)과 충(沖) 분석 (끌림의 진짜 이유)</div>' +
+      '<div class="toc-row"><span>제4부</span>왜 항상 같은 문제로 부딪힐까 (서로의 갈등 촉발 버튼)</div>' +
+      '<div class="toc-row"><span>제5부</span>상대방이 절대 먼저 털어놓지 않는 무의식적 결핍</div>' +
+      '<div class="toc-row"><span>제6부</span>돈 관리와 집안일, 미래를 합칠 때 터지는 위기 시기</div>' +
+      '<div class="toc-row"><span>제7부</span>평생 백년해로하기 위한 1:1 맞춤 화해·소통 개운 비책</div>' +
+      '</div>' +
+      '<div class="summary-card">' +
+      '<div class="summary-title">두 사람의 궁합을 한눈에</div>' +
+      '<div class="summary-grid">' +
+      '<div><span>일간</span>' + A.ilgan + '(' + esc(nameA) + ') × ' + B.ilgan + '(' + esc(nameB) + ') · ' + (r.ganRel.length ? esc(r.ganRel.join('·')) : '특별한 합충 없음') + '</div>' +
+      '<div><span>일지</span>' + A.ilji + ' × ' + B.ilji + ' · ' + (r.jiRel.length ? esc(r.jiRel.join('·')) : '특별한 합충 없음') + '</div>' +
+      '<div><span>종합 궁합</span>' + r.score.total + '점 · ' + esc(r.verdict.head.split(' — ')[0]) + '</div>' +
+      '<div><span>서로 채우는 기운</span>' + esc(elemListKr(r.fillA.concat(r.fillB))) + '</div>' +
+      '<div><span>겹쳐 과해지는 기운</span>' + esc(elemListKr(r.overlap)) + '</div>' +
+      '<div><span>둘 다 비어 있는 기운</span>' + esc(elemListKr(r.bothZero)) + '</div>' +
+      '</div></div>' +
+      '<div class="read-guide">' +
+      '<h3 class="sec-title">이 책을 읽는 법</h3>' +
+      '<p>1~2부는 각자의 사주를 따로 읽습니다. 상대를 이해하려면 먼저 각자의 재료를 알아야 하기 때문입니다.</p>' +
+      '<p>3부가 이 책의 중심입니다. 두 사람의 여덟 글자를 맞세워 <b>어디서 끌리고 어디서 부딪히는지</b>를 계산한 결과입니다.</p>' +
+      '<p>4~6부는 그 결과를 생활로 옮긴 것입니다. 갈등이 시작되는 지점, 서로 말하지 않는 결핍, 돈과 미래를 합칠 때의 시기를 다룹니다.</p>' +
+      '<p>7부는 결론입니다. <b>말 꺼내기 좋은 화해 날짜</b>와 이 관계에서 실제로 바꿀 세 가지를 날짜와 함께 적었습니다.</p>' +
+      '</div>';
+
+    // ── 제1부·2부: 각자 분석 ──
+    couplePersonChapters(b, A, nameA, 1, '첫 번째 분');
+    couplePersonChapters(b, B, nameB, 2, '두 번째 분');
+
+    // ── 제3부: 오행 합충 ──
+    b.addPage();
+    b.chapter(3, '두 사람의 오행 합(合)과 충(沖)', '두 사람의 여덟 글자를 맞세워 끌림과 마찰의 진짜 원인을 계산했습니다.', '부');
+    b.section('두 사람 원국 나란히');
+    b.block(coupleCompareTable(A, B, nameA, nameB));
+    b.para('위 표는 두 사람의 원국을 같은 기준으로 나란히 놓은 것입니다. 사주 원국의 네 기둥은 왼쪽부터 년·월·일·시이며, 시주가 비어 있으면 태어난 시간을 몰라 삼주로 계산한 것입니다.', 'small');
+
+    b.section('오행 분포 비교');
+    b.block('<div class="bar-legend"><span>위 ' + esc(nameA) + ' · 아래 ' + esc(nameB) + '</span></div>' + pairElementBar(A, B));
+    b.para(elemBalanceText(A, B, r, nameA, nameB));
+
+    b.section('서로 채워주는 기운과 겹쳐서 과해지는 기운');
+    b.block(elemStateTable(r, nameA, nameB));
+
+    b.addPage();
+    b.section('일간 ' + A.ilgan + ' × ' + B.ilgan + ' — 두 사람의 중심이 만나는 방식');
+    b.para(ganPairText(A, B, r, nameA, nameB));
+    b.para('<b>' + esc(nameB) + ' 님이 보는 ' + esc(nameA) + ' 님</b> — ' + esc(nameA) + ' 님의 일간(' + A.ilgan + ')은 ' + esc(nameB) + ' 님에게 <b>' + r.bSeesA + '</b>의 자리입니다. ' + (SIPSIN_TO_PARTNER[r.bSeesA] || ''));
+
+    b.section('일지 ' + A.ilji + ' × ' + B.ilji + ' — 배우자궁이 만나는 방식');
+    b.para(jiPairText(A, B, r));
+    b.block('<table class="mini-table wide"><tbody>' +
+      '<tr><th>' + esc(nameA) + ' 배우자궁</th><td>' + A.ilji + ' · ' + A.sipsin.day.ji + ' — ' + (SPOUSE_TRAIT[eng.ELEM_OF_JI[A.ilji]] || '') + '</td></tr>' +
+      '<tr><th>' + esc(nameB) + ' 배우자궁</th><td>' + B.ilji + ' · ' + B.sipsin.day.ji + ' — ' + (SPOUSE_TRAIT[eng.ELEM_OF_JI[B.ilji]] || '') + '</td></tr>' +
+      '</tbody></table>');
+
+    b.section('두 사주 사이의 다른 지지 관계');
+    if (r.cross.length) {
+      b.block('<table class="mini-table wide cross-table"><tbody>' + r.cross.slice(0, 6).map(function (c) {
+        return '<tr><th>' + esc(c.a.split(' ')[1]) + ' × ' + esc(c.b.split(' ')[1]) + '</th><td><span class="muted">' + esc(c.a.split(' ')[0]) + ' × ' + esc(c.b.split(' ')[0]) + '</span> · ' + esc(c.text) + '</td></tr>';
+      }).join('') + '</tbody></table>');
+    } else {
+      b.para('일지 이외의 지지에서는 두드러진 합이나 충이 없습니다. 관계의 성격은 일지와 오행의 보완에서 결정되는 구조입니다.', 'small');
+    }
+    if (r.crossGan.length) {
+      b.para('천간에서도 <b>' + esc(r.crossGan.slice(0, 3).map(function (g) { return g.a + '×' + g.b + ' ' + g.text; }).join(', ')) + '</b>이 성립합니다. 겉으로 드러나는 태도와 말투에 이 관계가 배어납니다.', 'small');
+    }
+
+    b.section('궁합 점수 — 다섯 가지로 나눠 본 결과');
+    b.para('아래 점수는 두 사람의 원국을 같은 기준으로 계산한 상대값입니다. 100점 만점의 절대 평가가 아니라, 이 관계 안에서 어느 부분이 강하고 어느 부분을 손봐야 하는지를 보여주는 지표입니다.', 'small');
+    b.block(scoreTable(r));
+    b.block('<table class="mini-table wide score-note"><tbody>' +
+      '<tr><th>끌림</th><td>일간·일지의 합과 충, 서로에게 보이는 십성으로 계산합니다. 높다고 좋은 것만은 아니며, 낮으면 관계의 시작 자체가 더디다는 뜻입니다.</td></tr>' +
+      '<tr><th>안정</th><td>충·형·파·해의 개수와 두 사람의 강약 차이를 봅니다. 이 점수가 낮으면 같은 문제가 반복됩니다.</td></tr>' +
+      '<tr><th>보완</th><td>한쪽에 없고 다른 쪽에 있는 오행, 둘 다 비어 있는 오행을 셉니다. 오래 가는 관계의 실제 연료입니다.</td></tr>' +
+      '<tr><th>생활</th><td>재성·식상·관성의 구조를 비교해 돈과 말, 규칙의 리듬이 맞는지 봅니다.</td></tr>' +
+      '<tr><th>시기</th><td>앞으로 6년의 세운과 현재 대운이 두 사람에게 동시에 어떻게 작용하는지 계산합니다.</td></tr>' +
+      '</tbody></table>');
+    b.section('이 궁합을 한 줄로');
+    b.para('<b>' + esc(r.verdict.head) + '</b>');
+    b.para(esc(r.verdict.body));
+    b.section('가장 먼저 손볼 것');
+    b.block('<table class="mini-table wide"><tbody>' + priorityRows(r).map(function (x) {
+      return '<tr><th>' + x[0] + ' ' + x[1] + '점</th><td>' + x[2] + '</td></tr>';
+    }).join('') + '</tbody></table>');
+    b.para('다섯 항목을 모두 고치려 하면 오래 가지 않습니다. 가장 낮은 두 항목만 3개월간 의식하면 나머지는 따라옵니다.', 'small');
+    b.section('이 관계가 강한 곳');
+    b.block('<table class="mini-table wide"><tbody>' + strongRows(r).map(function (x) {
+      return '<tr><th>' + x[0] + ' ' + x[1] + '점</th><td>' + x[2] + '</td></tr>';
+    }).join('') + '</tbody></table>');
+
+    // ── 제4부: 갈등 촉발 버튼 ──
+    b.addPage();
+    b.chapter(4, '왜 항상 같은 문제로 부딪힐까', '서로의 갈등 촉발 버튼은 사주에 정해져 있습니다. 버튼을 없앨 수는 없지만, 누르는 순서는 바꿀 수 있습니다.', '부');
+    var trig = conflictTriggers(A, B, r, nameA, nameB);
+    b.para(conflictIntro(A, B, r, nameA, nameB, trig.length));
+    trig.forEach(function (t, i) {
+      b.section((i + 1) + '. ' + t.title);
+      b.para(t.body);
+      b.para('<b>멈추는 방법</b> — ' + t.fix);
+    });
+    b.section('싸움이 커지는 순서');
+    b.para(fightSequence(A, B, r, nameA, nameB));
+    b.section('두 사람이 지킬 규칙 세 가지');
+    b.block('<table class="mini-table wide"><tbody>' + rulesFor(A, B, r, nameA, nameB).map(function (x, i) {
+      return '<tr><th>규칙 ' + (i + 1) + '</th><td>' + x + '</td></tr>';
+    }).join('') + '</tbody></table>');
+
+    // ── 제5부: 무의식적 결핍 ──
+    b.addPage();
+    b.chapter(5, '상대방이 절대 먼저 털어놓지 않는 무의식적 결핍', '사주에서 비어 있는 오행은 그 사람이 평생 말하지 않는 자리입니다.', '부');
+    b.para('사람은 자신에게 없는 것을 요구하지 않습니다. 그래서 사주에서 비어 있거나 약한 오행은 "이 사람이 먼저 말하지 않는 것"과 정확히 겹칩니다. 이 장은 두 사람의 빈자리를 각각 짚고, 그 자리를 채우는 방법을 적었습니다.');
+    var dA = pickDeficit(A, B, []);
+    var dB = pickDeficit(B, A, [dA]);
+    b.section(esc(nameB) + ' 님 — ' + DEFICIT[dB].lack);
+    b.para('빈자리 — ' + ELEM_KR[dB] + ' 기운이 ' + (B.counts[dB] === 0 ? '아예 없습니다' : '한 글자뿐입니다') + '. ' + DEFICIT[dB].now);
+    b.para('<b>' + esc(nameA) + ' 님이 해줄 수 있는 것</b> — ' + esc(nameB) + ' 님이 곁에서 기다리는 것은 ' + DEFICIT[dB].need + '입니다. ' + DEFICIT[dB].fill);
+    b.section(esc(nameA) + ' 님 — ' + DEFICIT[dA].lack);
+    b.para('빈자리 — ' + ELEM_KR[dA] + ' 기운이 ' + (A.counts[dA] === 0 ? '아예 없습니다' : '한 글자뿐입니다') + '. ' + DEFICIT[dA].now);
+    b.para('<b>' + esc(nameB) + ' 님이 해줄 수 있는 것</b> — ' + esc(nameA) + ' 님이 곁에서 기다리는 것은 ' + DEFICIT[dA].need + '입니다. ' + DEFICIT[dA].fill);
+    b.section('서로를 오해하는 지점');
+    b.block('<table class="mini-table wide"><tbody>' +
+      '<tr><th>' + esc(nameA) + '</th><td>' + missReadText(A, dA, B, nameA, nameB) + '</td></tr>' +
+      '<tr><th>' + esc(nameB) + '</th><td>' + missReadText(B, dB, A, nameB, nameA) + '</td></tr>' +
+      '</tbody></table>');
+    b.section('서로의 빈자리를 채우는 순서');
+    b.para(fillOrderText(A, B, r, nameA, nameB));
+
+    // ── 제6부: 돈·집안일·위기 시기 ──
+    b.addPage();
+    b.chapter(6, '돈 관리와 집안일, 미래를 합칠 때 터지는 위기 시기', '생활의 문제는 성격이 아니라 구조에서 옵니다. 두 사람의 재물·생활 구조를 나란히 봅니다.', '부');
+    b.section('두 사람의 돈 다루는 방식');
+    b.block(moneyCompareTable(A, B, nameA, nameB));
+    b.para(moneyPairText(A, B, r, nameA, nameB));
+    b.section('집안일과 생활 리듬');
+    b.para(choreText(A, B, r, nameA, nameB));
+    b.section('미래를 합칠 때 터지는 시기 — 2026~2031');
+    b.block(yearCrossTable(r, nameA, nameB));
+    b.para(yearCrossText(r, nameA, nameB));
+    b.addPage();
+    b.section('2027년 두 사람의 월별 기운');
+    b.para('2027년 한 해를 달 단위로 나눠, 두 사람의 일지에 각각 어떤 기운이 들어오는지 계산한 표입니다. 같은 달이라도 두 사람에게 다르게 작용하므로, 두 칸을 함께 보고 판단하세요.', 'small');
+    b.block(coupleMonthTable(A, B, nameA, nameB));
+    b.para(coupleMonthText(A, B, nameA, nameB), 'small');
+    b.section('2027년, 이 일은 이 달에');
+    b.block('<table class="mini-table wide event-table"><tbody>' + eventPlan(A, B).map(function (x) {
+      return '<tr><th>' + x[0] + '</th><td><b>좋은 달</b> ' + x[1] + '<br><b>피할 달</b> ' + x[2] + '<br><span class="muted">' + x[3] + '</span></td></tr>';
+    }).join('') + '</tbody></table>');
+    b.addPage();
+    b.section('대운의 교차점');
+    b.para(daeunCrossText(A, B, nameA, nameB));
+    b.block(daeunPairTable(A, B, nameA, nameB));
+    b.section('대운이 바뀌는 해에 두 사람이 할 일');
+    b.block('<table class="mini-table wide"><tbody>' + daeunShiftAdvice(A, B, nameA, nameB).map(function (x, i) {
+      return '<tr><th>' + (i + 1) + '</th><td>' + x + '</td></tr>';
+    }).join('') + '</tbody></table>');
+    b.section('위기 시기를 넘기는 3단계');
+    b.para('흔들리는 해에는 감정보다 <b>순서</b>가 중요합니다. 아래 순서를 미리 정해두면 그해에 같은 일로 두 번 싸우지 않습니다.');
+    b.block('<table class="mini-table wide"><tbody>' +
+      '<tr><th>1. 사실 확인</th><td>서로의 수면·일·돈 상태를 먼저 말로 확인합니다. 흔들릴 때는 대개 생활 기반이 먼저 무너져 있습니다.</td></tr>' +
+      '<tr><th>2. 결정 미루기</th><td>이사·투자·사업 확장처럼 되돌리기 어려운 결정은 2주 뒤로 미룹니다. 그 사이 감정이 가라앉습니다.</td></tr>' +
+      '<tr><th>3. 기록 남기기</th><td>돈이 오가는 일과 가족과의 약속은 그날 문자로 남깁니다. 기억이 아니라 기록이 이 관계의 안전장치입니다.</td></tr>' +
+      '</tbody></table>');
+    b.section('이 시기에 미리 정해둘 것');
+    b.para(moneyPairText(A, B, r, nameA, nameB) && '돈의 구조는 위기 시기에 가장 먼저 흔들립니다. 두 사람이 함께 정해둘 세 가지는 다음과 같습니다. ' +
+      '하나는 <b>고정지출의 한도</b>, 둘째는 <b>양가에 드리는 금액의 기준</b>, 셋째는 <b>큰 지출을 상의하는 금액선</b>입니다. ' +
+      '이 세 가지를 정해두면 흔들리는 해에도 다툼의 재료가 줄어듭니다.', 'small');
+
+    // ── 제7부: 화해·소통 ──
+    b.addPage();
+    b.chapter(7, '평생 백년해로를 위한 1:1 맞춤 화해·소통 개운 비책', '이 관계에서 실제로 바꿀 수 있는 것은 대화의 방식과 날짜입니다.', '부');
+    var dates = reconcileDates(A, B, today, 60);
+    var good = pickDates(dates, 3, 5, true);
+    var bad = pickDates(dates.filter(function (x) { return x.score <= 44; }).map(function (x) { return { date: x.date, dp: x.dp, score: x.score, plus: x.plus, minus: x.minus }; }), 3, 4);
+    if (!bad.length) {
+      bad = dates.slice().sort(function (a, b2) { return a.score - b2.score; }).slice(0, 2);
+    }
+    b.section('말 꺼내기 좋은 화해 날짜');
+    b.para('아래 날짜는 앞으로 60일 가운데 두 사람의 일지·일간과 가장 편하게 맞물리는 날을 계산한 것입니다. 미뤄둔 이야기를 꺼내거나, 사과를 하거나, 앞으로의 계획을 꺼내기 좋은 날입니다.');
+    b.block('<table class="mini-table wide date-table"><tbody>' + good.map(function (g) {
+      return '<tr><th>' + koDate(g.date) + '</th><td>' + g.dp.gan + g.dp.ji + '일 · ' + g.score + '점' +
+        (g.plus.length ? ' — ' + esc(Array.from(new Set(g.plus)).join('·')) : '') + '</td></tr>';
+    }).join('') + '</tbody></table>');
+    b.para('화해는 결론을 내는 자리가 아니라 <b>다시 말을 시작하는 자리</b>입니다. 이 날짜에는 "그때 내가 이렇게 느꼈어"까지만 말하고, 상대의 답을 재촉하지 마세요.', 'small');
+    b.section('피하는 것이 좋은 날');
+    b.block('<table class="mini-table wide date-table"><tbody>' + bad.map(function (g) {
+      return '<tr><th>' + koDate(g.date) + '</th><td>' + g.dp.gan + g.dp.ji + '일 · ' + g.score + '점' +
+        (g.minus.length ? ' — ' + esc(Array.from(new Set(g.minus)).join('·')) : '') + '</td></tr>';
+    }).join('') + '</tbody></table>');
+    b.para('이 날은 두 사람의 일지에 충·형·파가 걸리는 날입니다. 중요한 대화, 돈 이야기, 가족 문제는 하루만 미루면 훨씬 부드럽게 풀립니다.', 'small');
+    b.section('화해 대화 3단계');
+    b.block('<table class="mini-table wide"><tbody>' + reconcileScript(A, B, r, nameA, nameB).map(function (x, i) {
+      return '<tr><th>' + (i + 1) + '단계</th><td>' + x + '</td></tr>';
+    }).join('') + '</tbody></table>');
+    b.section('이 두 사람이 피해야 할 말');
+    b.block('<table class="mini-table wide phrase-table"><tbody>' + avoidPhrases(A, B, r, nameA, nameB).map(function (x) {
+      return '<tr><th>“' + x[0] + '”</th><td>' + x[1] + '</td></tr>';
+    }).join('') + '</tbody></table>');
+
+    b.addPage();
+    b.section(esc(nameB) + ' 님에게 말을 거는 법');
+    b.para('<b>' + B.ilgan + ' 일간</b> — ' + ilB.advice + ' ' + (SIPSIN_TO_PARTNER[r.aSeesB] || ''));
+    b.para(speakStyleText(B, nameB));
+    b.section(esc(nameA) + ' 님에게 말을 거는 법');
+    b.para('<b>' + A.ilgan + ' 일간</b> — ' + ilA.advice + ' ' + (SIPSIN_TO_PARTNER[r.bSeesA] || ''));
+    b.para(speakStyleText(A, nameA));
+    b.section('두 사람에게 없는 기운 채우기 — 함께하는 개운법');
+    b.para(pairBoostText(A, B, r, nameA, nameB));
+    b.section('3개월 실천 계획');
+    b.block('<table class="mini-table wide plan-table"><tbody>' + threeMonthPlan(A, B, r, nameA, nameB).map(function (row, i) {
+      return '<tr><th>' + (i + 1) + '개월</th><td>' + row + '</td></tr>';
+    }).join('') + '</tbody></table>');
+    b.para('궁합은 읽는 것으로 끝나지 않습니다. 위 세 가지 중 <b>가장 쉬운 하나</b>를 이번 주에 시작하면, 그 한 번이 다음 싸움의 방향을 바꿉니다.', 'small');
+    b.section('자주 묻는 질문');
+    b.block('<table class="mini-table wide faq-table"><tbody>' + coupleFaq(A, B, r, nameA, nameB).map(function (x) {
+      return '<tr><th>' + x[0] + '</th><td>' + x[1] + '</td></tr>';
+    }).join('') + '</tbody></table>');
+
+    // ── 마지막: 편지 + 이용 안내 ──
+    b.addPage();
+    b.chapter('', '마지막으로 드리는 말씀', '');
+    b.para(esc(nameA) + ' 님, ' + esc(nameB) + ' 님, 여기까지 읽어주셔서 고맙습니다.');
+    b.para(coupleLetter(A, B, r, ilA, ilB, nameA, nameB));
+    b.section('이용 안내');
+    b.para('<b>다운로드·열람 기간</b> — 이 책은 결제일로부터 30일 이내에 다시 내려받으실 수 있습니다. 기기에 저장하신 파일은 기간과 관계없이 보관하실 수 있습니다.');
+    b.para('<b>파일 오류 시</b> — 파일이 열리지 않거나 내용이 누락된 경우, 결제일로부터 30일 안에 같은 주문 페이지에서 다시 내려받으실 수 있습니다. 그래도 열리지 않으면 카카오톡 1:1 상담실에 <b>결제번호 ' + esc(order.paymentId || '-') + '</b>를 남겨주세요.');
+    b.para('<b>환불</b> — 다운로드 전에는 결제일로부터 7일 이내 전액 환불이 가능합니다. 다운로드가 시작된 디지털 콘텐츠는 단순 변심에 의한 환불이 제한됩니다(전자상거래법 제17조 제2항 제5호).');
+    b.para('<b>저작권</b> — 이 책의 분석 문구와 구성에 대한 저작권은 운명나침반에 있습니다. 구매자 본인의 열람·보관 목적 외 복제·배포는 삼가 주세요.', 'small');
+    b.para('<b>고지</b> — 본 리포트는 전통 명리학 이론에 근거한 해석 자료이며, 의료·법률·투자 판단을 대신하지 않습니다.', 'small');
+    b.para('<span class="brand-end">運命羅針盤 · nachimbansaju.com</span>', 'center');
+
+    return b.build();
+  }
+
+  function priorityRows(r) {
+    var keys = ['attraction', 'stability', 'balance', 'daily', 'timing'].slice().sort(function (a, b) { return r.score[a] - r.score[b]; });
+    var actions = {
+      attraction: '먼저 표현하는 쪽이 되기 — 하루 한 번, 고마운 점을 말로 꺼냅니다. 끌림은 말할수록 커집니다.',
+      stability: '생활의 경계를 정하기 — 잠드는 시간, 한 달 지출 한도, 주말 하루를 각자 영역으로 나눕니다.',
+      balance: '부족한 오행을 함께 채우기 — 이 책 7부의 개운법에서 두 사람에게 없는 기운을 주 1회 함께 합니다.',
+      daily: '돈의 구조를 나누기 — 고정지출·저축·여유자금 계좌를 분리하고 월 1회 함께 확인합니다.',
+      timing: '큰 결정을 분산하기 — 두 사람이 함께 흔들리는 해에는 이사·투자·사업 확장을 겹치지 않게 둡니다.'
+    };
+    return keys.slice(0, 2).map(function (k) { return [SCORE_LABEL[k], r.score[k], actions[k]]; });
+  }
+
+  function strongRows(r) {
+    var keys = ['attraction', 'stability', 'balance', 'daily', 'timing'].slice().sort(function (a, b) { return r.score[b] - r.score[a]; });
+    var strs = {
+      attraction: '끌림이 두 사람을 다시 만나게 합니다. 이 힘은 시간이 지나도 사라지지 않으니, 다툰 뒤에 먼저 다가가기 좋은 관계입니다.',
+      stability: '생활이 크게 흔들리지 않는 힘입니다. 이 안정 위에서만 어려운 이야기를 꺼내는 것이 좋습니다.',
+      balance: '상대에게 없는 것을 채워주는 자리입니다. 한 사람이 지칠 때 다른 사람이 자연스럽게 힘을 보탭니다.',
+      daily: '돈과 생활의 리듬이 맞는 편입니다. 두 사람이 함께 계획을 세울 때 가장 현실적인 결과가 나옵니다.',
+      timing: '앞으로의 세운이 두 사람에게 함께 힘을 보탭니다. 미뤄둔 계획을 시작하기 좋은 시기입니다.'
+    };
+    return keys.slice(0, 2).map(function (k) { return [SCORE_LABEL[k], r.score[k], strs[k]]; });
+  }
+
+  function coupleFaq(A, B, r, nA, nB) {
+    var out = [];
+    var q1 = '애초에 안 맞는 사주인가요?';
+    var a1 = '궁합 점수는 ' + r.score.total + '점, 그중 안정 ' + r.score.stability + '점입니다. ';
+    if (r.score.stability < 55) {
+      a1 += '안정 점수가 낮은 것은 두 사람이 비슷하지 않다는 뜻이지, 함께 살 수 없다는 뜻이 아닙니다. 충·형이 있는 커플은 규칙을 정할 때 오히려 오래 갑니다.';
+    } else if (r.score.stability >= 72) {
+      a1 += '안정 점수가 높아, 생활에서 크게 부딪히지 않는 구조입니다. 다만 편안함에 기대어 표현을 줄이면 조용히 멀어질 수 있습니다.';
+    } else {
+      a1 += '큰 충돌은 없고, 생활 규칙을 조금만 정하면 무난합니다.';
+    }
+    out.push([q1, a1]);
+
+    var q2 = '돈을 한 통장으로 합쳐도 되나요?';
+    var a2 = '';
+    var a = A.sipsinCounts['재성'], bb = B.sipsinCounts['재성'];
+    if (a === 0 || bb === 0) a2 += '한쪽의 재성이 비어 있어, 돈을 합치면 관리가 그쪽으로 몰립니다. ';
+    if (a >= 3 || bb >= 3) a2 += '또 재성이 과한 쪽은 들어오고 나가는 폭이 큽니다. ';
+    if (A.sipsinCounts['비겁'] >= 3 || B.sipsinCounts['비겁'] >= 3) a2 += '비겁이 강해 지인·가족 문제로 돈이 나가기 쉽습니다. ';
+    a2 += '결론적으로 하나로 합치기보다 <b>생활비·저축·각자 용돈</b> 세 계좌로 나누는 편이 이 궁합에 맞습니다.';
+    out.push([q2, a2]);
+
+    var q3 = '결혼·동거 시기는 언제가 좋나요?';
+    var goodYears = r.yearCross.filter(function (y) { return y.good >= 2 || y.verdict === '관계 결속'; }).map(function (y) { return y.year + '년'; });
+    var a3 = '';
+    if (goodYears.length) {
+      a3 += goodYears.join('·') + '은 두 사람의 일지에 합이 걸리는 해입니다. 관계를 제도로 굳히는 결정은 이 해에 두면 자연스럽게 진행됩니다. ';
+    } else {
+      a3 += '앞으로 6년 안에는 두 사람의 일지에 합이 동시에 걸리는 해가 뚜렷하지 않습니다. 이 경우 해보다 <b>두 사람 모두에게 기운이 실린 달</b>을 골라 진행하세요. ';
+    }
+    var ms = A.monthly2027.map(function (ma, i) { return { m: ma.month, s: coupleMonthScore(A, B, ma, B.monthly2027[i]).score }; });
+    var topM = ms.slice().sort(function (x, y) { return y.s - x.s; }).slice(0, 2).map(function (x) { return x.m + '월'; });
+    a3 += '2027년 안에서 고른다면 ' + topM.join('·') + '이 좋습니다.';
+    out.push([q3, a3]);
+    return out;
+  }
+
+  function elemListKr(list) {
+    if (!list || !list.length) return '없음';
+    return list.map(function (e) { return ELEM_KR[e]; }).join(', ');
+  }
+
+  function deficitElem(C) {
+    return C.elements.zero[0] || C.elements.missing[0] || C.elements.motherElem;
+  }
+
+  // 두 사람의 결핍이 같은 오행으로 겹치지 않도록 고르다.
+  // 1순위: 그 사람에게 아예 없거나 1자인 오행 중, 상대가 넉넉히(2자 이상) 가진 것
+  function pickDeficit(C, other, used) {
+    var list = [];
+    C.elements.zero.concat(C.elements.missing).forEach(function (e) {
+      if (list.indexOf(e) < 0) list.push(e);
+    });
+    var avail = list.filter(function (e) { return used.indexOf(e) < 0; });
+    if (!avail.length) avail = list.slice();
+    var fillable = avail.filter(function (e) { return (other.counts[e] || 0) >= 2; });
+    return fillable[0] || avail[0] || deficitElem(C);
+  }
+
+  function missReadText(C, d, other, name, otherName) {
+    var lack = DEFICIT[d].lack;
+    var t = name + ' 님은 ' + ELEM_KR[d] + ' 기운이 약해, ' + lack + josaEul(lack) + ' 먼저 요구하지 않습니다. ';
+    if ((other.counts[d] || 0) >= 3) {
+      t += '그런데 ' + otherName + ' 님은 이 기운이 넉넉해, ' + name + ' 님이 말하지 않아도 알아서 해줄 것이라 기대합니다. 기대가 어긋나는 순간 ' + name + ' 님은 서운함을, ' + otherName + ' 님은 억울함을 느낍니다.';
+    } else if ((other.counts[d] || 0) <= 1) {
+      t += otherName + ' 님도 이 기운이 넉넉하지 않아, 두 사람 모두 이 자리에서 서로를 기다립니다. 누가 먼저 말을 꺼내지 않으면 오래 비어 있는 채로 남습니다.';
+    } else {
+      t += otherName + ' 님은 이 기운을 적당히 가지고 있어, ' + name + ' 님이 기대하는 만큼은 아닐 수 있습니다. 기대치를 말로 맞춰야 합니다.';
+    }
+    return t;
+  }
+
+  // 각자 2쪽: 원국·일간 / 오행·배우자궁·생활
+  function couplePersonChapters(b, C, name, num, label) {
+    var il = ILGAN[C.ilgan] || ILGAN['甲'];
+    b.addPage();
+    b.chapter(num, label + ' — ' + name + ' 님의 타고난 본질', '먼저 이 사람이 어떤 재료로 만들어졌는지 봅니다.', '부');
+    b.para('사주는 네 기둥과 여덟 글자로 이루어집니다. 특히 <b>일간</b>(' + C.ilgan + ')이 이 사람 자신이고, 나머지 일곱 글자가 그를 돕는지 누르는지를 봅니다.');
+    b.block(pillarTable(C));
+    b.para('한글 표기로는 <b>' + C.hanglePillars.year + ' · ' + C.hanglePillars.month + ' · ' + C.hanglePillars.day + ' · ' + C.hanglePillars.hour + '</b>입니다. ' +
+      (C.input.isHourKnown ? '' : '태어난 시간을 모르시므로 시주를 제외한 삼주(三柱)로 해석했습니다. '), 'small');
+    b.section('일간 ' + C.ilgan + ' — ' + il.title);
+    b.para(il.essence);
+    b.para('<b>강점</b> — ' + il.strength);
+    b.para('<b>그림자</b> — ' + il.shadow);
+    b.para('<b>한 줄 처방</b> — ' + il.advice);
+    b.section('강약 — ' + C.strength.label + ' (내 편 ' + C.strength.supportPct + '%)');
+    b.para(strengthParagraph(C));
+
+    b.section('오행의 분포');
+    b.block(elementBar(C));
+    b.para(elemOneText(C), 'small');
+    if (C.elements.over.length) {
+      b.section('넘치는 기운 — ' + elemListKr(C.elements.over));
+      b.para(OVER_TEXT[C.elements.over[0]]);
+    }
+    if (C.elements.zero.length) {
+      b.section('비어 있는 기운 — ' + elemListKr(C.elements.zero));
+      b.para(ZERO_TEXT[C.elements.zero[0]]);
+    } else {
+      b.section('비어 있는 기운 — 없음');
+      b.para('다섯 기운이 모두 자리하고 있습니다. 큰 기복이 적은 대신, 스스로 판을 키우지 않으면 무난함에 머물 수 있습니다. 지금 가진 균형을 무기로 한 분야를 깊게 파는 것이 좋습니다.');
+    }
+    b.section('십성의 구조');
+    b.block(sipsinMiniTable(C));
+    b.para(sipsinOneText(C), 'small');
+    b.section('배우자궁(일지) — ' + C.ilji + ' · ' + C.sipsin.day.ji);
+    b.para('일지 ' + C.ilji + '는 배우자 자리이자 이 사람이 가까운 사람과 부딪히는 방식입니다. ' + (SIPSIN[C.sipsin.day.ji] ? SIPSIN[C.sipsin.day.ji].line : '') + ' ' + (SPOUSE_TRAIT[global.SajuEngine.ELEM_OF_JI[C.ilji]] || ''));
+    b.section('사랑에서 반복하는 패턴');
+    b.para(relationStages(C));
+    b.section('이 사람에게 통하는 말투');
+    b.para(speakStyleText(C, name));
+    b.section('재물과 일의 구조');
+    b.para(moneyStructure(C));
+    b.para(workStructure(C), 'small');
+  }
+
+  function sipsinMiniTable(C) {
+    var rows = ['비겁', '식상', '재성', '관성', '인성'].map(function (g) {
+      var n = C.sipsinCounts[g];
+      var st = n >= 3 ? '과다' : (n === 0 ? '없음' : '보통');
+      var cls = n >= 3 ? 'mid' : (n === 0 ? 'bad' : '');
+      return '<tr><td>' + g + '</td><td class="center">' + n + '개</td><td class="' + cls + '">' + st + '</td></tr>';
+    }).join('');
+    return '<table class="grid-table sipsin-mini"><thead><tr><th>구분</th><th>개수</th><th>상태</th></tr></thead><tbody>' + rows + '</tbody></table>';
+  }
+
+  function sipsinOneText(C) {
+    var groups = ['비겁', '식상', '재성', '관성', '인성'];
+    var over = groups.filter(function (g) { return C.sipsinCounts[g] >= 3; });
+    var zero = groups.filter(function (g) { return C.sipsinCounts[g] === 0; });
+    var t = '';
+    if (over.length) t += '<b>' + over.join('·') + '</b>이 과하게 자리해 이 사주의 성격을 주도합니다. ' + GROUP_TEXT[over[0]].over + ' ';
+    if (zero.length) t += '<b>' + zero.join('·') + '</b>은 비어 있어, 그 자리를 상대에게 기대거나 생활로 메워야 합니다. ' + GROUP_TEXT[zero[0]].under + ' ';
+    if (!over.length && !zero.length) t += '다섯 십성이 모두 한두 개로 고르게 자리합니다. 어느 한 곳이 튀지 않아 관계에서도 큰 굴곡이 적습니다.';
+    return t;
+  }
+
+  function elemOneText(C) {
+    var many = C.elements.over.length ? elemListKr(C.elements.over) + ' 기운이 과하고' : '오행이 크게 치우치지 않았고';
+    var zero = C.elements.zero.length ? elemListKr(C.elements.zero) + ' 기운이 비어 있습니다.' : '비어 있는 오행은 없습니다.';
+    return '이 사주는 ' + many + ' ' + zero + ' 같은 사주끼리 만나면 서로의 과한 기운을 눌러주거나, 반대로 부족한 기운을 함께 갖게 됩니다. 다음 장에서 두 사람을 맞세워 봅니다.';
+  }
+
+  function elemBalanceText(A, B, r, nA, nB) {
+    var t = '';
+    if (r.fillA.length && r.fillB.length) {
+      t = '두 사람은 <b>서로 다른 방향으로</b> 비어 있습니다. ' + esc(nB) + ' 님은 ' + esc(nA) + ' 님에게 ' + elemListKr(r.fillA) + ' 기운을 채워주고, ' + esc(nA) + ' 님은 ' + esc(nB) + ' 님에게 ' + elemListKr(r.fillB) + ' 기운을 채워줍니다. 이 구조는 처음엔 서로가 낯설지만, 시간이 지날수록 상대에게 없는 것을 자기 것으로 만드는 관계입니다.';
+    } else if (r.fillA.length) {
+      t = esc(nB) + ' 님의 사주가 ' + esc(nA) + ' 님에게 없는 ' + elemListKr(r.fillA) + ' 기운을 넉넉히 가지고 있습니다. ' + esc(nA) + ' 님이 이 사람 곁에서 편안함을 느끼는 이유가 여기 있습니다. 다만 한쪽이 계속 채워주는 구조이므로, ' + esc(nA) + ' 님도 상대의 빈자리를 살펴야 균형이 유지됩니다.';
+    } else if (r.fillB.length) {
+      t = esc(nA) + ' 님의 사주가 ' + esc(nB) + ' 님에게 없는 ' + elemListKr(r.fillB) + ' 기운을 채워줍니다. ' + esc(nB) + ' 님이 이 관계에서 안정을 느끼는 이유입니다. 반대로 ' + esc(nA) + ' 님이 받는 것이 적다고 느낀다면, 그 서운함을 말로 꺼내야 합니다.';
+    } else {
+      t = '두 사람의 오행 분포가 비슷합니다. 서로를 채워주는 힘은 크지 않지만, 같은 언어로 이야기할 수 있다는 장점이 있습니다. 대신 둘 다 비어 있는 기운은 이 관계 안에서 채워지지 않으므로, 생활 습관과 외부 사람의 도움으로 따로 메워야 합니다.';
+    }
+    if (r.overlap.length) {
+      t += ' 한편 <b>' + elemListKr(r.overlap) + '</b> 기운은 두 사람 모두에게 과합니다. 같은 기운이 겹치면 그 자리의 장점이 두 배가 되지만, 단점도 두 배가 됩니다.';
+    }
+    if (r.bothZero.length) {
+      t += ' <b>' + elemListKr(r.bothZero) + '</b> 기운은 두 사람 모두에게 없습니다. 이 부분은 상대에게 기대할 수 없으니, 두 사람이 함께 의식적으로 만들어야 합니다.';
+    }
+    return t;
+  }
+
+  function elemStateTable(r, nA, nB) {
+    var rows = '';
+    r.byElem.forEach(function (x) {
+      var label = '', note = '';
+      if (x.state === 'bFillsA') { label = nB + ' → ' + nA; note = nA + '에게 없는 기운'; }
+      else if (x.state === 'aFillsB') { label = nA + ' → ' + nB; note = nB + '에게 없는 기운'; }
+      else if (x.state === 'heavyOverlap') { label = '겹쳐 과함'; note = '둘 다 3자 이상'; }
+      else if (x.state === 'overlap') { label = '겹침'; note = '둘 다 2자 이상'; }
+      else if (x.state === 'bothZero') { label = '둘 다 없음'; note = '함께 메워야 함'; }
+      else { label = '무난'; note = '한쪽만 있음'; }
+      var cls = x.state === 'bothZero' ? 'bad' : (x.state.indexOf('Fills') >= 0 ? 'good' : (x.state.indexOf('verlap') >= 0 ? 'mid' : ''));
+      rows += '<tr><td>' + ELEM_KR[x.e] + '</td><td class="center">' + x.a + '</td><td class="center">' + x.b + '</td><td class="' + cls + '">' + esc(label) + ' <span class="muted">(' + note + ')</span></td></tr>';
+    });
+    return '<table class="grid-table elem-state"><thead><tr><th>오행</th><th>' + esc(nA) + '</th><th>' + esc(nB) + '</th><th>관계</th></tr></thead><tbody>' + rows + '</tbody></table>';
+  }
+
+  function ganPairText(A, B, r, nA, nB) {
+    var t = nA + ' 님의 일간 <b>' + A.ilgan + '</b>과 ' + nB + ' 님의 일간 <b>' + B.ilgan + '</b>은 ';
+    if (hasKw(r.ganRel, '천간합')) {
+      t += '<b>' + r.ganRel.join('·') + '</b>을 이룹니다. 천간합은 두 사람의 중심이 하나로 묶이는 자리로, 궁합에서 가장 강한 끌림 중 하나입니다. 설명하지 않아도 통하는 부분이 있고, 함께 있을 때 각자의 기운이 오히려 안정됩니다. 다만 합은 서로에게 흡수되는 관계이기도 해서, 한쪽이 자기 중심을 잃지 않도록 주의해야 합니다.';
+    } else if (r.ganRel.indexOf('같은 천간') >= 0) {
+      t += '같은 <b>' + A.ilgan + '</b>입니다. 같은 기운끼리 만나면 말이 빠르게 통하고 취향도 비슷합니다. 대신 둘 다 물러서지 않아 사소한 일이 자존심 싸움으로 번지고, 서로를 자기 거울로 보기 때문에 상대의 단점이 유난히 거슬립니다.';
+    } else if (hasKw(r.ganRel, '천간충')) {
+      t += '<b>천간충(沖)</b>의 자리입니다. 서로에게 없는 것을 정확히 건드려 강하게 끌리지만, 그 자극이 곧 부딪힘으로 바뀝니다. 이 관계는 편안함보다 긴장감으로 이어지는 구조라, 안정을 원할수록 더 피곤해질 수 있습니다.';
+    } else if (r.ganElemRel === 'a2b') {
+      t += A.ilgan + '의 기운이 ' + B.ilgan + '의 기운을 <b>살리는(相生)</b> 자리입니다. ' + nA + ' 님이 먼저 다가가고 먼저 챙기는 구도가 자연스럽습니다. 다만 주는 쪽이 지치지 않도록 중간에 멈추는 연습이 필요합니다.';
+    } else if (r.ganElemRel === 'b2a') {
+      t += B.ilgan + '의 기운이 ' + A.ilgan + '의 기운을 <b>살리는(相生)</b> 자리입니다. ' + nB + ' 님이 ' + nA + ' 님을 편안하게 해주는 구도이고, ' + nA + ' 님은 그 곁에서 힘을 얻습니다. 받는 쪽이 고마움을 표현하지 않으면 관계가 조용히 기웁니다.';
+    } else if (r.ganElemRel === 'aWin') {
+      t += A.ilgan + '의 기운이 ' + B.ilgan + '의 기운을 <b>누르는(相剋)</b> 자리입니다. ' + nA + ' 님이 관계의 속도를 쥐고 있고, ' + nB + ' 님은 그 속도에 맞추다 지칠 수 있습니다.';
+    } else {
+      t += B.ilgan + '의 기운이 ' + A.ilgan + '의 기운을 <b>누르는(相剋)</b> 자리입니다. ' + nB + ' 님이 기준을 세우고 ' + nA + ' 님이 맞추는 구도가 되기 쉽습니다. ' + nA + ' 님이 말을 아끼면 서운함이 쌓입니다.';
+    }
+    return t + ' ' + nB + ' 님이 보는 ' + nA + ' 님은 <b>' + r.aSeesB + '</b>의 자리입니다. ' + (SIPSIN_TO_PARTNER[r.aSeesB] || '');
+  }
+
+  function jiPairText(A, B, r) {
+    if (!r.jiRel.length) {
+      return '두 사람의 일지 ' + A.ilji + '와 ' + B.ilji + ' 사이에는 두드러진 합이나 충이 없습니다. 이 경우 관계의 결은 일지가 아니라 오행의 보완과 일간의 관계에서 결정됩니다. 좋게 말하면 서로 간섭이 적고, 아쉽게 말하면 관계를 묶어주는 힘이 약합니다. 생활의 규칙과 함께하는 목표가 이 관계를 붙잡아 줍니다.';
+    }
+    var parts = r.jiRel.map(function (rel) {
+      var key = rel.indexOf('육합') >= 0 ? '육합' : (rel.indexOf('삼합') >= 0 ? '삼합' : (rel.indexOf('자형') >= 0 ? '자형' : (rel.indexOf('충') >= 0 ? '충' : (rel.indexOf('형') >= 0 ? '형' : (rel.indexOf('파') >= 0 ? '파' : '해')))));
+      return REL_MEAN[key] || '';
+    }).filter(Boolean);
+    var head = '두 사람의 일지 <b>' + A.ilji + '</b>와 <b>' + B.ilji + '</b>는 <b>' + esc(r.jiRel.join('·')) + '</b>의 관계입니다. ';
+    if (r.jiRel.length > 1) {
+      head += '여러 관계가 겹쳐 있다는 것은, 이 자리에서 끌림과 마찰이 동시에 일어난다는 뜻입니다. 한쪽만 보지 말고 두 관계를 함께 읽어야 합니다. ';
+    }
+    return head + parts.join(' ');
+  }
+
+  function conflictIntro(A, B, r, nA, nB, count) {
+    var t = '두 사람이 싸우는 방식은 성격이 아니라 <b>사주에서 서로 부딪히는 자리</b>에서 나옵니다. ';
+    if (hasKw(r.jiRel, '충')) {
+      t += '이 관계는 일지에 충(沖)이 있어, 생활의 리듬과 가치관이 정면으로 다릅니다. 그래서 사소한 결정 하나도 "왜 그렇게 생각해?"에서 시작됩니다. ';
+    } else if (hasKw(r.jiRel, '형') || hasKw(r.jiRel, '파') || hasKw(r.jiRel, '해')) {
+      t += '이 관계는 일지에 ' + esc(r.jiRel.join('·')) + '이 있어, 큰 사건보다 말투와 태도에서 상처가 생깁니다. ';
+    } else {
+      t += '이 관계는 일지에 큰 충이 없어, 싸움의 원인이 사주보다 생활 습관과 피로에서 옵니다. ';
+    }
+    t += '아래 ' + count + '가지는 두 사람의 계산 결과에서 실제로 나온 촉발 지점입니다. 전부 없애려 하지 말고, 가장 자주 눌리는 것 하나만 먼저 다루세요.';
+    return t;
+  }
+
+  function conflictTriggers(A, B, r, nA, nB) {
+    var out = [];
+    if (hasKw(r.jiRel, '충')) {
+      out.push({
+        title: '생활 리듬의 정면 충돌',
+        body: nA + ' 님의 일지 ' + A.ilji + '와 ' + nB + ' 님의 일지 ' + B.ilji + '가 충(沖)을 이룹니다. 충은 서로의 생활 방식이 정반대라는 뜻입니다. 잠드는 시간, 돈을 쓰는 기준, 주말을 보내는 방식처럼 매일 반복되는 것에서 부딪힙니다. 감정이 상해서가 아니라 구조가 달라서 생기는 싸움입니다.',
+        fix: '생활의 규칙을 "각자 영역"으로 나누세요. 잠드는 시간, 지출 한도, 주말 하루는 서로 간섭하지 않기로 정하면 충의 절반이 사라집니다.'
+      });
+    }
+    if (hasKw(r.jiRel, '형')) {
+      out.push({
+        title: '말과 태도 — 서운함이 서운함으로 돌아오는 구조',
+        body: '일지에 형(刑)이 있어, 예의와 말투가 자주 문제가 됩니다. 한쪽은 사실을 말했다고 생각하는데 다른 쪽은 무시당했다고 느낍니다. 이 자리는 시간이 지나도 기억에 남아, 다음 싸움의 재료로 다시 나옵니다.',
+        fix: '감정이 올라오면 사실만 말하고, 판단은 하루 뒤에 하세요. "너는 항상"으로 시작하는 문장을 금지어로 정하는 것만으로도 크게 줄어듭니다.'
+      });
+    }
+    if (hasKw(r.jiRel, '파')) {
+      out.push({
+        title: '중요한 순간에 어긋나는 타이밍',
+        body: '일지에 파(破)가 있어, 평소에는 잘 맞다가 결정적인 순간에 방향이 갈립니다. 이사·이직·투자처럼 큰 결정에서 특히 그렇습니다. 서로 운이 없다고 느끼지만, 실제로는 결정을 내리는 속도가 다르기 때문입니다.',
+        fix: '큰 결정은 최소 일주일 전에 꺼내고, 결정일을 미리 정하세요. 즉석에서 결론을 내리는 대화를 피하는 것이 핵심입니다.'
+      });
+    }
+    if (hasKw(r.jiRel, '해')) {
+      out.push({
+        title: '두 사람 바깥의 사람이 끼어드는 문제',
+        body: '일지에 해(害)가 있어, 두 사람 사이보다 가족·친구·직장 사람이 문제의 원인이 되는 경우가 많습니다. 서로를 탓하기 전에 그 사람과의 경계를 먼저 봐야 합니다.',
+        fix: '양가 가족과 공통 지인에 대한 경계를 두 사람끼리 먼저 합의하세요. 밖에서 온 이야기는 두 사람이 확인한 뒤에 받아들이는 규칙이 필요합니다.'
+      });
+    }
+    if (A.strength.supportPct >= 55 && B.strength.supportPct >= 55) {
+      out.push({
+        title: '주도권 다툼',
+        body: '두 사람 모두 신강(身强)한 사주입니다. 각자 자기 방식이 확실하고, 상대의 방식을 존중하는 데 시간이 걸립니다. 결정권을 두고 다투면 사소한 일이 자존심 싸움으로 번집니다.',
+        fix: '결정권을 영역으로 나누세요. 돈, 아이, 집안일, 여행처럼 항목별로 최종 결정자를 정하면 다툼의 절반이 사라집니다.'
+      });
+    } else if (Math.abs(A.strength.supportPct - B.strength.supportPct) >= 25) {
+      var strongOne = A.strength.supportPct > B.strength.supportPct ? nA : nB;
+      var weakOne = A.strength.supportPct > B.strength.supportPct ? nB : nA;
+      out.push({
+        title: '한 사람만 짐을 지는 구조',
+        body: strongOne + ' 님의 사주가 더 강하고, ' + weakOne + ' 님은 상대의 속도에 맞추는 자리에 있습니다. 겉으로는 원만하지만 ' + weakOne + ' 님의 서운함이 말로 나오지 않아 쌓입니다.',
+        fix: weakOne + ' 님이 "괜찮다"고 말할 때 한 번 더 물어보세요. 결정을 미루고 상대의 선택을 기다리는 시간을 의식적으로 만드는 것이 필요합니다.'
+      });
+    }
+    r.overlap.forEach(function (e) {
+      if (out.length >= 4) return;
+      var c = ELEM_CLASH_PAIR[e];
+      if (!c) return;
+      out.push({ title: c[0], body: c[1], fix: c[2] });
+    });
+    if (out.length < 2) {
+      var sA = Math.max.apply(null, ['비겁', '식상', '재성', '관성', '인성'].map(function (g) { return A.sipsinCounts[g]; }));
+      out.push({
+        title: '무던함이 만드는 거리',
+        body: '두 사람의 사주에 강한 충돌이 없습니다. 이 경우 싸움이 없는 대신 서운함이 말로 나오지 않아, 어느 날 갑자기 거리가 벌어져 있습니다. 싸우지 않는 것이 잘 맞는 것과 같지는 않습니다.',
+        fix: '한 달에 한 번, 결론 없는 대화 30분을 정하세요. 해결하려 하지 말고 그냥 듣는 시간이 필요합니다.'
+      });
+    }
+    return out.slice(0, 4);
+  }
+
+  function fightSequence(A, B, r, nA, nB) {
+    var first = '말이 앞서는 쪽';
+    if (A.sipsinCounts['식상'] > B.sipsinCounts['식상']) first = nA;
+    else if (B.sipsinCounts['식상'] > A.sipsinCounts['식상']) first = nB;
+    var silent = '침묵하는 쪽';
+    if (A.sipsinCounts['인성'] > B.sipsinCounts['인성']) silent = nA;
+    else if (B.sipsinCounts['인성'] > A.sipsinCounts['인성']) silent = nB;
+    var t = '이 관계의 싸움은 보통 이렇게 흐릅니다. ';
+    t += '<b>1단계</b> — ' + (first === '말이 앞서는 쪽' ? '한 사람' : first + ' 님') + '이 감정을 말로 먼저 꺼냅니다. ';
+    t += '<b>2단계</b> — ' + (silent === '침묵하는 쪽' ? '상대' : silent + ' 님') + '은 그 자리에서 정리하려 하고 말수가 줄어듭니다. ';
+    t += '<b>3단계</b> — 말이 줄어든 것을 무관심으로 받아들여, 먼저 꺼낸 쪽이 더 크게 화를 냅니다. ';
+    t += '<b>4단계</b> — 결론 없이 끝나고, 같은 장면이 두 달 뒤에 반복됩니다. ';
+    if (hasKw(r.jiRel, '충')) t += '충의 관계에서는 3단계에서 감정이 두 배로 커지기 쉬우니, 2단계에서 멈추는 것이 유일한 방법입니다.';
+    else t += '이 순서를 끊으려면 2단계에서 "지금은 정리할 시간이 필요해"라고 말해주는 것만으로 충분합니다.';
+    return t;
+  }
+
+  function rulesFor(A, B, r, nA, nB) {
+    var out = [];
+    if (hasKw(r.jiRel, '충')) out.push('매일 반복되는 생활(잠·식사·지출)은 항목별로 담당자를 정하고, 서로 간섭하지 않습니다.');
+    else out.push('고민이 생기면 결론을 내기 전에 "지금 이야기해도 될까"를 먼저 묻습니다.');
+    if (hasKw(r.jiRel, '형') || hasKw(r.jiRel, '파')) out.push('큰 결정은 일주일 전에 꺼내고, 결정일을 미리 정합니다. 즉석 결정을 피합니다.');
+    else out.push('돈이 오가는 결정은 그 자리에서 정하지 않고 하루를 둡니다.');
+    if (r.overlap.length) out.push(elemListKr(r.overlap) + ' 기운이 겹치는 자리(감정·명분·책임)에서는 한 사람이 말할 때 다른 사람은 끊지 않습니다.');
+    else out.push('한 사람이 말하는 동안 끊지 않고, 끝까지 듣고 나서 한 문장으로 요약해 줍니다.');
+    return out;
+  }
+
+  function fillOrderText(A, B, r, nA, nB) {
+    var t = '';
+    if (r.commonMissing.length) {
+      t += '두 사람 모두에게 없는 <b>' + elemListKr(r.commonMissing) + '</b> 기운은 상대에게 기대할 수 없습니다. ';
+      var bo = BOOST[r.commonMissing[0]];
+      t += '대신 생활에서 함께 채울 수 있습니다. ' + bo.color + ' 계열의 소품, ' + bo.dir + ' 방향의 산책, ' + bo.act + ' 같은 활동이 여기에 해당합니다. 두 사람이 함께할 때 이 요소를 하나 넣어보세요. ';
+    }
+    if (r.fillB.length) {
+      t += nA + ' 님이 ' + nB + ' 님에게 ' + elemListKr(r.fillB) + ' 기운을 채워줄 수 있습니다. ' + nB + ' 님이 무기력해 보이는 날은 이 기운이 필요한 날입니다. ';
+    }
+    if (r.fillA.length) {
+      t += nB + ' 님이 ' + nA + ' 님에게 ' + elemListKr(r.fillA) + ' 기운을 채워줄 수 있습니다. ' + nA + ' 님이 조급해지는 날은 이 기운이 비어 있는 날입니다. ';
+    }
+    if (!r.fillA.length && !r.fillB.length) {
+      t += '두 사람이 서로에게 없는 기운을 직접 채워주는 구조는 아닙니다. 그래서 이 관계는 상대를 바꾸려 하기보다, 각자 자기 빈자리를 생활 습관으로 메우는 것이 오래 갑니다.';
+    }
+    return t;
+  }
+
+  function moneyCompareTable(A, B, nA, nB) {
+    function c(C, g) { return C.sipsinCounts[g]; }
+    var rows = [
+      ['재성(재물)', c(A, '재성') + '개 — ' + moneyStyle(A), c(B, '재성') + '개 — ' + moneyStyle(B)],
+      ['비겁(지출·경쟁)', c(A, '비겁') + '개', c(B, '비겁') + '개'],
+      ['식상(벌이·표현)', c(A, '식상') + '개', c(B, '식상') + '개'],
+      ['관성(책임·규율)', c(A, '관성') + '개', c(B, '관성') + '개'],
+      ['재물 점수', A.scores.money + '점', B.scores.money + '점']
+    ];
+    return '<table class="mini-table wide couple-table"><thead><tr><th>구분</th><th>' + esc(nA) + '</th><th>' + esc(nB) + '</th></tr></thead><tbody>' +
+      rows.map(function (r2) { return '<tr><td class="row-head">' + r2[0] + '</td><td>' + esc(r2[1]) + '</td><td>' + esc(r2[2]) + '</td></tr>'; }).join('') +
+      '</tbody></table>';
+  }
+
+  function moneyStyle(C) {
+    var n = C.sipsinCounts['재성'];
+    if (n >= 3) return '들어오는 돈도 많지만 나가는 길도 넓음';
+    if (n === 0) return '돈이 눈에 잘 보이지 않는 구조';
+    if (C.sipsinCounts['비겁'] >= 3) return '벌어도 지인·경쟁에서 새기 쉬움';
+    return '성실하게 모으는 구조';
+  }
+
+  function moneyPairText(A, B, r, nA, nB) {
+    var a = A.sipsinCounts['재성'], bb = B.sipsinCounts['재성'];
+    var t = '';
+    if (a >= 2 && bb >= 2) {
+      t += '두 사람 모두 재성이 있어 돈이 오가는 일에 익숙합니다. 문제는 벌이가 아니라 <b>속도</b>입니다. 한쪽은 크게 벌고 크게 쓰고, 다른 쪽은 작게 벌어도 남기려 합니다. 이 차이는 아껴서가 아니라 기준이 달라서 생깁니다. ';
+    } else if (a === 0 && bb === 0) {
+      t += '두 사람 모두 재성이 비어 있습니다. 벌이가 없어서가 아니라, 돈을 관리하는 자리가 약하다는 뜻입니다. 통장을 하나로 두면 지출이 보이지 않으니, <b>고정지출·저축·여유자금</b> 계좌를 처음부터 나눠 두는 것이 이 관계에서 가장 현실적인 처방입니다. ';
+    } else if (a === 0 || bb === 0) {
+      var noJae = a === 0 ? nA : nB;
+      var hasJae = a === 0 ? nB : nA;
+      t += noJae + ' 님은 재성이 비어 있고 ' + hasJae + ' 님은 재성이 있습니다. 돈을 관리하는 역할은 자연스럽게 ' + hasJae + ' 님에게 몰립니다. 이것이 불만으로 굳지 않도록, ' + noJae + ' 님도 월 1회 가계를 함께 확인하는 자리를 만드세요. ';
+    } else {
+      t += '두 사람 모두 재성이 한두 개로 알맞습니다. 큰 위험 없이 모으는 구조이니, 한 사람이 관리하고 한 사람이 확인하는 방식이 잘 맞습니다. ';
+    }
+    if (A.sipsinCounts['비겁'] >= 3 && B.sipsinCounts['비겁'] >= 3) {
+      t += '다만 두 사람 모두 비겁이 강해, 지인 거래·보증·동업에서 돈이 새기 쉽습니다. 돈이 오가는 일은 반드시 문서로 남기세요.';
+    } else if (A.sipsinCounts['비겁'] >= 3 || B.sipsinCounts['비겁'] >= 3) {
+      t += '한쪽의 비겁이 강해 지인·가족 문제로 돈이 나갈 수 있습니다. 두 사람이 함께 정한 금액을 넘는 지출은 상의하기로 정하세요.';
+    } else {
+      t += '비겁이 과하지 않아 지인 문제로 돈이 새는 일은 적은 편입니다.';
+    }
+    return t;
+  }
+
+  function choreText(A, B, r, nA, nB) {
+    var t = '';
+    var gA = A.sipsinCounts, gB = B.sipsinCounts;
+    var who = [];
+    if (gA['인성'] >= 2 || gA['관성'] >= 2) who.push(nA);
+    if (gB['인성'] >= 2 || gB['관성'] >= 2) who.push(nB);
+    if (who.length === 1) {
+      t += who[0] + ' 님은 계획과 정리를 맡을 때 편안함을 느낍니다. 집안일을 "누가 더 많이 하느냐"로 세지 말고, ' + who[0] + ' 님이 기준과 순서를 정하고 다른 한 사람이 실행하는 방식으로 나누면 갈등이 줄어듭니다. ';
+    } else if (who.length === 2) {
+      t += '두 사람 모두 기준과 순서를 세우는 힘이 있습니다. 그래서 집안일의 "방식"을 두고 다투기 쉽습니다. 역할을 나누되 각자의 방식은 건드리지 않는 것이 핵심입니다. ';
+    } else {
+      t += '두 사람 모두 규칙에 묶이는 것을 답답해합니다. 집안일은 계획표보다 그때그때 처리하는 방식이 잘 맞습니다. 다만 미루는 일이 쌓이면 한쪽에 몰리므로, 최소한의 담당만 정해두세요. ';
+    }
+    if (hasKw(r.jiRel, '충')) {
+      t += '일지에 충이 있어 생활 시간대(아침·저녁)가 다를 가능성이 큽니다. 같은 시간에 함께 있어야 한다는 기대를 내려놓으면 훨씬 편해집니다.';
+    } else if (hasKw(r.jiRel, '육합')) {
+      t += '일지에 육합이 있어 함께 있을 때 생활이 자연스럽게 맞물립니다. 같은 공간에서 각자 할 일을 하는 방식이 이 커플에게 잘 맞습니다.';
+    } else {
+      t += '생활 리듬은 크게 부딪히지 않습니다. 대신 서로가 알아서 해줄 것이라 기대하다 서운해지는 지점을 말로 확인하는 것이 필요합니다.';
+    }
+    return t;
+  }
+
+  function yearCrossTable(r, nA, nB) {
+    var rows = r.yearCross.map(function (y) {
+      var cls = y.bad >= 2 ? 'bad' : (y.good >= 2 ? 'good' : (y.bad === 1 ? 'mid' : ''));
+      return '<tr><td>' + y.year + '년</td><td class="hanja-sm">' + y.gan + y.ji + '</td>' +
+        '<td class="small">' + esc(y.relA) + '</td><td class="small">' + esc(y.relB) + '</td>' +
+        '<td class="' + cls + '"><b>' + esc(y.verdict) + '</b>' + (y.daeunShift ? '<br><span class="muted small">' + esc(y.shiftWho) + ' 대운 전환</span>' : '') + '</td></tr>';
+    }).join('');
+    return '<table class="grid-table year-cross"><thead><tr><th>연도</th><th>간지</th><th>' + esc(nA) + ' 일지</th><th>' + esc(nB) + ' 일지</th><th>판정</th></tr></thead><tbody>' + rows + '</tbody></table>';
+  }
+
+  function yearCrossText(r, nA, nB) {
+    var bad2 = r.yearCross.filter(function (y) { return y.bad >= 2; }).map(function (y) { return y.year + '년'; });
+    var bad1 = r.yearCross.filter(function (y) { return y.bad === 1; }).map(function (y) { return y.year + '년'; });
+    var good2 = r.yearCross.filter(function (y) { return y.good >= 2; }).map(function (y) { return y.year + '년'; });
+    var t = '';
+    if (bad2.length) {
+      t += '<b>' + bad2.join('·') + '</b>은 두 사람의 일지에 동시에 충이 걸리거나 천간충이 겹치는 해입니다. 이 해에는 이사·이직·투자·양가 문제처럼 판을 바꾸는 결정을 겹쳐서 하지 마세요. 한 사람이 흔들릴 때 다른 사람이 중심을 잡아야 하는 해입니다. ';
+    }
+    if (bad1.length) {
+      t += '<b>' + bad1.join('·') + '</b>은 한쪽만 흔들리는 해입니다. 흔들리는 쪽의 말을 "예민하다"고 넘기지 말고, 그 사람의 생활 기반(수면·일·돈)을 먼저 확인하세요. ';
+    }
+    if (good2.length) {
+      t += '<b>' + good2.join('·') + '</b>은 두 사람의 일지에 합이 걸리는 해입니다. 결혼·동거·이사처럼 관계를 제도로 굳히는 결정은 이 해에 두면 훨씬 자연스럽게 진행됩니다. ';
+    }
+    if (!bad2.length && !bad1.length) {
+      t += '앞으로 6년은 두 사람에게 동시에 큰 충이 걸리지 않습니다. 이 시기에 생활의 규칙과 돈의 구조를 정해두면, 나중에 흔들리는 해를 훨씬 수월하게 넘깁니다.';
+    }
+    return t;
+  }
+
+  function coupleMonthScore(A, B, ma, mb) {
+    var eng = global.SajuEngine;
+    var ra = eng.compatOf(A.ilji, ma.ji);
+    var rb = eng.compatOf(B.ilji, mb.ji);
+    var ga = eng.ganRelation(A.ilgan, ma.gan);
+    var gb = eng.ganRelation(B.ilgan, mb.gan);
+    var sc = 55;
+    [[ra, ga, A, ma], [rb, gb, B, mb]].forEach(function (p) {
+      var rel = p[0], grel = p[1], C = p[2], m = p[3];
+      if (hasKw(rel, '육합')) sc += 12;
+      if (hasKw(rel, '삼합')) sc += 7;
+      if (hasKw(rel, '충')) sc -= 15;
+      if (hasKw(rel, '형')) sc -= 7;
+      if (hasKw(rel, '파')) sc -= 6;
+      if (hasKw(rel, '해')) sc -= 4;
+      if (hasKw(grel, '천간합')) sc += 5;
+      if (hasKw(grel, '천간충')) sc -= 7;
+      if (C.elements.missing.indexOf(m.yElem) >= 0) sc += 2;
+    });
+    if (A.elements.missing.indexOf(ma.yElem) >= 0 && B.elements.missing.indexOf(mb.yElem) >= 0) sc += 4;
+    sc = clampScore(sc, 10, 96);
+    return {
+      score: sc,
+      relA: ra, relB: rb,
+      verdict: sc >= 74 ? '좋음' : (sc >= 62 ? '순조' : (sc >= 48 ? '평이' : '주의')),
+      cls: sc >= 74 ? 'good' : (sc >= 62 ? 'ok' : (sc >= 48 ? 'mid' : 'bad')),
+      use: sc >= 74 ? '결정·여행·양가 인사' : (sc >= 62 ? '대화·계획 세우기' : (sc >= 48 ? '평소대로' : '큰 지출·큰 대화는 다음 달로'))
+    };
+  }
+
+  function coupleMonthTable(A, B, nA, nB) {
+    var rows = '';
+    A.monthly2027.forEach(function (ma, i) {
+      var mb = B.monthly2027[i];
+      var s = coupleMonthScore(A, B, ma, mb);
+      rows += '<tr><td class="mon">' + String(ma.month) + '월</td>' +
+        '<td class="small">' + (s.relA.length ? s.relA.join('·') : '-') + '</td>' +
+        '<td class="small">' + (s.relB.length ? s.relB.join('·') : '-') + '</td>' +
+        '<td class="' + s.cls + '"><b>' + s.score + '</b> ' + s.verdict + '</td>' +
+        '<td class="small use">' + s.use + '</td></tr>';
+    });
+    return '<table class="grid-table month-couple"><thead><tr><th>월</th><th>' + esc(nA) + '</th><th>' + esc(nB) + '</th><th>기운</th><th>이 달에 할 일</th></tr></thead><tbody>' + rows + '</tbody></table>';
+  }
+
+  function monthList(list) {
+    if (!list.length) return '없음';
+    return list.map(function (x) { return x.m + '월'; }).join('·');
+  }
+
+  function eventPlan(A, B) {
+    var ms = A.monthly2027.map(function (ma, i) {
+      var mb = B.monthly2027[i];
+      var s = coupleMonthScore(A, B, ma, mb);
+      return { m: ma.month, s: s.score, relA: s.relA, relB: s.relB };
+    });
+    var byScore = ms.slice().sort(function (a, b) { return b.s - a.s; });
+    var top = byScore.slice(0, 3).sort(function (a, b) { return a.m - b.m; });
+    var bottom = byScore.slice(-2).sort(function (a, b) { return a.m - b.m; });
+    var haeMonths = ms.filter(function (x) { return hasKw(x.relA, '해') || hasKw(x.relB, '해'); });
+    var calmFamily = ms.filter(function (x) { return !hasKw(x.relA, '해') && !hasKw(x.relB, '해'); }).sort(function (a, b) { return b.s - a.s; }).slice(0, 3).sort(function (a, b) { return a.m - b.m; });
+    var dealMonths = byScore.filter(function (x) { return x.s >= 64; }).slice(0, 3).sort(function (a, b) { return a.m - b.m; });
+    var weakDeal = byScore.filter(function (x) { return x.s < 50; }).sort(function (a, b) { return a.m - b.m; });
+    return [
+      ['함께 여행·휴식', monthList(top), monthList(bottom), '두 사람 일지에 합이 걸리는 달에 움직이면 같은 비용으로 관계가 더 편해집니다.'],
+      ['가족 모임·양가 인사', monthList(calmFamily), monthList(haeMonths.length ? haeMonths : bottom), '해(害)가 걸리는 달은 두 사람 사이보다 바깥 사람이 문제를 만드는 달입니다.'],
+      ['큰 지출·계약', monthList(dealMonths.length ? dealMonths : top), monthList(weakDeal.length ? weakDeal : bottom), '돈이 오가는 결정은 기운이 실린 달에 두고, 흔들리는 달에는 서명하지 마세요.']
+    ];
+  }
+
+  function coupleMonthText(A, B, nA, nB) {
+    var list = A.monthly2027.map(function (ma, i) {
+      var s = coupleMonthScore(A, B, ma, B.monthly2027[i]);
+      return { m: ma.month, s: s.score };
+    });
+    var sorted = list.slice().sort(function (a, b) { return b.s - a.s; });
+    var best = sorted.slice(0, 3).sort(function (a, b) { return a.m - b.m; });
+    var worst = sorted.slice(-2).sort(function (a, b) { return a.m - b.m; });
+    return '두 사람 모두에게 기운이 실리는 달은 <b>' + best.map(function (x) { return x.m + '월(' + x.s + '점)'; }).join(', ') + '</b>입니다. 이 달에는 여행·이사·양가 인사처럼 두 사람이 함께 결정해야 하는 일을 두세요. 반대로 <b>' + worst.map(function (x) { return x.m + '월(' + x.s + '점)'; }).join(', ') + '</b>은 두 사람의 일지에 충이나 해가 걸리는 달입니다. 이 달에는 큰 지출과 큰 대화를 다음 달로 미루면 다툼의 절반이 줄어듭니다.';
+  }
+
+  function daeunCrossText(A, B, nA, nB) {    var curA = A.daeun.list.filter(function (d) { return d.current; })[0];
+    var curB = B.daeun.list.filter(function (d) { return d.current; })[0];
+    var t = '';
+    if (curA) t += nA + ' 님은 지금 <b>' + curA.gan + curA.ji + '(' + curA.ganSipsin + ')</b> 대운, ' + curA.startAge + '~' + curA.endAge + '세(' + curA.startYear + '~' + curA.endYear + ')입니다. ';
+    else t += nA + ' 님은 아직 첫 대운 전입니다. ';
+    if (curB) t += nB + ' 님은 지금 <b>' + curB.gan + curB.ji + '(' + curB.ganSipsin + ')</b> 대운, ' + curB.startAge + '~' + curB.endAge + '세(' + curB.startYear + '~' + curB.endYear + ')입니다. ';
+    else t += nB + ' 님은 아직 첫 대운 전입니다. ';
+
+    if (curA && curB) {
+      if (curA.endYear === curB.endYear) {
+        t += '두 사람의 대운이 <b>' + curA.endYear + '년</b>에 함께 바뀝니다. 같은 해에 두 사람의 판이 동시에 바뀌면 생활 전체가 흔들리므로, 그 전후 1년은 이사·사업·큰 지출을 겹치지 않게 두는 것이 좋습니다. ';
+      } else {
+        t += '두 사람의 대운이 바뀌는 해가 서로 다릅니다(' + curA.endYear + '년, ' + curB.endYear + '년). 한 사람이 판을 바꾸는 동안 다른 사람은 그 변화를 받아주는 역할을 하게 됩니다. ';
+      }
+      var eA = elemListKr([curA.jiElem]);
+      t += '지금 ' + nA + ' 님의 대운 지지가 ' + eA + ' 기운인데, 이 기운이 ' + nB + ' 님의 사주에서 ' + (B.elements.missing.indexOf(curA.jiElem) >= 0 ? '비어 있는 자리입니다. 이 대운 동안 ' + nA + ' 님이 ' + nB + ' 님에게 없던 것을 채워주는 역할을 하게 됩니다.' : '이미 강한 자리입니다. 이 대운 동안 ' + nA + ' 님의 그 기운이 ' + nB + ' 님에게는 부담으로 느껴질 수 있습니다.');
+    }
+    return t;
+  }
+
+  function daeunPairTable(A, B, nA, nB) {
+    function row(label, d) {
+      if (!d) return '';
+      return '<tr><td>' + label + '</td><td class="small">' + d.startAge + '~' + d.endAge + '세<br>' + d.startYear + '~' + d.endYear + '</td>' +
+        '<td class="hanja-sm">' + d.gan + d.ji + '</td><td class="small">' + d.ganSipsin + '/' + d.jiSipsin + '</td></tr>';
+    }
+    function slice(C) {
+      var list = C.daeun.list;
+      var idx = list.map(function (d) { return d.current; }).indexOf(true);
+      if (idx < 0) idx = 0;
+      return list.slice(idx, idx + 3);
+    }
+    var sa = slice(A), sb = slice(B);
+    var rows = '';
+    for (var i = 0; i < Math.max(sa.length, sb.length); i++) {
+      var da = sa[i], db = sb[i];
+      rows += '<tr><td class="row-head">' + (i === 0 ? '지금' : (i === 1 ? '다음' : '그다음')) + '</td>' +
+        '<td class="small">' + (da ? da.gan + da.ji + ' · ' + da.startYear + '~' + da.endYear + ' (' + da.ganSipsin + ')' : '-') + '</td>' +
+        '<td class="small">' + (db ? db.gan + db.ji + ' · ' + db.startYear + '~' + db.endYear + ' (' + db.ganSipsin + ')' : '-') + '</td></tr>';
+    }
+    return '<table class="mini-table wide couple-table"><thead><tr><th>시기</th><th>' + esc(nA) + '</th><th>' + esc(nB) + '</th></tr></thead><tbody>' + rows + '</tbody></table>';
+  }
+
+  function daeunShiftAdvice(A, B, nA, nB) {
+    var out = [];
+    var listA = A.daeun.list, listB = B.daeun.list;
+    var shiftA = listA.filter(function (d) { return d.startYear >= 2026 && d.startYear <= 2033; });
+    var shiftB = listB.filter(function (d) { return d.startYear >= 2026 && d.startYear <= 2033; });
+    if (shiftA.length) {
+      out.push(nA + ' 님의 대운 전환(' + shiftA.map(function (d) { return d.startYear + '년 ' + d.gan + d.ji + ' ' + d.ganSipsin; }).join(', ') + ') — 전환 전후 6개월은 새 일을 벌이기보다 지금 하는 일을 정리하는 시기로 두세요.');
+    } else {
+      out.push(nA + ' 님은 앞으로 7년 안에 대운 전환이 없습니다. 지금의 판을 깊게 파는 데 집중하기 좋습니다.');
+    }
+    if (shiftB.length) {
+      out.push(nB + ' 님의 대운 전환(' + shiftB.map(function (d) { return d.startYear + '년 ' + d.gan + d.ji + ' ' + d.ganSipsin; }).join(', ') + ') — 이 시기에 ' + nB + ' 님의 일과 돈의 구조가 바뀝니다. 두 사람의 생활비 구조를 미리 점검해 두세요.');
+    } else {
+      out.push(nB + ' 님은 앞으로 7년 안에 대운 전환이 없습니다. 관계의 리듬을 다듬기에 적합한 시기입니다.');
+    }
+    out.push('두 사람의 대운 전환이 같은 해에 겹치면 이사·사업·큰 지출을 그 해에 몰아두지 마세요. 한 해씩 나누는 것만으로도 흔들림이 크게 줄어듭니다.');
+    return out;
+  }
+
+  function reconcileScript(A, B, r, nA, nB) {
+    return [
+      '<b>시작</b> — “지금 10분만 얘기해도 될까?” 시간을 먼저 정하면 상대는 공격이 아니라 대화로 받아들입니다.',
+      '<b>사실과 감정</b> — “그때 네가 ' + (hasKw(r.jiRel, '충') ? '내 계획을 먼저 정했을 때' : '말을 그렇게 했을 때') + ' 나는 서운했어.” 평가가 아니라 그때의 내 감정만 말합니다.',
+      '<b>요청</b> — “다음엔 ' + (A.sipsinCounts['인성'] >= 2 && B.sipsinCounts['인성'] >= 2 ? '정하기 전에 한 번만 물어봐 줘' : '내 말 끝까지 듣고 대답해 줘') + '.” 한 가지만 부탁합니다. 여러 개를 꺼내면 결론이 나지 않습니다.'
+    ];
+  }
+
+  function avoidPhrases(A, B, r, nA, nB) {
+    var out = [];
+    if (hasKw(r.jiRel, '형') || hasKw(r.jiRel, '파')) {
+      out.push(['그거 전에도 그랬잖아', '형·파의 관계에서는 과거를 소환할수록 대화가 재판이 됩니다. 지금 일만 다룰 때 풀립니다.']);
+    }
+    if (hasKw(r.jiRel, '충')) {
+      out.push(['우린 애초에 안 맞아', '충의 관계에서 가장 위험한 말입니다. 다름을 확인하는 말이 아니라 관계를 부정하는 말이 됩니다.']);
+    }
+    if (A.sipsinCounts['비겁'] >= 3 || B.sipsinCounts['비겁'] >= 3) {
+      out.push(['너는 항상 네 방식만 고집해', '주도권이 강한 사주에게는 가장 예민한 말입니다. “나는 이렇게 하고 싶어”로 바꿔 말하세요.']);
+    }
+    if (A.sipsinCounts['인성'] >= 3 || B.sipsinCounts['인성'] >= 3) {
+      out.push(['말해도 뭐가 달라져', '생각이 많은 사주는 이 한마디에 말을 닫습니다. 대화를 끝내는 말이라 가장 오래 남습니다.']);
+    }
+    if (out.length < 2) {
+      out.push(['괜찮아 (서운한데)', '괜찮다는 말로 넘기면 상대는 정말 괜찮은 줄 압니다. 이 관계는 참는 대신 말하는 쪽이 오래 갑니다.']);
+    }
+    if (out.length < 2) {
+      out.push(['너도 그랬잖아', '상대의 잘못을 맞받아치는 순간 대화는 교환으로 바뀝니다. 한 번에 한 사람만 말하도록 정하세요.']);
+    }
+    return out.slice(0, 3);
+  }
+
+  function speakStyleText(C, name) {
+    var g = C.sipsinCounts;
+    var t = '';
+    if (g['식상'] >= 3) t += name + ' 님은 말로 생각을 정리하는 사람입니다. 그래서 침묵이 무관심으로 보입니다. 말이 많다는 것을 이해한다는 신호로 받아들여 주세요. ';
+    if (g['인성'] >= 3) t += name + ' 님은 혼자 정리하는 시간이 필요합니다. 대화를 요구하기 전에 "언제 이야기할 수 있어?"라고 시간을 물으면 훨씬 부드럽게 열립니다. ';
+    if (g['관성'] >= 3) t += name + ' 님은 기준이 분명합니다. 기대를 말하지 않고 평가하면 상처가 됩니다. 원하는 것을 먼저 문장으로 말해 주세요. ';
+    if (g['비겁'] >= 3) t += name + ' 님은 자기 방식이 확실합니다. 지적보다 제안으로 말할 때 훨씬 잘 듣습니다. ';
+    if (g['재성'] >= 3) t += name + ' 님은 현실적인 결과로 애정을 확인합니다. 말보다 함께 해결해 주는 것이 마음을 여는 길입니다. ';
+    if (!t) t += name + ' 님은 오행과 십성이 비교적 고른 편이라, 대화의 방식에 크게 예민하지 않습니다. 다만 편안함에 기대어 표현을 아끼면 서운함이 쌓입니다. ';
+    return t;
+  }
+
+  function pairBoostText(A, B, r, nA, nB) {
+    var target = r.commonMissing.length ? r.commonMissing[0] : (r.fillA[0] || r.fillB[0] || A.elements.motherElem);
+    var bo = BOOST[target];
+    var t = '두 사람이 함께 채워야 할 기운은 <b>' + ELEM_KR[target] + '</b>입니다. ';
+    t += '색은 ' + bo.color + ', 방위는 ' + bo.dir + ', 숫자는 ' + bo.num + '입니다. ';
+    t += '두 사람이 함께하는 활동에 ' + bo.act + '을 넣고, ' + bo.food + ' 쪽 식사를 한 달에 두 번은 함께 해보세요. ';
+    t += '<b>생활 처방</b> — ' + bo.habit + ' 이 습관을 두 사람이 같이 하면 한 사람만 애쓰는 구조를 피할 수 있습니다. ';
+    if (hasKw(r.jiRel, '충')) {
+      t += '충의 관계에서는 같은 공간에서 각자 하는 시간이 필요합니다. 붙어 있는 시간을 늘리는 것보다, 각자의 방·시간을 보장하는 것이 관계를 오래 갑니다.';
+    } else if (hasKw(r.jiRel, '육합')) {
+      t += '육합의 관계에서는 함께하는 시간이 곧 개운입니다. 같은 목표를 하나 정해 함께 진행해 보세요.';
+    } else {
+      t += '관계를 묶어주는 힘이 약한 구조이니, 함께하는 정기적인 일정(주 1회 식사, 월 1회 나들이)을 달력에 먼저 넣어두는 것이 좋습니다.';
+    }
+    return t;
+  }
+
+  function threeMonthPlan(A, B, r, nA, nB) {
+    var first = hasKw(r.jiRel, '충') ? '생활 리듬의 경계를 정하기 — 잠드는 시간, 지출 한도, 주말 하루를 각자 영역으로 합의합니다.' :
+      (hasKw(r.jiRel, '형') ? '말투 규칙 정하기 — "너는 항상"을 금지어로 정하고, 판단은 하루 뒤로 미룹니다.' :
+        '서운함을 그날 한 문장으로 말하는 연습 — 쌓아두지 않는 것이 이 관계의 핵심입니다.');
+    var second = r.commonMissing.length
+      ? ELEM_KR[r.commonMissing[0]] + ' 기운을 함께 채우기 — ' + BOOST[r.commonMissing[0]].act + '을 주 1회 함께 합니다.'
+      : '돈의 구조를 나누기 — 고정지출·저축·여유자금 계좌를 분리하고 월 1회 함께 확인합니다.';
+    var third = '화해 날짜를 달력에 미리 넣기 — 이 책 7부에 적힌 날짜에 미뤄둔 이야기를 꺼냅니다.';
+    return [first, second, third];
+  }
+
+  function coupleLetter(A, B, r, ilA, ilB, nA, nB) {
+    return '두 사람의 사주를 나란히 놓고 보면, 잘 맞는 부분보다 <b>어긋나는 부분</b>이 먼저 눈에 들어옵니다. 그래서 궁합을 본 사람들은 종종 실망합니다. 하지만 어긋남은 헤어질 이유가 아니라, 어디를 조율해야 하는지 알려주는 지도입니다. ' +
+      nA + ' 님은 ' + ilA.title.split(' ')[0] + ', ' + nB + ' 님은 ' + ilB.title.split(' ')[0] + '의 기운을 타고났습니다. 두 재료는 다르지만, 다른 재료이기 때문에 서로에게 없는 것을 채울 수 있습니다. ' +
+      '이 책에서 확인한 갈등 촉발 버튼과 화해 날짜는, 두 사람이 같은 자리에서 같은 방식으로 다투지 않기 위한 장치입니다. ' +
+      '운은 한 번에 바뀌지 않습니다. 다만 같은 상황에서 한 번만 다르게 말해도 10년 뒤의 관계는 달라집니다. ' +
+      '마지막 장에 적어둔 세 가지 중 하나만 이번 달에 해보시면, 그 한 번이 다음 계절의 씨앗이 됩니다.';
   }
 
   global.SajuBook = {

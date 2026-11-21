@@ -86,6 +86,8 @@
       font-size: 14px;
       color: var(--text-muted);
       margin-bottom: 24px;
+      word-break: keep-all;
+      overflow-wrap: anywhere;
     }
     .receipt-box {
       background: rgba(0, 0, 0, 0.4);
@@ -260,6 +262,10 @@
         <span class="receipt-label">사주 정보</span>
         <span class="receipt-value" id="rec-birth">-</span>
       </div>
+      <div class="receipt-row" id="rec-partner-row" hidden>
+        <span class="receipt-label">상대방 사주</span>
+        <span class="receipt-value" id="rec-partner">-</span>
+      </div>
       <div class="receipt-row">
         <span class="receipt-label">결제 번호</span>
         <span class="receipt-value mono" id="rec-orderid">-</span>
@@ -341,6 +347,7 @@
 
     var order = loadOrder(paymentId);
     var calc = null;
+    var partnerCalc = null;
     var lastPdfUrl = null;
 
     function loadOrder(id) {
@@ -364,12 +371,17 @@
     }
 
     function birthText(o) {
-      if (!o.birth) return '-';
-      var h = o.birth.hour;
+      if (!o || !o.birth) return '-';
+      return birthOneText(o.birth);
+    }
+
+    function birthOneText(birth) {
+      if (!birth) return '-';
+      var h = birth.hour;
       var hour = (h === undefined || h === null || h === '' || h === 'unknown') ? '시간 미상' :
         ['자시', '축시', '인시', '묘시', '진시', '사시', '오시', '미시', '신시', '유시', '술시', '해시'][Math.floor(((Number(h) + 1) % 24) / 2)] + '경';
-      var cal = o.birth.calendar === 'lunar' ? '음력' : '양력';
-      return cal + ' ' + o.birth.y + '.' + o.birth.m + '.' + o.birth.d + (o.birth.leap ? '(윤달)' : '') + ' · ' + hour;
+      var cal = birth.calendar === 'lunar' ? '음력' : '양력';
+      return cal + ' ' + birth.y + '.' + birth.m + '.' + birth.d + (birth.leap ? '(윤달)' : '') + ' · ' + hour;
     }
 
     function init() {
@@ -400,6 +412,10 @@
       show('card-success');
 
       order.paymentId = order.paymentId || paymentId;
+      if (order.product === 'couple' && order.partner && order.partner.birth && order.partner.birth.y) {
+        document.getElementById('status-sub').textContent = '두 사람의 생년월일시로 2인 궁합 책을 바로 만들어 드립니다.';
+        document.getElementById('btn-download').textContent = '📥 두 사람의 궁합 책 PDF 다운로드';
+      }
       document.getElementById('rec-product').textContent = order.productName || '맞춤 사주 PDF 책';
       document.getElementById('rec-name').textContent = (order.customerName || '회원') + ' 님';
       document.getElementById('rec-birth').textContent = birthText(order);
@@ -443,6 +459,44 @@
         document.getElementById('rec-birth').textContent = birthText(order) +
           ' → 양력 ' + calc.input.solar.y + '.' + calc.input.solar.m + '.' + calc.input.solar.d;
       }
+
+      // 2인 궁합 상품: 상대방 사주도 함께 계산한다.
+      if (order.product === 'couple') {
+        if (!order.partner || !order.partner.birth || !order.partner.birth.y) {
+          // 상대방 정보가 없는 예전 주문 — 1인 분석 책으로 만들되 이유를 알린다.
+          var st = document.getElementById('pdf-status');
+          st.className = 'pdf-status';
+          st.textContent = '이 주문에는 상대방 생년월일이 저장되어 있지 않아, 첫 번째 분의 사주 분석을 중심으로 책을 만듭니다.';
+        } else {
+          try {
+            partnerCalc = window.SajuEngine.compute({
+              name: order.partner.name || '',
+              gender: order.partner.gender || 'male',
+              year: order.partner.birth.y,
+              month: order.partner.birth.m,
+              day: order.partner.birth.d,
+              calendar: order.partner.birth.calendar || 'solar',
+              leap: !!order.partner.birth.leap,
+              hour: order.partner.birth.hour
+            });
+          } catch (e) {
+            console.warn('partner saju compute failed', e);
+          }
+          if (!partnerCalc || partnerCalc.ok === false) {
+            disableDownload((partnerCalc && partnerCalc.error === 'lunar_out_of_range')
+              ? '두 번째 분의 음력 생년월일이 지원 범위(1936~2030년)를 벗어나 계산할 수 없습니다. 카카오톡 상담실로 알려주세요.'
+              : '두 번째 분의 사주 계산 중 문제가 생겼습니다. 카카오톡 상담실에 결제번호를 남겨주세요.');
+            return;
+          }
+          var prow = document.getElementById('rec-partner-row');
+          prow.hidden = false;
+          document.getElementById('rec-partner').textContent =
+            (order.partner.name ? order.partner.name + ' · ' : '') + birthOneText(order.partner.birth);
+          if (partnerCalc.input.converted) {
+            document.getElementById('rec-partner').textContent += ' → 양력 ' + partnerCalc.input.solar.y + '.' + partnerCalc.input.solar.m + '.' + partnerCalc.input.solar.d;
+          }
+        }
+      }
     }
 
     function renderExpiry() {
@@ -474,6 +528,10 @@
       var name = (order && order.customerName) ? order.customerName : '회원';
       var d = new Date();
       var stamp = d.getFullYear() + String(d.getMonth() + 1).padStart(2, '0') + String(d.getDate()).padStart(2, '0');
+      var pn = (order && order.partner && order.partner.name) ? order.partner.name : '';
+      if (order && order.product === 'couple') {
+        return '운명나침반_' + name + (pn ? '_' + pn : '') + '_2인궁합책_' + stamp + '.pdf';
+      }
       var kind = (order && order.product) ? order.product : 'saju';
       return '운명나침반_' + name + '_사주책_' + kind + '_' + stamp + '.pdf';
     }
@@ -488,8 +546,7 @@
       if (!calc || calc.ok === false) {
         disableDownload('사주 정보를 확인할 수 없어 PDF를 만들 수 없습니다. 카카오톡 상담실로 알려주세요.');
         return;
-      }
-      if (!window.PdfExport || !window.PdfExport.libsReady()) {
+      }      if (!window.PdfExport || !window.PdfExport.libsReady()) {
         status.className = 'pdf-status err';
         status.innerHTML = 'PDF 생성 모듈을 불러오지 못했습니다. 네트워크를 확인한 뒤 다시 눌러주세요. 계속 문제가 있으면 <a href="' + KAKAO_URL + '" target="_blank" rel="noopener">카카오톡 상담</a>으로 결제번호와 함께 알려주세요.';
         return;
@@ -508,14 +565,15 @@
       stage.innerHTML = '';
 
       try {
-        document.getElementById('progress-text').textContent = '사주 여덟 글자를 세고 있습니다…';
+        document.getElementById('progress-text').textContent = (partnerCalc ? '두 사람의 여덟 글자를 세고 있습니다…' : '사주 여덟 글자를 세고 있습니다…');
         document.getElementById('progress-bar').style.width = '6%';
         await new Promise(function (r) { setTimeout(r, 60); });
 
         var book = window.SajuBook.build(calc, {
           product: order.product,
           productName: order.productName,
-          paymentId: order.paymentId
+          paymentId: order.paymentId,
+          partnerCalc: partnerCalc
         });
         stage.appendChild(book);
 
