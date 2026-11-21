@@ -1,0 +1,583 @@
+/* 운명나침반 맞춤 사주 책 — 인쇄(PDF) 레이아웃 */
+.pdf-book {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 794px;
+  background: #ffffff;
+  color: #24211c;
+  font-family: 'Noto Serif KR', 'Nanum Myeongjo', serif;
+  -webkit-font-smoothing: antialiased;
+  z-index: 1;
+}
+
+.pdf-page {
+  position: relative;
+  width: 794px;
+  height: 1123px;
+  background: #fffdf8;
+  overflow: hidden;
+  padding: 40px 54px 34px;
+  box-sizing: border-box;
+  page-break-after: always;
+}
+
+.pdf-page .page-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 22px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid #e7dfcd;
+  font-size: 10px;
+  letter-spacing: 0.02em;
+  color: #8d8471;
+}
+
+.pdf-page .ph-brand { font-weight: 700; }
+.pdf-page .ph-name { color: #a89568; }
+
+.pdf-page .page-body {
+  height: 990px;
+  overflow: hidden;
+}
+
+.pdf-page .page-foot {
+  position: absolute;
+  left: 54px;
+  right: 54px;
+  bottom: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 10px;
+  color: #b3a88f;
+}
+
+.pdf-page .page-foot .ph-num {
+  font-family: 'Noto Sans KR', sans-serif;
+  font-weight: 700;
+  color: #a89568;
+}
+
+/* 본문 */
+.pdf-book p {
+  margin: 0 0 8px;
+  font-size: 13.5px;
+  line-height: 1.85;
+  color: #2c2924;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+
+.pdf-book p.small { font-size: 12px; line-height: 1.8; color: #5c564b; }
+.pdf-book p.center { text-align: center; }
+.pdf-book .muted { color: #8d8471; }
+.pdf-book b { color: #1b1916; }
+
+.pdf-book .blk { margin-bottom: 6px; }
+
+.pdf-book h2.page-title {
+  margin: 4px 0 22px;
+  font-size: 24px;
+  font-weight: 900;
+  letter-spacing: -0.01em;
+  color: #1b1916;
+}
+
+.pdf-book .ch-num {
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  color: #b09455;
+  margin-bottom: 6px;
+}
+
+.pdf-book h2.ch-title {
+  margin: 0 0 6px;
+  font-size: 23px;
+  font-weight: 900;
+  line-height: 1.35;
+  color: #1b1916;
+  letter-spacing: -0.01em;
+}
+
+.pdf-book .ch-sub {
+  font-size: 12px;
+  color: #7d7466;
+  margin-bottom: 14px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #1b1916;
+}
+
+.pdf-book .blk.ch-head { margin-bottom: 14px; }
+
+.pdf-book h3.sec-title {
+  margin: 14px 0 6px;
+  font-size: 15px;
+  font-weight: 900;
+  color: #6b5320;
+  letter-spacing: -0.01em;
+}
+
+.pdf-book h3.sec-title:first-child { margin-top: 4px; }
+
+/* 사주 원국 표 */
+.pdf-book table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 6px 0 14px;
+  font-size: 12px;
+}
+
+.pdf-book .saju-table th,
+.pdf-book .saju-table td {
+  border: 1px solid #ddd3bd;
+  padding: 7px 4px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.pdf-book .saju-table thead th {
+  background: #f3ecdd;
+  font-size: 12px;
+  font-weight: 900;
+  color: #4a4234;
+  padding: 8px 4px;
+}
+
+.pdf-book .saju-table td.ph {
+  background: #faf5e9;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 10.5px;
+  font-weight: 700;
+  color: #7d7466;
+  width: 62px;
+}
+
+.pdf-book .saju-table td.hanja {
+  font-family: 'Noto Serif KR', serif;
+  font-size: 27px;
+  font-weight: 700;
+  line-height: 1.25;
+  padding: 4px 2px;
+}
+
+.pdf-book .saju-table td.small { font-size: 11px; line-height: 1.55; }
+.pdf-book .saju-table td.muted { color: #b3a88f; }
+
+.pdf-book .grid-table th,
+.pdf-book .grid-table td {
+  border-bottom: 1px solid #e6ddc9;
+  padding: 6px 4px;
+  text-align: center;
+  font-size: 11.5px;
+}
+
+.pdf-book .grid-table thead th {
+  background: #f3ecdd;
+  border-top: 1px solid #ddd3bd;
+  border-bottom: 1px solid #ddd3bd;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 10.5px;
+  font-weight: 700;
+  color: #5c564b;
+}
+
+.pdf-book .grid-table tr.cur td {
+  background: #fdf6e3;
+  font-weight: 700;
+}
+
+.pdf-book .grid-table td.center { text-align: center; }
+.pdf-book .grid-table td.mon { font-weight: 700; white-space: nowrap; min-width: 46px; }
+.pdf-book .grid-table td.good { color: #1f7a3d; }
+.pdf-book .grid-table td.ok { color: #4a6b1f; }
+.pdf-book .grid-table td.mid { color: #8a6d1f; }
+.pdf-book .grid-table td.bad { color: #b03a2e; }
+
+.pdf-book .mini-table th {
+  background: #faf5e9;
+  border: 1px solid #e6ddc9;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 10.5px;
+  color: #7d7466;
+  width: 58px;
+  padding: 6px 4px;
+  text-align: left;
+}
+
+.pdf-book .mini-table td {
+  border: 1px solid #e6ddc9;
+  font-size: 11.5px;
+  padding: 6px 8px;
+  text-align: left;
+}
+
+/* 오행 막대 */
+.pdf-book .bar-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 7px;
+}
+
+.pdf-book .bar-name {
+  width: 62px;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: #4a4234;
+}
+
+.pdf-book .bar-track {
+  flex: 1;
+  height: 13px;
+  background: #f0e9da;
+  border-radius: 7px;
+  overflow: hidden;
+  margin-right: 10px;
+}
+
+.pdf-book .bar-fill {
+  height: 13px;
+  border-radius: 7px;
+}
+
+.pdf-book .bar-val {
+  width: 92px;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 10.5px;
+  color: #5c564b;
+  text-align: right;
+}
+
+.pdf-book .c-wood { color: #2f7d4f; }
+.pdf-book .c-fire { color: #c0392b; }
+.pdf-book .c-earth { color: #a1751f; }
+.pdf-book .c-metal { color: #5b6470; }
+.pdf-book .c-water { color: #1f5f8b; }
+
+.pdf-book .bar-fill.c-wood { background: #4a9b68; }
+.pdf-book .bar-fill.c-fire { background: #d05a45; }
+.pdf-book .bar-fill.c-earth { background: #c39a4a; }
+.pdf-book .bar-fill.c-metal { background: #89919c; }
+.pdf-book .bar-fill.c-water { background: #4b84ad; }
+
+/* 목차 */
+.pdf-book .toc { margin-bottom: 26px; }
+
+.pdf-book .toc-row {
+  display: flex;
+  align-items: baseline;
+  padding: 9px 0;
+  border-bottom: 1px dashed #e0d6c0;
+  font-size: 13px;
+  color: #2c2924;
+}
+
+.pdf-book .toc-row span {
+  display: inline-block;
+  width: 86px;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #b09455;
+}
+
+.pdf-book .read-guide {
+  background: #faf5e9;
+  border: 1px solid #e7dfcd;
+  border-radius: 4px;
+  padding: 18px 20px 6px;
+}
+
+.pdf-book .read-guide p { font-size: 12.5px; }
+
+/* 표지 보강 */
+.pdf-book .cover-kicker {
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  color: #8d8471;
+  margin-bottom: 14px;
+}
+
+.pdf-book .strip {
+  display: flex;
+  gap: 10px;
+  margin: 34px 0 0;
+}
+
+.pdf-book .strip-col {
+  width: 62px;
+  border-top: 2px solid #1b1916;
+  padding-top: 8px;
+  text-align: center;
+}
+
+.pdf-book .strip-pos {
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 10px;
+  color: #8d8471;
+  margin-bottom: 4px;
+}
+
+.pdf-book .strip-gan,
+.pdf-book .strip-ji {
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+/* 목차 요약 카드 */
+.pdf-book .summary-card {
+  background: #1b1916;
+  color: #f6f1e4;
+  border-radius: 4px;
+  padding: 18px 20px;
+  margin-bottom: 22px;
+}
+
+.pdf-book .summary-title {
+  font-size: 12px;
+  font-family: 'Noto Sans KR', sans-serif;
+  letter-spacing: 0.16em;
+  color: #cbb476;
+  margin-bottom: 10px;
+}
+
+.pdf-book .summary-grid div {
+  display: flex;
+  font-size: 12px;
+  line-height: 2;
+  color: #f6f1e4;
+}
+
+.pdf-book .summary-grid div span {
+  width: 96px;
+  flex-shrink: 0;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 10.5px;
+  color: #a89c82;
+}
+
+/* 점수 한 줄 */
+.pdf-book .score-line {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #e6ddc9;
+  padding: 6px 0 4px;
+}
+
+.pdf-book .score-name {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #4a4234;
+}
+
+.pdf-book .score-num {
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 13px;
+  font-weight: 900;
+  color: #7d5f14;
+}
+
+.pdf-book .grid-table td.hanja-sm {
+  font-family: 'Noto Serif KR', serif;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.pdf-book .mini-table.wide th { width: 96px; }
+.pdf-book .mini-table.wide th,
+.pdf-book .mini-table.wide td { padding: 5px 8px; }
+
+.pdf-book .score-table th { width: 132px; font-size: 11px; }
+.pdf-book .score-table td { font-size: 11.5px; line-height: 1.7; }
+.pdf-book .score-chip {
+  display: inline-block;
+  margin-left: 5px;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 9.5px;
+  font-weight: 900;
+  color: #7d5f14;
+  background: #f6ecd2;
+  border-radius: 8px;
+  padding: 1px 5px;
+}
+.pdf-book .mini-table tr.note-row td {
+  border-top: none;
+  padding-top: 0;
+  padding-bottom: 7px;
+  font-size: 10.5px;
+}
+.pdf-book .mini-table tr.note-row th { border-top: none; }
+
+/* 표지 */
+.pdf-page.cover {
+  padding: 0;
+  background: #fffdf8;
+}
+
+.pdf-page.cover .page-body { height: 1123px; }
+
+.pdf-book .cover-wrap {
+  height: 1123px;
+  padding: 76px 68px 60px;
+  box-sizing: border-box;
+  background: #fffdf8;
+  border: 14px solid #1b1916;
+  display: flex;
+  flex-direction: column;
+}
+
+.pdf-book .cover-brand {
+  font-size: 13px;
+  letter-spacing: 0.5em;
+  color: #b09455;
+  font-weight: 700;
+}
+
+.pdf-book .cover-line {
+  width: 54px;
+  height: 3px;
+  background: #b09455;
+  margin: 16px 0 46px;
+}
+
+.pdf-book .cover-title {
+  font-size: 42px;
+  font-weight: 900;
+  line-height: 1.45;
+  letter-spacing: -0.02em;
+  color: #1b1916;
+}
+
+.pdf-book .cover-ilju {
+  margin-top: 22px;
+  font-size: 14px;
+  color: #6b5320;
+}
+
+.pdf-book .cover-badge {
+  display: inline-block;
+  margin-top: 26px;
+  padding: 9px 16px;
+  border: 1px solid #cbb476;
+  border-radius: 3px;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  color: #7d5f14;
+  background: #fdf6e3;
+}
+
+.pdf-book .cover-info {
+  margin-top: auto;
+  border-top: 1px solid #e0d6c0;
+  padding-top: 18px;
+}
+
+.pdf-book .cover-info div {
+  display: flex;
+  font-size: 12px;
+  line-height: 2.1;
+  color: #3a352c;
+}
+
+.pdf-book .cover-info div span {
+  display: inline-block;
+  width: 82px;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 10.5px;
+  color: #8d8471;
+  letter-spacing: 0.06em;
+}
+
+.pdf-book .cover-foot {
+  margin-top: 26px;
+  padding-top: 14px;
+  border-top: 1px solid #e0d6c0;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 10px;
+  line-height: 1.8;
+  color: #9a907c;
+}
+
+.pdf-book .brand-end {
+  font-size: 11px;
+  letter-spacing: 0.24em;
+  color: #b09455;
+}
+
+/* 생성 중 화면 */
+.pdf-stage {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 794px;
+  height: 1123px;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.pdf-progress-mask {
+  position: fixed;
+  inset: 0;
+  background: rgba(9, 13, 22, 0.96);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 24px;
+  text-align: center;
+}
+
+.pdf-progress-mask .spin {
+  width: 46px;
+  height: 46px;
+  border: 3px solid rgba(212, 175, 55, 0.25);
+  border-top-color: #d4af37;
+  border-radius: 50%;
+  animation: pdfspin 0.9s linear infinite;
+  margin-bottom: 20px;
+}
+
+@keyframes pdfspin { to { transform: rotate(360deg); } }
+
+.pdf-progress-mask .t1 {
+  font-size: 15px;
+  font-weight: 800;
+  color: #f8fafc;
+  margin-bottom: 6px;
+}
+
+.pdf-progress-mask .t2 {
+  font-size: 12px;
+  color: #94a3b8;
+  line-height: 1.6;
+}
+
+.pdf-progress-mask .bar {
+  width: 220px;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 3px;
+  margin-top: 18px;
+  overflow: hidden;
+}
+
+.pdf-progress-mask .bar > div {
+  height: 6px;
+  width: 0%;
+  background: linear-gradient(90deg, #d4af37, #f3e5ab);
+  transition: width 0.25s;
+}
+
+.pdf-progress-mask[hidden],
+.pdf-stage[hidden] {
+  display: none !important;
+}

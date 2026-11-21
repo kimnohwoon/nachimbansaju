@@ -7,7 +7,8 @@
   <title>주문 완료 · 운명나침반</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700;800&family=Noto+Serif+KR:wght@500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Noto+Serif+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/pdf-book.css">
   <style>
     :root {
       --bg: #090d16;
@@ -27,7 +28,7 @@
     body {
       background-color: var(--bg);
       color: var(--text);
-      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Noto Sans KR', sans-serif;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
@@ -46,6 +47,7 @@
       text-align: center;
       box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6), 0 0 30px rgba(212, 175, 55, 0.1);
     }
+    .status-card[hidden] { display: none; }
     .icon-badge {
       width: 64px;
       height: 64px;
@@ -68,6 +70,11 @@
       background: rgba(239, 68, 68, 0.15);
       border-color: #ef4444;
       color: #f87171;
+    }
+    .icon-badge.info {
+      background: rgba(212, 175, 55, 0.12);
+      border-color: var(--gold);
+      color: var(--gold-light);
     }
     h1 {
       font-size: 20px;
@@ -92,6 +99,7 @@
     .receipt-row {
       display: flex;
       justify-content: space-between;
+      gap: 12px;
       padding: 6px 0;
       border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     }
@@ -103,6 +111,16 @@
     }
     .receipt-label {
       color: var(--text-muted);
+      flex-shrink: 0;
+    }
+    .receipt-value {
+      text-align: right;
+      word-break: break-all;
+    }
+    .receipt-value.mono {
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 11px;
+      color: #cbd5e1;
     }
     .btn-download-pdf {
       display: block;
@@ -119,10 +137,15 @@
       cursor: pointer;
       border: none;
       transition: all 0.2s;
+      font-family: inherit;
     }
-    .btn-download-pdf:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 24px rgba(212, 175, 55, 0.6);
+    .btn-download-pdf:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(212, 175, 55, 0.6); }
+    .btn-download-pdf:disabled,
+    .btn-download-pdf[aria-disabled="true"] {
+      opacity: 0.6;
+      cursor: default;
+      transform: none;
+      box-shadow: none;
     }
     .btn-kakao-as {
       display: flex;
@@ -147,9 +170,7 @@
       margin-top: 10px;
       padding: 8px 16px;
     }
-    .btn-home:hover {
-      color: #ffffff;
-    }
+    .btn-home:hover { color: #ffffff; }
     .notice-box {
       background: rgba(212, 175, 55, 0.08);
       border: 1px solid rgba(212, 175, 55, 0.2);
@@ -159,116 +180,374 @@
       color: var(--gold-light);
       text-align: left;
       margin-bottom: 18px;
-      line-height: 1.5;
+      line-height: 1.6;
+    }
+    .notice-box.warn {
+      background: rgba(239, 68, 68, 0.08);
+      border-color: rgba(239, 68, 68, 0.3);
+      color: #fecaca;
+    }
+    .pdf-status {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 14px;
+      line-height: 1.6;
+      min-height: 18px;
+    }
+    .pdf-status.ok { color: #4ade80; }
+    .pdf-status.err { color: #f87171; }
+    .pdf-status a { color: var(--gold-light); }
+    .step-hint {
+      font-size: 11.5px;
+      color: #64748b;
+      margin-top: 14px;
+      line-height: 1.7;
+    }
+    .pdf-stage {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 794px;
+      height: 1123px;
+      overflow: hidden;
+      pointer-events: none;
+      z-index: 1;
+    }
+    @media (max-width: 480px) {
+      .status-card { padding: 26px 18px; border-radius: 16px; }
+      h1 { font-size: 18px; }
+      .receipt-box { font-size: 12.5px; }
     }
   </style>
 </head>
 <body>
 
-  <div class="status-card" id="card-content">
+  <!-- 결제 성공 -->
+  <div class="status-card" id="card-success" hidden>
     <div class="icon-badge success" id="status-icon">✓</div>
-    <h1 id="status-title">결제가 정상 완료되었습니다!</h1>
-    <p class="subtitle" id="status-sub">할머니의 비밀 비책 맞춤 PDF 책이 잠금 해제되었습니다.</p>
+    <h1 id="status-title">결제가 정상 완료되었습니다</h1>
+    <p class="subtitle" id="status-sub">입력하신 생년월일시로 맞춤 사주 책을 바로 만들어 드립니다.</p>
 
     <div class="notice-box">
       💡 <b>다운로드 안내</b><br>
-      아래 [PDF 책 다운로드] 버튼을 누르면 폰에 저장됩니다. 결제일로부터 <b>30일 이내</b> 다운로드·열람이 가능합니다. 궁금한 점은 카카오톡 1:1 상담실에서 무료 질문 AS를 도와드립니다.
+      아래 버튼을 누르면 사주 책 PDF가 이 기기에 만들어집니다. 결제일로부터 <b>30일 이내</b> 다시 받으실 수 있습니다.
     </div>
 
     <div class="receipt-box">
       <div class="receipt-row">
         <span class="receipt-label">주문 상품</span>
-        <span id="rec-product">2027 신년운세 완전판 PDF 책</span>
+        <span class="receipt-value" id="rec-product">-</span>
+      </div>
+      <div class="receipt-row">
+        <span class="receipt-label">주문자</span>
+        <span class="receipt-value" id="rec-name">-</span>
+      </div>
+      <div class="receipt-row">
+        <span class="receipt-label">사주 정보</span>
+        <span class="receipt-value" id="rec-birth">-</span>
       </div>
       <div class="receipt-row">
         <span class="receipt-label">결제 번호</span>
-        <span id="rec-orderid">-</span>
-      </div>
-      <div class="receipt-row">
-        <span class="receipt-label">결제 일시</span>
-        <span id="rec-time">-</span>
-      </div>
-      <div class="receipt-row">
-        <span class="receipt-label">이용 기간</span>
-        <span>결제일로부터 30일 이내</span>
+        <span class="receipt-value mono" id="rec-orderid">-</span>
       </div>
       <div class="receipt-row">
         <span class="receipt-label">결제 금액</span>
-        <span id="rec-amount">9,900원</span>
+        <span class="receipt-value" id="rec-amount">-</span>
       </div>
     </div>
 
-    <button type="button" class="btn-download-pdf" id="btn-download" onclick="downloadSajuPdf()">
-      📥 내 맞춤 사주 PDF 책 다운로드
+    <div class="pdf-status" id="pdf-status"></div>
+
+    <button type="button" class="btn-download-pdf" id="btn-download" onclick="startPdfDownload()">
+      📥 내 맞춤 사주 책 PDF 다운로드
     </button>
 
-    <a href="https://open.kakao.com/o/sfdOLuWi" target="_blank" class="btn-kakao-as">
-      💬 카카오톡으로도 받기 & 1회 무료 질문 AS
+    <a href="https://open.kakao.com/o/sfdOLuWi" target="_blank" rel="noopener" class="btn-kakao-as">
+      💬 카카오톡 1:1 상담 · 1회 무료 질문 AS
     </a>
 
-    <a href="/" class="btn-home">← 운명나침반 첫 화면으로 이동</a>
+    <a href="/" class="btn-home">← 운명나침반 첫 화면으로</a>
   </div>
 
+  <!-- 결제 실패 -->
+  <div class="status-card" id="card-fail" hidden>
+    <div class="icon-badge fail">✕</div>
+    <h1>결제가 완료되지 않았습니다</h1>
+    <p class="subtitle" id="fail-sub">결제가 취소되었거나 카드 승인 중 문제가 발생했습니다.</p>
+    <div class="notice-box warn" id="fail-detail" hidden></div>
+    <a href="/" class="btn-download-pdf" style="display:block; text-align:center;">처음으로 돌아가 다시 시도하기</a>
+    <a href="https://open.kakao.com/o/sfdOLuWi" target="_blank" rel="noopener" class="btn-kakao-as">💬 결제 관련 문의하기</a>
+  </div>
+
+  <!-- 주문 정보를 찾을 수 없음 -->
+  <div class="status-card" id="card-missing" hidden>
+    <div class="icon-badge info">🔎</div>
+    <h1 id="missing-title">주문 정보를 확인할 수 없습니다</h1>
+    <p class="subtitle" id="missing-sub">이 브라우저에서 결제를 진행한 기록을 찾지 못했습니다.</p>
+    <div class="notice-box">
+      맞춤 사주 책은 <b>결제한 기기·브라우저에서 바로 만들어지는 디지털 파일</b>입니다. 결제한 기기와 다른 기기·시크릿 모드에서 여셨다면 주문 기록이 남아 있지 않을 수 있습니다.
+    </div>
+    <div class="receipt-box" id="missing-only-id" hidden>
+      <div class="receipt-row">
+        <span class="receipt-label">결제 번호</span>
+        <span class="receipt-value mono" id="missing-orderid">-</span>
+      </div>
+    </div>
+    <a href="https://open.kakao.com/o/sfdOLuWi" target="_blank" rel="noopener" class="btn-kakao-as">💬 결제번호 보내고 책 받기 (카카오 상담)</a>
+    <a href="/" class="btn-home">← 운명나침반 첫 화면으로</a>
+  </div>
+
+  <!-- 생성 중 -->
+  <div class="pdf-progress-mask" id="progress" hidden>
+    <div class="spin"></div>
+    <div class="t1" id="progress-title">사주 책을 만들고 있습니다</div>
+    <div class="t2" id="progress-text">여덟 글자를 세는 중…</div>
+    <div class="bar"><div id="progress-bar"></div></div>
+    <div class="t2" style="margin-top:18px; font-size:11px; color:#64748b;">창을 닫지 말고 잠시만 기다려 주세요. (약 10~25초)</div>
+  </div>
+
+  <div class="pdf-stage" id="pdf-stage" hidden></div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="js/saju-engine.js"></script>
+  <script src="js/saju-book.js"></script>
+  <script src="js/pdf-export.js"></script>
   <script>
-    const params = new URLSearchParams(window.location.search);
-    // 포트원 V2 리다이렉트: paymentId / 실패 시 code·message·pgCode·pgMessage
-    const paymentId = params.get('paymentId') || params.get('payment_id') || '';
-    const errorCode = params.get('code');
-    const errorMessage = params.get('message');
-    const pgMessage = params.get('pgMessage');
+    var KAKAO_URL = 'https://open.kakao.com/o/sfdOLuWi';
+    var ORDER_PREFIX = 'nb_order_';
+    var DOWNLOAD_DAYS = 30;
 
-    // 결제 요청 시 저장해 둔 주문 내용을 paymentId로 찾아 복원합니다.
-    let order = null;
-    if (paymentId) {
+    var params = new URLSearchParams(window.location.search);
+    var paymentId = params.get('paymentId') || params.get('payment_id') || '';
+    var errorCode = params.get('code');
+    var errorMessage = params.get('message');
+    var pgMessage = params.get('pgMessage');
+    var isFail = !!(errorCode || params.get('status') === 'fail');
+
+    var order = loadOrder(paymentId);
+    var calc = null;
+    var lastPdfUrl = null;
+
+    function loadOrder(id) {
+      if (!id) return null;
       try {
-        const raw = localStorage.getItem('nb_order_' + paymentId);
-        if (raw) order = JSON.parse(raw);
+        var raw = localStorage.getItem(ORDER_PREFIX + id);
+        if (!raw) return null;
+        var o = JSON.parse(raw);
+        if (o && typeof o === 'object') { o.paymentId = o.paymentId || id; return o; }
       } catch (e) {
-        console.warn('Order lookup failed:', e);
+        console.warn('order lookup failed', e);
+      }
+      return null;
+    }
+
+    function show(cardId) {
+      ['card-success', 'card-fail', 'card-missing'].forEach(function (id) {
+        var el = document.getElementById(id);
+        if (el) el.hidden = (id !== cardId);
+      });
+    }
+
+    function birthText(o) {
+      if (!o.birth) return '-';
+      var h = o.birth.hour;
+      var hour = (h === undefined || h === null || h === '' || h === 'unknown') ? '시간 미상' :
+        ['자시', '축시', '인시', '묘시', '진시', '사시', '오시', '미시', '신시', '유시', '술시', '해시'][Math.floor(((Number(h) + 1) % 24) / 2)] + '경';
+      var cal = o.birth.calendar === 'lunar' ? '음력' : '양력';
+      return cal + ' ' + o.birth.y + '.' + o.birth.m + '.' + o.birth.d + (o.birth.leap ? '(윤달)' : '') + ' · ' + hour;
+    }
+
+    function init() {
+      if (isFail) {
+        show('card-fail');
+        if (pgMessage || errorMessage) {
+          var d = document.getElementById('fail-detail');
+          d.hidden = false;
+          d.textContent = pgMessage || errorMessage;
+        }
+        document.getElementById('fail-sub').textContent = '결제가 실제로 승인된 것 같다면 결제번호와 함께 카카오톡으로 알려주세요.';
+        return;
+      }
+
+      if (!paymentId || !order) {
+        show('card-missing');
+        if (paymentId) {
+          document.getElementById('missing-only-id').hidden = false;
+          document.getElementById('missing-orderid').textContent = paymentId;
+          document.getElementById('missing-title').textContent = '이 기기에 주문 기록이 없습니다';
+        } else {
+          document.getElementById('missing-title').textContent = '주문 정보 없이 열린 페이지입니다';
+          document.getElementById('missing-sub').textContent = '결제를 마치면 이 페이지로 자동 이동합니다. 혹시 결제하신 뒤 이 화면을 보신다면 아래 상담실로 알려주세요.';
+        }
+        return;
+      }
+
+      show('card-success');
+
+      order.paymentId = order.paymentId || paymentId;
+      document.getElementById('rec-product').textContent = order.productName || '맞춤 사주 PDF 책';
+      document.getElementById('rec-name').textContent = (order.customerName || '회원') + ' 님';
+      document.getElementById('rec-birth').textContent = birthText(order);
+      document.getElementById('rec-orderid').textContent = order.paymentId;
+      document.getElementById('rec-amount').textContent = Number(order.amount || 0).toLocaleString('ko-KR') + '원';
+
+      renderExpiry();
+
+      // 생년월일 정보가 없으면(구 주문) PDF를 만들 수 없다.
+      if (!order.birth || !order.birth.y) {
+        disableDownload('이 주문에는 사주 정보가 저장되어 있지 않습니다. 카카오톡 상담실에 결제번호를 남겨주시면 맞춤 책을 만들어 드립니다.');
+        return;
+      }
+
+      calc = null;
+      try {
+        calc = window.SajuEngine.compute({
+          name: order.customerName || '',
+          gender: order.gender || 'female',
+          year: order.birth.y,
+          month: order.birth.m,
+          day: order.birth.d,
+          calendar: order.birth.calendar || 'solar',
+          leap: !!order.birth.leap,
+          hour: order.birth.hour
+        });
+      } catch (e) {
+        console.warn('saju compute failed', e);
+      }
+
+      if (!calc || calc.ok === false) {
+        var msg = (calc && calc.error === 'lunar_out_of_range')
+          ? '음력 생년월일이 지원 범위(1936~2030년)를 벗어나 계산할 수 없습니다. 카카오톡 상담실로 알려주세요.'
+          : '사주 계산 중 문제가 생겼습니다. 카카오톡 상담실에 결제번호를 남겨주세요.';
+        disableDownload(msg);
+        return;
+      }
+
+      // 음력 → 양력 변환 결과를 함께 보여준다.
+      if (calc.input.converted) {
+        document.getElementById('rec-birth').textContent = birthText(order) +
+          ' → 양력 ' + calc.input.solar.y + '.' + calc.input.solar.m + '.' + calc.input.solar.d;
       }
     }
 
-    const productKey = (order && order.product) || params.get('product') || 'newyear';
-    const amount = (order && order.amount) || params.get('amount') || '9900';
-
-    const prodNames = {
-      newyear: '2027 신년운세 완전판 PDF 책',
-      life: '100쪽 평생 대운 완전판 PDF 책',
-      child: '자녀 기질·입시대운 맞춤 솔루션 PDF 책',
-      couple: '2인 사주 & 평생 궁합 완전판 PDF 책'
-    };
-
-    const pName = prodNames[productKey] || '2027 신년운세 완전판 PDF 책';
-
-    document.getElementById('rec-product').textContent = pName;
-    document.getElementById('rec-orderid').textContent = paymentId ? paymentId.slice(0, 20) : '-';
-    document.getElementById('rec-amount').textContent = Number(amount).toLocaleString() + '원';
-    document.getElementById('rec-time').textContent = new Date().toLocaleString('ko-KR');
-
-    if (errorCode || params.get('status') === 'fail') {
-      document.getElementById('status-icon').className = 'icon-badge fail';
-      document.getElementById('status-icon').textContent = '✕';
-      document.getElementById('status-title').textContent = '결제가 완료되지 않았습니다';
-      document.getElementById('status-sub').textContent = '결제가 취소되었거나 카드 승인 중 문제가 발생했습니다.';
-      if (errorMessage || pgMessage) {
-        document.querySelector('.notice-box').innerHTML = '💡 <b>안내</b><br>' + (pgMessage || errorMessage) +
-          '<br>결제가 실제로 승인된 것 같으면 카카오톡 1:1 상담실에 주문번호를 남겨주세요.';
+    function renderExpiry() {
+      if (!order || !order.createdAt) return;
+      var created = new Date(order.createdAt).getTime();
+      if (!created) return;
+      var days = Math.floor((Date.now() - created) / 86400000);
+      var left = DOWNLOAD_DAYS - days;
+      var status = document.getElementById('pdf-status');
+      if (left < 0) {
+        disableDownload('다운로드 가능 기간(결제일로부터 30일)이 지났습니다. 카카오톡 상담실에 결제번호를 남겨주시면 재발급을 도와드립니다.');
+      } else if (left <= 5) {
+        status.className = 'pdf-status';
+        status.textContent = '다운로드 가능 기간이 ' + left + '일 남았습니다. 지금 기기에 저장해 두세요.';
       }
-      document.getElementById('btn-download').style.display = 'none';
     }
 
-    function downloadSajuPdf() {
-      alert('할머니의 정밀 맞춤 사주 보고서를 생성 중입니다.\n생성된 파일이 기기에 자동 다운로드됩니다.');
-      // Create a clean printable summary or guide
-      const content = `[운명나침반 정밀 사주 지침서]\n상품: ${pName}\n결제번호: ${paymentId || '-'}\n결제금액: ${Number(amount).toLocaleString()}원\n\n할머니의 말씀: '말 못 할 가슴앓이 혼자 삭이느라 얼마나 고단했니...'\n정밀 분석 보고서 및 1회 무료 질문 AS는 카카오톡 1:1 상담실(https://open.kakao.com/o/sfdOLuWi)에서 결제번호를 말씀해주시면 즉시 지원됩니다.`;
-      const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = `운명나침반_${pName.replace(/\\s+/g, '_')}_소장용.txt`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
+    function disableDownload(msg) {
+      var btn = document.getElementById('btn-download');
+      btn.disabled = true;
+      btn.setAttribute('aria-disabled', 'true');
+      btn.textContent = '📥 PDF 다운로드 (상담 후 발급)';
+      var status = document.getElementById('pdf-status');
+      status.className = 'pdf-status err';
+      status.innerHTML = msg + ' <a href="' + KAKAO_URL + '" target="_blank" rel="noopener">카카오톡 상담 →</a>';
     }
+
+    function filenameFor() {
+      var name = (order && order.customerName) ? order.customerName : '회원';
+      var d = new Date();
+      var stamp = d.getFullYear() + String(d.getMonth() + 1).padStart(2, '0') + String(d.getDate()).padStart(2, '0');
+      var kind = (order && order.product) ? order.product : 'saju';
+      return '운명나침반_' + name + '_사주책_' + kind + '_' + stamp + '.pdf';
+    }
+
+    var generating = false;
+
+    async function startPdfDownload() {
+      if (generating) return;
+      var status = document.getElementById('pdf-status');
+      var btn = document.getElementById('btn-download');
+
+      if (!calc || calc.ok === false) {
+        disableDownload('사주 정보를 확인할 수 없어 PDF를 만들 수 없습니다. 카카오톡 상담실로 알려주세요.');
+        return;
+      }
+      if (!window.PdfExport || !window.PdfExport.libsReady()) {
+        status.className = 'pdf-status err';
+        status.innerHTML = 'PDF 생성 모듈을 불러오지 못했습니다. 네트워크를 확인한 뒤 다시 눌러주세요. 계속 문제가 있으면 <a href="' + KAKAO_URL + '" target="_blank" rel="noopener">카카오톡 상담</a>으로 결제번호를 보내주시면 파일을 보내드립니다.';
+        return;
+      }
+
+      generating = true;
+      btn.disabled = true;
+      btn.textContent = 'PDF 만드는 중…';
+      status.className = 'pdf-status';
+      status.textContent = '';
+
+      var mask = document.getElementById('progress');
+      var stage = document.getElementById('pdf-stage');
+      mask.hidden = false;
+      stage.hidden = false;
+      stage.innerHTML = '';
+
+      try {
+        document.getElementById('progress-text').textContent = '사주 여덟 글자를 세고 있습니다…';
+        document.getElementById('progress-bar').style.width = '6%';
+        await new Promise(function (r) { setTimeout(r, 60); });
+
+        var book = window.SajuBook.build(calc, {
+          product: order.product,
+          productName: order.productName,
+          paymentId: order.paymentId
+        });
+        stage.appendChild(book);
+
+        // 폰트 로딩 대기 (한글 깨짐 방지)
+        if (document.fonts && document.fonts.ready) { await document.fonts.ready; }
+
+        // 페이지 넘침 정리 (문서에 붙인 뒤에 측정 가능)
+        window.SajuBook.finish(book);
+
+        var res = await window.PdfExport.toPdf(book, {
+          scale: window.devicePixelRatio > 1.5 ? 1.6 : 1.5,
+          onProgress: function (done, total) {
+            var pct = Math.round(done / total * 100);
+            document.getElementById('progress-bar').style.width = pct + '%';
+            document.getElementById('progress-text').textContent = done + ' / ' + total + '쪽 만드는 중…';
+          }
+        });
+
+        if (lastPdfUrl) { URL.revokeObjectURL(lastPdfUrl); lastPdfUrl = null; }
+        lastPdfUrl = window.PdfExport.saveBlob(res.blob, filenameFor());
+
+        mask.hidden = true;
+        stage.hidden = true;
+        stage.innerHTML = '';
+
+        var mb = (res.blob.size / 1048576).toFixed(1);
+        status.className = 'pdf-status ok';
+        status.innerHTML = '✅ ' + res.pages + '쪽 PDF(' + mb + 'MB)가 만들어졌습니다. 다운로드가 시작되지 않으면 ' +
+          '<a href="' + lastPdfUrl + '" target="_blank" rel="noopener" download="' + filenameFor() + '"><b>여기를 눌러 열기</b></a>.';
+        btn.disabled = false;
+        btn.textContent = '📥 PDF 다시 받기';
+        generating = false;
+      } catch (err) {
+        console.error('PDF generation failed', err);
+        mask.hidden = true;
+        stage.hidden = true;
+        stage.innerHTML = '';
+        generating = false;
+        btn.disabled = false;
+        btn.textContent = '📥 다시 시도';
+        status.className = 'pdf-status err';
+        status.innerHTML = 'PDF를 만드는 중 문제가 생겼습니다. 다시 한 번 눌러주세요. 같은 문제가 반복되면 <a href="' + KAKAO_URL + '" target="_blank" rel="noopener">카카오톡 상담</a>으로 결제번호를 보내주시면 파일을 직접 보내드립니다.';
+      }
+    }
+
+    init();
   </script>
 </body>
 </html>

@@ -1467,11 +1467,11 @@
     </div>
 
     <!-- 내 주문 다시 받기 -->
-    <div class="drawer-reorder-box" id="btn-drawer-reorder" onclick="openReorderModal()">
+    <div class="drawer-reorder-box" id="btn-drawer-reorder">
       <div class="reorder-title">
         <span>🔖</span> 내 주문 · 다시 받기
       </div>
-      <div class="reorder-desc">메일이 안 왔을 때, 다시 받기, 재구매 할인</div>
+      <div class="reorder-desc">이 기기에서 결제한 주문을 바로 열어 다시 받기</div>
     </div>
 
     <!-- 무료 정밀 만세력 바로가기 -->
@@ -1629,6 +1629,10 @@
           <button type="button" class="radio-btn active" id="btn-solar">양력</button>
           <button type="button" class="radio-btn" id="btn-lunar">음력</button>
         </div>
+        <label id="leap-month-row" style="display: none; align-items: center; gap: 6px; font-size: 12.5px; color: var(--text-sub); margin-bottom: 8px; cursor: pointer;">
+          <input type="checkbox" id="chk-leap-month" style="width: 15px; height: 15px; accent-color: #d4af37; cursor: pointer;">
+          음력 윤달(閏月)에 태어났어요
+        </label>
         <div class="date-row">
           <select id="birth-year" class="date-select"></select>
           <select id="birth-month" class="date-select"></select>
@@ -2095,6 +2099,7 @@
 
 </div>
 
+<script src="js/saju-engine.js"></script>
 <script>
   // Populate Year (1940 - 2026) - Default unselected for visitors
   const selYear = document.getElementById('birth-year');
@@ -2207,14 +2212,29 @@
   });
 
   // Solar/Lunar toggle
+  let selectedCalendarType = 'solar';
+  let selectedLeapMonth = false;
+  const leapMonthRow = document.getElementById('leap-month-row');
+  const leapMonthChk = document.getElementById('chk-leap-month');
   document.getElementById('btn-solar').addEventListener('click', function() {
     this.classList.add('active');
     document.getElementById('btn-lunar').classList.remove('active');
+    selectedCalendarType = 'solar';
+    selectedLeapMonth = false;
+    if (leapMonthRow) leapMonthRow.style.display = 'none';
+    if (leapMonthChk) leapMonthChk.checked = false;
   });
   document.getElementById('btn-lunar').addEventListener('click', function() {
     this.classList.add('active');
     document.getElementById('btn-solar').classList.remove('active');
+    selectedCalendarType = 'lunar';
+    if (leapMonthRow) leapMonthRow.style.display = 'flex';
   });
+  if (leapMonthChk) {
+    leapMonthChk.addEventListener('change', function() {
+      selectedLeapMonth = !!this.checked;
+    });
+  }
 
   // Gender toggle (Visitor must pick one)
   let selectedGender = null;
@@ -2405,19 +2425,63 @@
     const phoneInput = document.getElementById('user-phone');
     const userPhone = phoneInput ? phoneInput.value.replace(/[^0-9-]/g, '') : '';
     const nameInput = document.getElementById('user-name');
-    const userName = (nameInput && nameInput.value.trim()) || '운명나침반 손님';
+    const rawName = nameInput ? nameInput.value.trim() : '';
+    const userName = rawName || '운명나침반 손님';
+
+    // 맞춤 사주 책은 입력한 생년월일시로 만들기 때문에, 결제 전에 사주 정보가 있어야 합니다.
+    const bY = parseInt(selYear.value, 10) || 0;
+    const bM = parseInt(selMonth.value, 10) || 0;
+    const bD = parseInt(selDay.value, 10) || 0;
+    if (!bY || !bM || !bD) {
+      alert('맞춤 사주 책을 만들려면 태어난 날짜(년·월·일)를 먼저 입력해 주세요.');
+      const formSec = document.getElementById('form-section');
+      if (formSec) formSec.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+    if (!selectedGender) {
+      alert('사주 풀이에 필요한 성별을 먼저 선택해 주세요.');
+      const formSec2 = document.getElementById('form-section');
+      if (formSec2) formSec2.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
 
     const paymentId = createPaymentId(currentProductKey);
+    const orderRecord = {
+      paymentId: paymentId,
+      product: currentProductKey,
+      productName: p.name,
+      amount: p.price,
+      email: userEmail,
+      phone: userPhone,
+      customerName: rawName,
+      gender: selectedGender,
+      concern: selectedConcern,
+      birth: {
+        y: bY,
+        m: bM,
+        d: bD,
+        calendar: selectedCalendarType,
+        leap: !!selectedLeapMonth,
+        hour: document.getElementById('birth-time').value
+      },
+      createdAt: new Date().toISOString()
+    };
 
-    // 결제 완료 후 order-status.html에서 주문 내용을 복원하기 위해 저장합니다.
+    // 결제 완료 후 order-status.html에서 주문 내용과 사주 정보를 복원하기 위해 저장합니다.
     try {
-      localStorage.setItem(ORDER_STORAGE_PREFIX + paymentId, JSON.stringify({
+      localStorage.setItem(ORDER_STORAGE_PREFIX + paymentId, JSON.stringify(orderRecord));
+      const recentRaw = localStorage.getItem('nb_orders');
+      const recent = recentRaw ? JSON.parse(recentRaw) : [];
+      const list = Array.isArray(recent) ? recent : [];
+      list.unshift({
+        paymentId: paymentId,
         product: currentProductKey,
         productName: p.name,
+        customerName: rawName,
         amount: p.price,
-        email: userEmail,
-        createdAt: new Date().toISOString()
-      }));
+        createdAt: orderRecord.createdAt
+      });
+      localStorage.setItem('nb_orders', JSON.stringify(list.slice(0, 5)));
     } catch (e) {
       console.warn('Order storage unavailable:', e);
     }
@@ -2486,10 +2550,16 @@
     const nameInput = document.getElementById('user-name').value.trim();
     const displayName = nameInput ? nameInput : '아가야';
     
-    const year = parseInt(selYear.value);
-    const month = parseInt(selMonth.value);
-    const day = parseInt(selDay.value);
+    let year = parseInt(selYear.value);
+    let month = parseInt(selMonth.value);
+    let day = parseInt(selDay.value);
     const hourVal = document.getElementById('birth-time').value;
+
+    // 음력으로 입력한 경우 양력으로 환산해 계산합니다 (PDF 책과 동일한 기준).
+    if (selectedCalendarType === 'lunar' && window.SajuEngine) {
+      const conv = window.SajuEngine.lunarToSolar(year, month, day, selectedLeapMonth);
+      if (conv) { year = conv.y; month = conv.m; day = conv.d; }
+    }
 
     document.getElementById('form-section').style.display = 'none';
     document.getElementById('loading-box').style.display = 'block';
@@ -2700,9 +2770,11 @@
       strengthBadge.textContent = badgeText;
 
       // Imbalance Diagnosis Text
-      if (year === 1991 && month === 1 && day === 12) {
+      // 재다신약(財多身弱) 임상 문구 — 특정 생년월일이 아니라 사주 구조(일간 壬水 · 화 4개 이상 · 목 결핍)로 판별합니다.
+      const noonCount = [yJi, mJi, dJi, hJi].filter(j => j === '午').length;
+      if (dGan === '壬' && counts.fire >= 4 && counts.wood === 0 && noonCount >= 2) {
         if (counts.fire >= 4) {
-          document.getElementById('res-elem-diag').innerHTML = `<span style="color: var(--gold); font-weight: 700;">⚠ 오행 불균형 진단:</span> 사주에 <b>불(재물/편재)이 4개(50%)로 천간·지지에 거대한 불기둥</b>이 치솟아 있는 전형적인 <b>재다신약(財多身弱)</b> 사주입니다. 말 세 마리(三午)가 달리는 극강의 추진력과 생활력을 타고났으나, 이 맹렬한 불바다를 일간 바다(壬水) 하나로 버텨내느라 늘 온몸이 부서질 듯 피로하고 속에 천불이 끓어오릅니다. 특히 숨통을 틔워줄 나무(식상 0%)가 전무하여 감정의 출구가 꽉 막힌 상태입니다.`;
+          document.getElementById('res-elem-diag').innerHTML = `<span style="color: var(--gold); font-weight: 700;">⚠ 오행 불균형 진단:</span> 사주에 <b>불(재물/편재)이 4개(50%)로 천간·지지에 거대한 불기둥</b>이 치솟아 있는 전형적인 <b>재다신약(財多身弱)</b> 사주입니다. 말 ${noonCount}마리가 달리는 극강의 추진력과 생활력을 타고났으나, 이 맹렬한 불바다를 일간 바다(壬水) 하나로 버텨내느라 늘 온몸이 부서질 듯 피로하고 속에 천불이 끓어오릅니다. 특히 숨통을 틔워줄 나무(식상 0%)가 전무하여 감정의 출구가 꽉 막힌 상태입니다.`;
         } else {
           document.getElementById('res-elem-diag').innerHTML = `<span style="color: var(--gold); font-weight: 700;">⚠ 오행 불균형 진단:</span> 불(재물 ${pFire}%)과 흙(책임감·일 ${pEarth}%)이 <b>사주를 무겁게 짓누르고 있어</b>, 남들은 모르는 막중한 책임감과 돈에 대한 압박을 혼자 떠안고 있는 신약 사주입니다. 반면에 숨통을 틔워주는 나무(식상 0%)가 메말라 있어 속마음을 시원하게 털어놓지 못하고 속에 천불과 화병이 차오릅니다.`;
         }
@@ -3043,17 +3115,51 @@
     }
   }
 
-  // Reorder / Redownload Modal simulation
+  // 내 주문 · 다시 받기 — 이 기기에 저장된 실제 주문 기록만 보여줍니다.
   const btnDrawerReorder = document.getElementById('btn-drawer-reorder');
   if (btnDrawerReorder) {
+    btnDrawerReorder.removeAttribute('onclick');
     btnDrawerReorder.addEventListener('click', () => {
-      const email = prompt('구매 시 입력하셨던 이메일 주소를 입력해 주세요:');
-      if (email && email.includes('@')) {
-        alert(email + ' 주소로 구매하신 사주 PDF 리포트 재발송 요청이 접수되었습니다! 10분 이내에 메일함을 확인해 주세요.');
-        closeDrawer();
-      } else if (email) {
-        alert('올바른 이메일 주소를 입력해 주세요.');
+      const box = document.getElementById('drawer-recent-orders');
+      if (box && box.style.display !== 'none') {
+        box.style.display = 'none';
+        return;
       }
+
+      let list = [];
+      try {
+        const raw = localStorage.getItem('nb_orders');
+        const parsed = raw ? JSON.parse(raw) : [];
+        list = Array.isArray(parsed) ? parsed.filter(o => o && o.paymentId) : [];
+      } catch (e) {
+        list = [];
+      }
+
+      let container = document.getElementById('drawer-recent-orders');
+      if (!container) {
+        container = document.createElement('div');
+        container.id = 'drawer-recent-orders';
+        container.style.cssText = 'display:none; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 12px 14px; margin: -6px 0 16px;';
+        btnDrawerReorder.parentNode.insertBefore(container, btnDrawerReorder.nextSibling);
+      }
+
+      if (!list.length) {
+        container.innerHTML = '<div style="font-size:12px; color:#cbd5e1; line-height:1.7;">이 기기에서 결제한 주문 기록이 없습니다.<br>결제한 기기·브라우저에서 다시 열거나, 결제번호를 카카오톡 1:1 상담실로 보내주시면 책을 다시 받으실 수 있습니다.</div>' +
+          '<a href="https://open.kakao.com/o/sfdOLuWi" target="_blank" rel="noopener" style="display:block; margin-top:10px; text-align:center; background:#fee500; color:#191919; text-decoration:none; border-radius:9px; padding:9px; font-size:12px; font-weight:800;">카카오톡으로 주문 문의하기</a>';
+        container.style.display = 'block';
+        return;
+      }
+
+      const rows = list.map(o => {
+        const d = o.createdAt ? new Date(o.createdAt) : null;
+        const when = d ? (d.getFullYear() + '.' + String(d.getMonth() + 1).padStart(2, '0') + '.' + String(d.getDate()).padStart(2, '0')) : '';
+        const name = o.customerName ? o.customerName + ' 님 · ' : '';
+        return '<a href="order-status.html?paymentId=' + encodeURIComponent(o.paymentId) + '" style="display:block; padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.07); text-decoration:none;">' +
+          '<div style="font-size:12px; font-weight:700; color:#f8fafc;">' + (o.productName || '맞춤 사주 책') + '</div>' +
+          '<div style="font-size:11px; color:#94a3b8; margin-top:2px;">' + name + when + ' · PDF 다시 받기 →</div></a>';
+      }).join('');
+      container.innerHTML = '<div style="font-size:11px; color:#94a3b8; margin-bottom:4px;">최근 주문 (이 기기 기준)</div>' + rows;
+      container.style.display = 'block';
     });
   }
 
