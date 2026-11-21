@@ -509,6 +509,7 @@
       '<div class="cover-ilju">' + calc.ilju + '일주 · ' + il.title + '</div>' +
       stripTable(calc) +
       '<div class="cover-badge">' + esc(productName) + '</div>' +
+      '<div class="cover-quote">여덟 글자는 정해진 운명이 아니라,<br>어디에 힘을 쓸지 알려주는 지도입니다.</div>' +
       '<div class="cover-info">' +
       '<div><span>생년월일</span>' + esc(birthLabel(calc)) + '</div>' +
       '<div><span>성별</span>' + (calc.input.gender === 'female' ? '여성' : '남성') + '</div>' +
