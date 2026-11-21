@@ -2307,7 +2307,7 @@
     } else {
       t += B.ilgan + '의 기운이 ' + A.ilgan + '의 기운을 <b>누르는(相剋)</b> 자리입니다. ' + nB + ' 님이 기준을 세우고 ' + nA + ' 님이 맞추는 구도가 되기 쉽습니다. ' + nA + ' 님이 말을 아끼면 서운함이 쌓입니다.';
     }
-    return t + ' ' + nB + ' 님이 보는 ' + nA + ' 님은 <b>' + r.aSeesB + '</b>의 자리입니다. ' + (SIPSIN_TO_PARTNER[r.aSeesB] || '');
+    return t + ' ' + nA + ' 님이 보는 ' + nB + ' 님은 <b>' + r.aSeesB + '</b>의 자리입니다. ' + (SIPSIN_TO_PARTNER[r.aSeesB] || '');
   }
 
   function jiPairText(A, B, r) {
