@@ -1730,7 +1730,7 @@
     }
     var rows = [
       ['사주 원국', p4(A), p4(B)],
-      ['일주', A.ilju + ' · ' + (ILGAN[A.ilgan] || {}).title.split(' ')[0], B.ilju + ' · ' + (ILGAN[B.ilgan] || {}).title.split(' ')[0]],
+      ['일주', A.ilju + ' · ' + (ILGAN[A.ilgan] || {}).title.split(' (')[0], B.ilju + ' · ' + (ILGAN[B.ilgan] || {}).title.split(' (')[0]],
       ['일간', A.ilgan + ' — ' + ELEM_KR[eng.ELEM_OF_GAN[A.ilgan]], B.ilgan + ' — ' + ELEM_KR[eng.ELEM_OF_GAN[B.ilgan]]],
       ['일지(배우자궁)', A.ilji + ' · ' + A.sipsin.day.ji, B.ilji + ' · ' + B.sipsin.day.ji],
       ['강약', A.strength.label + ' (내 편 ' + A.strength.supportPct + '%)', B.strength.label + ' (내 편 ' + B.strength.supportPct + '%)'],
@@ -2761,7 +2761,7 @@
 
   function coupleLetter(A, B, r, ilA, ilB, nA, nB) {
     return '두 사람의 사주를 나란히 놓고 보면, 잘 맞는 부분보다 <b>어긋나는 부분</b>이 먼저 눈에 들어옵니다. 그래서 궁합을 본 사람들은 종종 실망합니다. 하지만 어긋남은 헤어질 이유가 아니라, 어디를 조율해야 하는지 알려주는 지도입니다. ' +
-      nA + ' 님은 ' + ilA.title.split(' ')[0] + ', ' + nB + ' 님은 ' + ilB.title.split(' ')[0] + '의 기운을 타고났습니다. 두 재료는 다르지만, 다른 재료이기 때문에 서로에게 없는 것을 채울 수 있습니다. ' +
+      nA + ' 님은 ' + ilA.title.split(' (')[0] + ', ' + nB + ' 님은 ' + ilB.title.split(' (')[0] + '의 기운을 타고났습니다. 두 재료는 다르지만, 다른 재료이기 때문에 서로에게 없는 것을 채울 수 있습니다. ' +
       '이 책에서 확인한 갈등 촉발 버튼과 화해 날짜는, 두 사람이 같은 자리에서 같은 방식으로 다투지 않기 위한 장치입니다. ' +
       '운은 한 번에 바뀌지 않습니다. 다만 같은 상황에서 한 번만 다르게 말해도 10년 뒤의 관계는 달라집니다. ' +
       '마지막 장에 적어둔 세 가지 중 하나만 이번 달에 해보시면, 그 한 번이 다음 계절의 씨앗이 됩니다.';
