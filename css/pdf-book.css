@@ -129,7 +129,10 @@
   border-collapse: collapse;
   margin: 6px 0 14px;
   font-size: 12px;
+  letter-spacing: 0.28px;
 }
+
+.pdf-book .month-table .mon span { display: inline-block; }
 
 .pdf-book .saju-table th,
 .pdf-book .saju-table td {
@@ -191,7 +194,13 @@
 }
 
 .pdf-book .grid-table td.center { text-align: center; }
-.pdf-book .grid-table td.mon { font-weight: 700; white-space: nowrap; min-width: 46px; }
+.pdf-book .grid-table td.mon { font-weight: 700; white-space: nowrap; width: 60px; }
+.pdf-book .grid-table td.mon span { display: inline-block; white-space: nowrap; }
+.pdf-book .month-table { table-layout: fixed; }
+.pdf-book .month-table th:nth-child(1) { width: 60px; }
+.pdf-book .month-table th:nth-child(2) { width: 96px; }
+.pdf-book .month-table th:nth-child(3) { width: 120px; }
+.pdf-book .month-table th:nth-child(4) { width: 120px; }
 .pdf-book .grid-table td.good { color: #1f7a3d; }
 .pdf-book .grid-table td.ok { color: #4a6b1f; }
 .pdf-book .grid-table td.mid { color: #8a6d1f; }
@@ -305,12 +314,12 @@
 
 .pdf-book .strip {
   display: flex;
-  gap: 10px;
   margin: 34px 0 0;
 }
 
 .pdf-book .strip-col {
   width: 62px;
+  margin-right: 10px;
   border-top: 2px solid #1b1916;
   padding-top: 8px;
   text-align: center;
@@ -525,7 +534,10 @@
 
 .pdf-progress-mask {
   position: fixed;
-  inset: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
   background: rgba(9, 13, 22, 0.96);
   display: flex;
   flex-direction: column;

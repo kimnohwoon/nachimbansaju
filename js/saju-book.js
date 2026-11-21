@@ -353,7 +353,7 @@
       var sc = monthScore(calc, m);
       var label = sc >= 75 ? '대길' : (sc >= 60 ? '순조' : (sc >= 45 ? '평이' : '주의'));
       var cls = sc >= 75 ? 'good' : (sc >= 60 ? 'ok' : (sc >= 45 ? 'mid' : 'bad'));
-      rows += '<tr><td class="mon">' + m.month + '월</td>' +
+      rows += '<tr><td class="mon"><span>' + String(m.month).split('').map(function (ch) { return '<span>' + ch + '</span>'; }).join('') + '<span>월</span></span></td>' +
         '<td class="hanja-sm">' + m.gan + m.ji + '</td>' +
         '<td class="small">' + m.ganSipsin + '/' + m.jiSipsin + '</td>' +
         '<td class="small">' + (m.relDay.length ? m.relDay.join('·') : '-') + '</td>' +
