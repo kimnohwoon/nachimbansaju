@@ -7,6 +7,13 @@
 <meta name="googlebot" content="noindex, nofollow">
 <meta name="referrer" content="no-referrer">
 <meta name="theme-color" content="#090d16">
+<!-- iOS 홈 화면 웹앱(standalone) 설정 -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="운명나침반">
+<meta name="format-detection" content="telephone=no">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/studio-icon-180.png">
 <title>운명나침반 · 개인 테스트 스튜디오</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -38,7 +45,9 @@
     font-size: 14px;
     line-height: 1.55;
     min-height: 100vh;
+    min-height: 100dvh;
     overflow-x: hidden;
+    -webkit-text-size-adjust: 100%;
   }
   button { font-family: inherit; font-size: inherit; color: inherit; border: 0; background: none; cursor: pointer; }
   input, select { font-family: inherit; font-size: 16px; }
@@ -47,7 +56,7 @@
   #gate {
     position: fixed; inset: 0; z-index: 9000;
     display: flex; align-items: center; justify-content: center;
-    padding: 24px 20px calc(24px + env(safe-area-inset-bottom));
+    padding: calc(24px + env(safe-area-inset-top)) calc(20px + env(safe-area-inset-right)) calc(24px + env(safe-area-inset-bottom)) calc(20px + env(safe-area-inset-left));
     background:
       radial-gradient(120% 60% at 50% 0%, rgba(212, 175, 55, 0.18), transparent 60%),
       #070a12;
@@ -94,11 +103,14 @@
 
   /* ── 앱 ────────────────────────────────────────────── */
   #app[hidden] { display: none; }
-  .wrap { max-width: 430px; margin: 0 auto; padding: 0 16px calc(48px + env(safe-area-inset-bottom)); }
+  .wrap {
+    max-width: 430px; margin: 0 auto;
+    padding: 0 calc(16px + env(safe-area-inset-right)) calc(48px + env(safe-area-inset-bottom)) calc(16px + env(safe-area-inset-left));
+  }
   .app-head {
     position: sticky; top: 0; z-index: 60;
     display: flex; align-items: center; gap: 10px;
-    padding: calc(12px + env(safe-area-inset-top)) 16px 12px;
+    padding: calc(12px + env(safe-area-inset-top)) calc(16px + env(safe-area-inset-right)) 12px calc(16px + env(safe-area-inset-left));
     background: linear-gradient(180deg, rgba(9, 13, 22, .97), rgba(9, 13, 22, .82));
     backdrop-filter: blur(10px);
     border-bottom: 1px solid var(--line);
@@ -270,6 +282,9 @@
     background: rgba(255,255,255,.05); color: #cbbf95;
     border: 1px solid rgba(212,175,55,.4); box-shadow: none; height: 44px; font-size: 13px; font-weight: 800;
   }
+  .dl-btn:active { transform: scale(.985); }
+  .dl-hint { margin: 9px 2px 0; font-size: 11px; line-height: 1.6; color: #7f8ba1; }
+  .dl-fallback { display: block; margin-top: 8px; font-size: 11.5px; color: #cbbf95; text-align: center; text-decoration: underline; text-underline-offset: 3px; }
 
   /* 진행 마스크 */
   #mask {
@@ -444,8 +459,10 @@
 
       <div class="card dl-box">
         <div class="dl-status" id="dlStatus">PDF를 만드는 중입니다…</div>
-        <a class="dl-btn" id="dlBtn" hidden download>📥 PDF 저장</a>
-        <button class="dl-btn ghost" id="dlAgain" hidden>🔄 다시 계산해서 뽑기</button>
+        <button class="dl-btn" id="dlBtn" type="button" hidden>📥 PDF 저장</button>
+        <p class="dl-hint" id="dlHint" hidden></p>
+        <a class="dl-fallback" id="dlFallback" hidden target="_blank" rel="noopener">새 창에서 열기</a>
+        <button class="dl-btn ghost" id="dlAgain" type="button" hidden>🔄 다시 계산해서 뽑기</button>
       </div>
     </div>
 
@@ -508,7 +525,57 @@
 
   var $ = function (id) { return document.getElementById(id); };
   var state = { product: 'newyear', a: { cal: 'solar', gender: 'female' }, b: { cal: 'solar', gender: 'male' } };
-  var lastUrl = null, lastFilename = '', generating = false;
+  var lastUrl = null, lastFilename = '', lastBlob = null, generating = false;
+
+  /* ── iOS 홈 화면 웹앱: 공유 시트로 저장 ─────────────── */
+  var ua = navigator.userAgent || '';
+  var isIOS = /iPad|iPhone|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  var isStandalone = false;
+  try {
+    isStandalone = (window.navigator.standalone === true) ||
+      (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches);
+  } catch (e) {}
+
+  function currentFile() {
+    if (!lastBlob || !lastFilename) return null;
+    try { return new File([lastBlob], lastFilename, { type: 'application/pdf' }); }
+    catch (e) { return null; }
+  }
+  function canShareFile() {
+    var f = currentFile();
+    return !!(f && navigator.share && navigator.canShare && navigator.canShare({ files: [f] }));
+  }
+  function releaseUrl() {
+    if (lastUrl) { try { URL.revokeObjectURL(lastUrl); } catch (e) {} lastUrl = null; }
+    $('dlFallback').hidden = true;
+  }
+  function downloadBlob() {
+    if (!lastBlob || !lastFilename) return;
+    lastUrl = window.PdfExport.saveBlob(lastBlob, lastFilename);
+    if (isStandalone) {
+      // 홈 화면 앱에서는 a.download가 조용히 막히는 경우가 있어 새 창 열기 길을 같이 열어 둔다.
+      $('dlFallback').href = lastUrl;
+      $('dlFallback').hidden = false;
+      $('dlHint').hidden = false;
+      $('dlHint').textContent = '저장이 시작되지 않으면 아래 「새 창에서 열기」를 누른 뒤 공유 버튼으로 저장하세요.';
+    }
+  }
+  function saveOrShare() {
+    var file = currentFile();
+    if (isIOS && canShareFile()) {
+      navigator.share({ files: [file], title: lastFilename }).then(function () {
+        $('dlStatus').className = 'dl-status ok';
+        $('dlStatus').innerHTML = '📤 공유 시트로 내보냈습니다.<br>「파일에 저장」을 골랐다면 파일 앱 → 다운로드에서 볼 수 있습니다.';
+        $('dlHint').hidden = true;
+      }).catch(function (err) {
+        if (err && err.name === 'AbortError') return;   // 사용자가 직접 닫은 경우
+        console.warn('share failed → download fallback', err);
+        downloadBlob();
+      });
+      return;
+    }
+    downloadBlob();
+  }
 
   /* ── PIN 잠금 ───────────────────────────────────── */
   var pinBuf = '';
@@ -868,6 +935,8 @@
       $('dlStatus').className = 'dl-status';
       $('dlStatus').textContent = 'PDF를 만드는 중입니다… (' + pages + '쪽)';
       $('dlBtn').hidden = true;
+      $('dlHint').hidden = true;
+      $('dlFallback').hidden = true;
       $('dlAgain').hidden = true;
       $('result').scrollIntoView({ behavior: 'smooth', block: 'start' });
 
@@ -889,8 +958,8 @@
       stage.innerHTML = '';
 
       var fname = filenameFor(inpA.name, inpB.name, key);
-      if (lastUrl) { try { URL.revokeObjectURL(lastUrl); } catch (e) {} lastUrl = null; }
-      lastUrl = window.PdfExport.saveBlob(res.blob, fname);
+      releaseUrl();
+      lastBlob = res.blob;
       lastFilename = fname;
 
       setBar(100);
@@ -898,14 +967,28 @@
 
       var mb = (res.blob.size / 1048576).toFixed(1);
       $('dlStatus').className = 'dl-status ok';
-      $('dlStatus').innerHTML = '✅ ' + res.pages + '쪽 PDF(' + mb + 'MB)가 만들어졌습니다.<br>저장이 시작되지 않았다면 아래 버튼을 눌러 주세요.';
+      $('dlStatus').innerHTML = '✅ ' + res.pages + '쪽 PDF(' + mb + 'MB)가 만들어졌습니다.<br>아래 버튼을 눌러 저장해 주세요.';
+
       var btn = $('dlBtn');
-      btn.href = lastUrl;
-      btn.setAttribute('download', fname);
-      btn.textContent = '📥 PDF 저장 (' + res.pages + '쪽 · ' + mb + 'MB)';
+      btn.textContent = (isIOS ? '📤 PDF 저장 / 공유' : '📥 PDF 저장') + ' (' + res.pages + '쪽 · ' + mb + 'MB)';
       btn.hidden = false;
       $('dlAgain').hidden = false;
-      window.__nbStudioPdf = { pages: res.pages, bytes: res.blob.size, filename: fname };
+      $('dlHint').hidden = false;
+
+      if (isIOS) {
+        $('dlHint').textContent = canShareFile()
+          ? '버튼을 누르면 iOS 공유 시트가 열립니다. 「파일에 저장」 또는 카카오톡을 고르세요.'
+          : '버튼을 누르면 PDF를 내려받거나 새 창에서 엽니다.';
+      } else {
+        $('dlHint').textContent = '내려받기 폴더에 저장됩니다.';
+        // PC·안드로이드는 기존처럼 바로 저장을 시도한다.
+        downloadBlob();
+      }
+
+      window.__nbStudioPdf = {
+        pages: res.pages, bytes: res.blob.size, filename: fname,
+        ios: isIOS, standalone: isStandalone, canShare: canShareFile()
+      };
     } catch (err) {
       console.error('studio failed', err);
       $('mask').hidden = true;
@@ -921,6 +1004,10 @@
   }
 
   $('btnRun').addEventListener('click', run);
+  $('dlBtn').addEventListener('click', function (e) {
+    e.preventDefault();
+    saveOrShare();
+  });
   $('dlAgain').addEventListener('click', function () {
     $('result').hidden = true;
     run();
