@@ -792,3 +792,7 @@
 
 .pdf-book .mini-table.faq-table th { width: 150px; font-size: 11px; line-height: 1.55; color: #6b5320; }
 .pdf-book .mini-table.faq-table td { font-size: 11px; line-height: 1.7; }
+
+.pdf-book .summary-card.chapter-summary { margin-top: 14px; margin-bottom: 0; }
+.pdf-book .chapter-summary .summary-grid div { line-height: 1.85; }
+.pdf-book .chapter-summary .summary-grid div span { width: 46px; }

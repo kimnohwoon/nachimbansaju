@@ -1528,7 +1528,7 @@
     r.commonMissing = EO.filter(function (e) { return (A.counts[e] || 0) <= 1 && (B.counts[e] || 0) <= 1; });
 
     // ── 점수 ──
-    var attr = 52;
+    var attr = 58;
     if (hasKw(r.ganRel, '천간합')) attr += 20;
     else if (hasKw(r.ganRel, '같은 천간')) attr += 8;
     else if (r.ganElemRel === 'a2b' || r.ganElemRel === 'b2a') attr += 10;
@@ -1543,10 +1543,10 @@
     if (['식신', '상관', '편재', '정재'].indexOf(r.aSeesB) >= 0) attr += 4;
     if (['식신', '상관', '편재', '정재'].indexOf(r.bSeesA) >= 0) attr += 4;
 
-    var stab = 56;
-    if (hasKw(r.jiRel, '충')) stab -= 20;
-    if (hasKw(r.jiRel, '형')) stab -= 8;
-    if (hasKw(r.jiRel, '파')) stab -= 7;
+    var stab = 62;
+    if (hasKw(r.jiRel, '충')) stab -= 16;
+    if (hasKw(r.jiRel, '형')) stab -= 7;
+    if (hasKw(r.jiRel, '파')) stab -= 6;
     if (hasKw(r.jiRel, '해')) stab -= 5;
     if (hasKw(r.jiRel, '육합')) stab += 14;
     if (hasKw(r.jiRel, '삼합')) stab += 8;
@@ -1563,7 +1563,7 @@
     stab -= Math.min(8, crossChung * 4);
     stab += Math.min(6, crossHap * 3);
 
-    var bal = 50;
+    var bal = 54;
     bal += r.fillA.length * 6 + r.fillB.length * 6;
     bal -= r.overlap.length * 5;
     bal -= r.bothZero.length * 7;
@@ -1572,7 +1572,7 @@
     if (A.elements.over.indexOf(eng.ELEM_OF_GAN[B.ilgan]) >= 0) bal -= 4;
     if (B.elements.over.indexOf(eng.ELEM_OF_GAN[A.ilgan]) >= 0) bal -= 4;
 
-    var daily = 55;
+    var daily = 58;
     var jaeA = A.sipsinCounts['재성'], jaeB = B.sipsinCounts['재성'];
     daily -= Math.min(9, Math.abs(jaeA - jaeB) * 3);
     if (jaeA === 0 && jaeB === 0) daily -= 6;
@@ -1584,7 +1584,7 @@
     var inA = A.sipsinCounts['인성'], inB = B.sipsinCounts['인성'];
     if (inA >= 3 && inB >= 3) daily -= 4;
 
-    var timing = 55;
+    var timing = 58;
     var crossYears = yearCross(A, B);
     crossYears.forEach(function (y) {
       if (y.bad >= 2) timing -= 6;
@@ -1913,13 +1913,7 @@
     b.section('궁합 점수 — 다섯 가지로 나눠 본 결과');
     b.para('아래 점수는 두 사람의 원국을 같은 기준으로 계산한 상대값입니다. 100점 만점의 절대 평가가 아니라, 이 관계 안에서 어느 부분이 강하고 어느 부분을 손봐야 하는지를 보여주는 지표입니다.', 'small');
     b.block(scoreTable(r));
-    b.block('<table class="mini-table wide score-note"><tbody>' +
-      '<tr><th>끌림</th><td>일간·일지의 합과 충, 서로에게 보이는 십성으로 계산합니다. 높다고 좋은 것만은 아니며, 낮으면 관계의 시작 자체가 더디다는 뜻입니다.</td></tr>' +
-      '<tr><th>안정</th><td>충·형·파·해의 개수와 두 사람의 강약 차이를 봅니다. 이 점수가 낮으면 같은 문제가 반복됩니다.</td></tr>' +
-      '<tr><th>보완</th><td>한쪽에 없고 다른 쪽에 있는 오행, 둘 다 비어 있는 오행을 셉니다. 오래 가는 관계의 실제 연료입니다.</td></tr>' +
-      '<tr><th>생활</th><td>재성·식상·관성의 구조를 비교해 돈과 말, 규칙의 리듬이 맞는지 봅니다.</td></tr>' +
-      '<tr><th>시기</th><td>앞으로 6년의 세운과 현재 대운이 두 사람에게 동시에 어떻게 작용하는지 계산합니다.</td></tr>' +
-      '</tbody></table>');
+    b.para('다섯 항목은 각각 <b>끌림</b>(일간·일지의 합과 충, 서로에게 보이는 십성), <b>안정</b>(충·형·파·해의 개수와 강약 차이), <b>보완</b>(한쪽에 없고 다른 쪽에 있는 오행), <b>생활</b>(재성·식상·관성의 구조), <b>시기</b>(6년의 세운과 현재 대운)를 따로 계산한 값입니다. 점수가 높다고 좋은 것만은 아니며, 낮은 항목이 앞으로 손볼 자리입니다.', 'small');
     b.section('이 궁합을 한 줄로');
     b.para('<b>' + esc(r.verdict.head) + '</b>');
     b.para(esc(r.verdict.body));
@@ -1932,6 +1926,10 @@
     b.block('<table class="mini-table wide"><tbody>' + strongRows(r).map(function (x) {
       return '<tr><th>' + x[0] + ' ' + x[1] + '점</th><td>' + x[2] + '</td></tr>';
     }).join('') + '</tbody></table>');
+    b.block('<div class="summary-card chapter-summary">' +
+      '<div class="summary-title">제3부 요약 — 이 관계의 세 줄</div>' +
+      '<div class="summary-grid">' + chapterThreeSummary(A, B, r, nameA, nameB) + '</div>' +
+      '</div>');
 
     // ── 제4부: 갈등 촉발 버튼 ──
     b.addPage();
@@ -2135,6 +2133,18 @@
     a3 += '2027년 안에서 고른다면 ' + topM.join('·') + '이 좋습니다.';
     out.push([q3, a3]);
     return out;
+  }
+
+  function chapterThreeSummary(A, B, r, nA, nB) {
+    var keys = ['attraction', 'stability', 'balance', 'daily', 'timing'].slice().sort(function (a, b) { return r.score[a] - r.score[b]; });
+    var low = keys[0];
+    var center = (r.ganRel.length ? '일간은 ' + r.ganRel.join('·') : '일간은 특별한 합충이 없고') + ', 일지는 ' + (r.jiRel.length ? r.jiRel.join('·') : '특별한 관계가 없습니다') + '.';
+    var need = '지금 가장 필요한 것은 ' + SCORE_LABEL[low] + '(' + r.score[low] + '점)을 올리는 일입니다.';
+    var watch = r.overlap.length ? '조심할 것은 ' + elemListKr(r.overlap) + ' 기운이 겹치는 자리 — 같은 장점이 두 배, 같은 단점도 두 배가 됩니다.' :
+      (r.bothZero.length ? '조심할 것은 ' + elemListKr(r.bothZero) + ' 기운이 둘 다 비어 있다는 점 — 이 자리는 함께 만들어야 합니다.' : '두 사람 사이에 유난히 과한 기운은 없습니다. 생활의 규칙이 관계의 안전장치입니다.');
+    return '<div><span>중심</span>' + center + '</div>' +
+      '<div><span>필요</span>' + need + '</div>' +
+      '<div><span>주의</span>' + watch + '</div>';
   }
 
   function elemListKr(list) {
