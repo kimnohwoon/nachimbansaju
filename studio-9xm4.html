@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+<meta name="googlebot" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<meta name="theme-color" content="#090d16">
+<title>운명나침반 · 개인 테스트 스튜디오</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Noto+Serif+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/pdf-book.css">
+<style>
+  :root {
+    --bg: #090d16;
+    --card: rgba(18, 24, 38, 0.96);
+    --card-2: rgba(26, 33, 50, 0.9);
+    --line: rgba(212, 175, 55, 0.18);
+    --gold: #d4af37;
+    --gold-light: #f3e5ab;
+    --text: #f8fafc;
+    --muted: #94a3b8;
+    --green: #34d399;
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  [hidden] { display: none !important; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background:
+      radial-gradient(120% 70% at 50% -10%, rgba(212, 175, 55, 0.16), transparent 62%),
+      radial-gradient(90% 60% at 100% 100%, rgba(59, 130, 246, 0.10), transparent 60%),
+      var(--bg);
+    background-attachment: fixed;
+    color: var(--text);
+    font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    font-size: 14px;
+    line-height: 1.55;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+  button { font-family: inherit; font-size: inherit; color: inherit; border: 0; background: none; cursor: pointer; }
+  input, select { font-family: inherit; font-size: 16px; }
+
+  /* ── PIN 잠금 ───────────────────────────────────────── */
+  #gate {
+    position: fixed; inset: 0; z-index: 9000;
+    display: flex; align-items: center; justify-content: center;
+    padding: 24px 20px calc(24px + env(safe-area-inset-bottom));
+    background:
+      radial-gradient(120% 60% at 50% 0%, rgba(212, 175, 55, 0.18), transparent 60%),
+      #070a12;
+    transition: opacity .34s ease, visibility .34s ease;
+  }
+  #gate.out { opacity: 0; visibility: hidden; }
+  .gate-inner { width: 100%; max-width: 360px; text-align: center; }
+  .gate-brand {
+    font-family: 'Noto Serif KR', serif; font-weight: 900; font-size: 30px;
+    letter-spacing: .18em; color: var(--gold-light);
+    text-shadow: 0 0 26px rgba(212, 175, 55, .35);
+  }
+  .gate-rule { width: 54px; height: 1px; margin: 14px auto 18px; background: linear-gradient(90deg, transparent, var(--gold), transparent); }
+  .gate-title { font-size: 15px; font-weight: 700; letter-spacing: .04em; }
+  .gate-sub { margin-top: 6px; font-size: 12.5px; color: var(--muted); }
+  .pin-dots { display: flex; justify-content: center; gap: 16px; margin: 26px 0 10px; }
+  .pin-dots i {
+    width: 13px; height: 13px; border-radius: 50%;
+    border: 1.5px solid rgba(212, 175, 55, .55); background: transparent;
+    transition: background .16s ease, transform .16s ease, border-color .16s ease;
+  }
+  .pin-dots i.on { background: var(--gold); border-color: var(--gold); transform: scale(1.08); box-shadow: 0 0 12px rgba(212, 175, 55, .55); }
+  .pin-msg { min-height: 20px; font-size: 12.5px; color: #f87171; letter-spacing: .01em; }
+  .pin-msg.hint { color: var(--muted); }
+  @keyframes shake {
+    0%,100% { transform: translateX(0); }
+    20% { transform: translateX(-8px); } 40% { transform: translateX(8px); }
+    60% { transform: translateX(-5px); } 80% { transform: translateX(5px); }
+  }
+  .pin-dots.shake { animation: shake .4s ease; }
+
+  .keypad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 18px; }
+  .keypad button {
+    height: 58px; border-radius: 16px;
+    background: rgba(255, 255, 255, .045);
+    border: 1px solid rgba(255, 255, 255, .07);
+    font-size: 22px; font-weight: 700; color: var(--text);
+    display: flex; align-items: center; justify-content: center;
+    transition: background .12s ease, transform .08s ease;
+  }
+  .keypad button:active { background: rgba(212, 175, 55, .22); transform: scale(.97); }
+  .keypad button.ghost { background: transparent; border-color: transparent; font-size: 15px; color: var(--muted); }
+  .gate-note { margin-top: 20px; font-size: 11px; line-height: 1.7; color: #59637a; }
+
+  /* ── 앱 ────────────────────────────────────────────── */
+  #app[hidden] { display: none; }
+  .wrap { max-width: 430px; margin: 0 auto; padding: 0 16px calc(48px + env(safe-area-inset-bottom)); }
+  .app-head {
+    position: sticky; top: 0; z-index: 60;
+    display: flex; align-items: center; gap: 10px;
+    padding: calc(12px + env(safe-area-inset-top)) 16px 12px;
+    background: linear-gradient(180deg, rgba(9, 13, 22, .97), rgba(9, 13, 22, .82));
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  .app-head .brand {
+    font-family: 'Noto Serif KR', serif; font-weight: 900; font-size: 15px;
+    letter-spacing: .12em; color: var(--gold-light);
+  }
+  .badge-test {
+    font-size: 10px; font-weight: 800; letter-spacing: .04em;
+    color: #062b1c; background: linear-gradient(135deg, #6ee7b7, #34d399);
+    padding: 3px 7px; border-radius: 999px;
+  }
+  .head-spacer { flex: 1; }
+  .head-lock {
+    font-size: 11.5px; color: var(--muted);
+    border: 1px solid rgba(255, 255, 255, .1); border-radius: 999px;
+    padding: 6px 10px;
+  }
+
+  .hero { padding: 20px 2px 14px; }
+  .hero h1 {
+    margin: 0; font-size: 20px; line-height: 1.4; font-weight: 900; letter-spacing: -.01em;
+  }
+  .hero h1 em { font-style: normal; color: var(--gold-light); }
+  .hero p { margin: 8px 0 0; font-size: 12.5px; color: var(--muted); line-height: 1.6; }
+
+  /* 상품 탭 */
+  .tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 4px; }
+  .tab {
+    text-align: left; padding: 11px 12px; border-radius: 13px;
+    background: rgba(255, 255, 255, .035);
+    border: 1px solid rgba(255, 255, 255, .08);
+    transition: border-color .16s ease, background .16s ease, box-shadow .16s ease;
+  }
+  .tab b { display: block; font-size: 13px; font-weight: 800; letter-spacing: -.01em; }
+  .tab span { display: block; margin-top: 2px; font-size: 11px; color: var(--muted); }
+  .tab.active {
+    background: linear-gradient(160deg, rgba(212, 175, 55, .20), rgba(212, 175, 55, .06));
+    border-color: rgba(212, 175, 55, .62);
+    box-shadow: 0 6px 18px -10px rgba(212, 175, 55, .8);
+  }
+  .tab.active b { color: var(--gold-light); }
+  .tab.active span { color: #cbbf95; }
+
+  .card {
+    margin-top: 14px; padding: 16px 15px 17px;
+    background: var(--card); border: 1px solid rgba(255, 255, 255, .07);
+    border-radius: 18px;
+    box-shadow: 0 18px 40px -30px rgba(0, 0, 0, .9);
+  }
+  .card-head { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+  .card-head .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--gold); }
+  .card-head h2 { margin: 0; font-size: 13.5px; font-weight: 800; letter-spacing: -.01em; }
+  .card-head .who { font-size: 11px; color: var(--muted); font-weight: 600; }
+
+  .field { margin-top: 11px; }
+  .field:first-of-type { margin-top: 0; }
+  .field > label { display: block; font-size: 11.5px; font-weight: 700; color: #a9b4c6; margin-bottom: 6px; letter-spacing: .01em; }
+  .inp {
+    width: 100%; height: 44px; padding: 0 12px;
+    background: rgba(255, 255, 255, .05); color: var(--text);
+    border: 1px solid rgba(255, 255, 255, .1); border-radius: 11px;
+    outline: none; -webkit-appearance: none; appearance: none;
+  }
+  .inp:focus { border-color: rgba(212, 175, 55, .7); background: rgba(212, 175, 55, .08); }
+  select.inp {
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path d='M1 1l5 5 5-5' fill='none' stroke='%2394a3b8' stroke-width='1.6' stroke-linecap='round'/></svg>");
+    background-repeat: no-repeat; background-position: right 12px center; padding-right: 30px;
+  }
+  select.inp option { background: #131a28; color: #f8fafc; }
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .row-3 { display: grid; grid-template-columns: 1.15fr 1fr 1fr; gap: 8px; }
+
+  .seg { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; background: rgba(255,255,255,.04); padding: 4px; border-radius: 12px; border: 1px solid rgba(255,255,255,.07); }
+  .seg button { height: 36px; border-radius: 9px; font-size: 13px; font-weight: 700; color: var(--muted); }
+  .seg button.on { background: linear-gradient(160deg, rgba(212,175,55,.9), rgba(170,130,10,.85)); color: #12100a; }
+
+  .checkline { display: flex; align-items: center; gap: 8px; margin-top: 10px; }
+  .checkline input[type=checkbox] { width: 18px; height: 18px; accent-color: #d4af37; }
+  .checkline label { font-size: 12px; color: #a9b4c6; }
+  .hintline { margin-top: 7px; font-size: 11px; color: #6d7a90; line-height: 1.5; }
+
+  .sample-btn {
+    display: block; margin: 12px auto 0;
+    padding: 8px 14px; border-radius: 999px;
+    font-size: 11.5px; font-weight: 700; color: #cbbf95;
+    border: 1px dashed rgba(212, 175, 55, .45); background: rgba(212, 175, 55, .07);
+  }
+  .sample-btn:active { background: rgba(212, 175, 55, .18); }
+
+  .cta {
+    width: 100%; margin-top: 16px; height: 56px; border-radius: 16px;
+    font-size: 15.5px; font-weight: 900; letter-spacing: -.01em; color: #14110a;
+    background: linear-gradient(135deg, #f7e6a4 0%, #d4af37 46%, #b5891d 100%);
+    box-shadow: 0 16px 34px -16px rgba(212, 175, 55, .75), inset 0 1px 0 rgba(255,255,255,.55);
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+  }
+  .cta:disabled { opacity: .6; box-shadow: none; }
+  .cta:active:not(:disabled) { transform: translateY(1px); }
+  .cta-sub { margin-top: 9px; text-align: center; font-size: 11px; color: #6d7a90; }
+
+  .err-box {
+    margin-top: 12px; padding: 11px 13px; border-radius: 11px;
+    background: rgba(248, 113, 113, .1); border: 1px solid rgba(248, 113, 113, .35);
+    color: #fca5a5; font-size: 12.5px; line-height: 1.5;
+  }
+
+  /* 결과 */
+  #result[hidden] { display: none; }
+  .res-head { display: flex; align-items: center; gap: 9px; margin: 22px 2px 0; }
+  .res-head h2 { margin: 0; font-size: 16px; font-weight: 900; }
+  .res-head .pill { font-size: 10.5px; font-weight: 800; color: #062b1c; background: #34d399; padding: 3px 8px; border-radius: 999px; }
+
+  .sum-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; }
+  .sum-cell { background: rgba(255, 255, 255, .045); border: 1px solid rgba(255,255,255,.07); border-radius: 12px; padding: 9px 11px; }
+  .sum-cell span { display: block; font-size: 10.5px; color: var(--muted); font-weight: 700; }
+  .sum-cell b { display: block; margin-top: 2px; font-size: 13.5px; font-weight: 800; color: var(--gold-light); letter-spacing: -.01em; }
+  .sum-cell b.small { font-size: 12px; color: var(--text); }
+
+  .elem-bar { margin-top: 12px; }
+  .elem-row { display: grid; grid-template-columns: 52px 1fr 40px; align-items: center; gap: 8px; margin-top: 6px; }
+  .elem-row .nm { font-size: 11.5px; color: #a9b4c6; font-weight: 700; }
+  .elem-row .tr { height: 8px; border-radius: 999px; background: rgba(255,255,255,.07); overflow: hidden; }
+  .elem-row .tr i { display: block; height: 100%; border-radius: 999px; background: linear-gradient(90deg, #d4af37, #f3e5ab); }
+  .elem-row .pc { font-size: 11px; color: var(--muted); text-align: right; font-variant-numeric: tabular-nums; }
+
+  .score-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 7px; margin-top: 12px; }
+  .score-cell { background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.06); border-radius: 10px; padding: 8px 6px; text-align: center; }
+  .score-cell span { display: block; font-size: 10px; color: var(--muted); font-weight: 700; }
+  .score-cell b { display: block; font-size: 16px; font-weight: 900; color: var(--text); font-variant-numeric: tabular-nums; }
+  .score-cell b.hi { color: #6ee7b7; }
+  .score-cell b.low { color: #fca5a5; }
+
+  .partner-sum { margin-top: 14px; padding-top: 13px; border-top: 1px dashed rgba(255,255,255,.1); }
+  .partner-sum .p-name { font-size: 12.5px; font-weight: 800; color: #e2e8f0; margin-bottom: 8px; }
+
+  .preview-shell { margin-top: 12px; border-radius: 14px; overflow: hidden; border: 1px solid rgba(255,255,255,.09); background: #0b101a; }
+  .preview-bar {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 9px 12px; font-size: 11px; color: var(--muted);
+    background: rgba(255,255,255,.04); border-bottom: 1px solid rgba(255,255,255,.07);
+  }
+  .preview-bar b { color: #cbbf95; font-weight: 800; }
+  #preview-frame {
+    max-height: 64vh; overflow-y: auto; overflow-x: hidden;
+    padding: 8px; background: #10151f;
+    -webkit-overflow-scrolling: touch;
+  }
+  .preview-book { position: absolute; left: 0; top: 0; transform-origin: top left; }
+  .preview-book .pdf-page { outline: 1px solid rgba(0, 0, 0, .5); margin-bottom: 8px; }
+  .preview-book .pdf-page:last-child { margin-bottom: 0; }
+  .res-prod { margin: 4px 2px 0; font-size: 12px; color: #a9b4c6; }
+  .res-prod b { color: #cbbf95; font-weight: 800; }
+
+  .dl-box { margin-top: 13px; }
+  .dl-status { font-size: 12px; line-height: 1.55; color: var(--muted); }
+  .dl-status.ok { color: #6ee7b7; }
+  .dl-status.err { color: #fca5a5; }
+  .dl-btn {
+    display: flex; align-items: center; justify-content: center; gap: 7px;
+    width: 100%; height: 50px; margin-top: 10px; border-radius: 14px;
+    font-size: 14.5px; font-weight: 900; color: #14110a;
+    background: linear-gradient(135deg, #f7e6a4, #d4af37 55%, #b5891d);
+    box-shadow: 0 14px 30px -18px rgba(212, 175, 55, .85);
+    text-decoration: none;
+  }
+  .dl-btn.ghost {
+    background: rgba(255,255,255,.05); color: #cbbf95;
+    border: 1px solid rgba(212,175,55,.4); box-shadow: none; height: 44px; font-size: 13px; font-weight: 800;
+  }
+
+  /* 진행 마스크 */
+  #mask {
+    position: fixed; inset: 0; z-index: 9500;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 0; padding: 28px; background: rgba(6, 9, 16, .97);
+  }
+  #mask[hidden] { display: none; }
+  .mask-brand { font-family: 'Noto Serif KR', serif; font-size: 22px; font-weight: 900; letter-spacing: .16em; color: var(--gold-light); }
+  .mask-text { margin-top: 14px; font-size: 13px; color: #cbd5e1; text-align: center; }
+  .bar { width: 100%; max-width: 260px; height: 6px; margin-top: 16px; border-radius: 999px; background: rgba(255,255,255,.1); overflow: hidden; }
+  .bar i { display: block; height: 100%; width: 4%; border-radius: 999px; background: linear-gradient(90deg, #d4af37, #f3e5ab); transition: width .25s ease; }
+  .mask-note { margin-top: 12px; font-size: 11px; color: #6d7a90; }
+
+  .foot-note { margin: 26px 2px 0; font-size: 10.5px; line-height: 1.7; color: #4d5a6f; text-align: center; }
+
+  /* PDF 생성용 스테이지 (화면 밖, 측정용) */
+  #pdf-stage {
+    position: fixed; left: 0; top: 0; width: 794px; height: 1123px;
+    overflow: hidden; pointer-events: none; z-index: 1;
+  }
+  #pdf-stage[hidden] { display: none; }
+</style>
+</head>
+<body>
+
+<!-- ══ PIN 잠금 화면 ══════════════════════════════════ -->
+<div id="gate">
+  <div class="gate-inner">
+    <div class="gate-brand">運命羅針盤</div>
+    <div class="gate-rule"></div>
+    <div class="gate-title">개인 테스트 스튜디오</div>
+    <div class="gate-sub">4자리 PIN을 입력해 주세요</div>
+    <div class="pin-dots" id="pinDots"><i></i><i></i><i></i><i></i></div>
+    <div class="pin-msg hint" id="pinMsg">비공개 테스트 페이지입니다</div>
+    <div class="keypad" id="keypad">
+      <button data-k="1">1</button><button data-k="2">2</button><button data-k="3">3</button>
+      <button data-k="4">4</button><button data-k="5">5</button><button data-k="6">6</button>
+      <button data-k="7">7</button><button data-k="8">8</button><button data-k="9">9</button>
+      <button class="ghost" data-k="clear">전체</button><button data-k="0">0</button><button class="ghost" data-k="del">지움</button>
+    </div>
+    <div class="gate-note">운명나침반 운영자 전용 · 무료 테스트 페이지<br>일반 방문자에게 공개되지 않습니다</div>
+  </div>
+</div>
+
+<!-- ══ 앱 ═════════════════════════════════════════════ -->
+<div id="app" hidden>
+  <div class="app-head">
+    <span class="brand">運命羅針盤</span>
+    <span class="badge-test">TEST</span>
+    <span class="head-spacer"></span>
+    <button class="head-lock" id="btnLock">잠금</button>
+  </div>
+
+  <div class="wrap">
+    <div class="hero">
+      <h1>4종 사주 상품 <em>결제 없이</em><br>전부 뽑아보는 테스트 스튜디오</h1>
+      <p>손님용 사이트와 같은 엔진·같은 PDF 생성기로 만듭니다.<br>입력하면 화면에서 바로 미리보기 + PDF 저장까지 됩니다.</p>
+    </div>
+
+    <div class="tabs" id="tabs">
+      <button class="tab active" data-key="newyear"><b>2027 신년운세</b><span>9,900원 · 테스트</span></button>
+      <button class="tab" data-key="life"><b>평생 종합사주</b><span>29,900원 · 테스트</span></button>
+      <button class="tab" data-key="child"><b>자녀 기질·사주</b><span>19,900원 · 테스트</span></button>
+      <button class="tab" data-key="couple"><b>2인 사주&amp;궁합</b><span>39,900원 · 테스트</span></button>
+    </div>
+
+    <!-- 본인 입력 -->
+    <div class="card">
+      <div class="card-head"><span class="dot"></span><h2>사주 정보 입력</h2><span class="who" id="whoA">첫 번째 분</span></div>
+
+      <div class="field">
+        <label for="a-name">이름</label>
+        <input class="inp" id="a-name" type="text" placeholder="예) 김하늘" autocomplete="off" maxlength="20">
+      </div>
+
+      <div class="field">
+        <label>양력 / 음력</label>
+        <div class="seg" id="a-cal">
+          <button data-v="solar" class="on">양력</button>
+          <button data-v="lunar">음력</button>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>태어난 날짜</label>
+        <div class="row-3">
+          <select class="inp" id="a-y"></select>
+          <select class="inp" id="a-m"></select>
+          <select class="inp" id="a-d"></select>
+        </div>
+        <div class="checkline" id="a-leap-line" hidden>
+          <input type="checkbox" id="a-leap"><label for="a-leap">윤달입니다</label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="a-hour">태어난 시간</label>
+        <select class="inp" id="a-hour"></select>
+      </div>
+
+      <div class="field">
+        <label>성별</label>
+        <div class="seg" id="a-gender">
+          <button data-v="female" class="on">여성</button>
+          <button data-v="male">남성</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 상대방 입력 (2인 상품에서만) -->
+    <div class="card" id="partnerBox" hidden>
+      <div class="card-head"><span class="dot"></span><h2>상대방 사주 입력</h2><span class="who">두 번째 분</span></div>
+
+      <div class="field">
+        <label for="b-name">이름</label>
+        <input class="inp" id="b-name" type="text" placeholder="예) 이도윤" autocomplete="off" maxlength="20">
+      </div>
+
+      <div class="field">
+        <label>양력 / 음력</label>
+        <div class="seg" id="b-cal">
+          <button data-v="solar" class="on">양력</button>
+          <button data-v="lunar">음력</button>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>태어난 날짜</label>
+        <div class="row-3">
+          <select class="inp" id="b-y"></select>
+          <select class="inp" id="b-m"></select>
+          <select class="inp" id="b-d"></select>
+        </div>
+        <div class="checkline" id="b-leap-line" hidden>
+          <input type="checkbox" id="b-leap"><label for="b-leap">윤달입니다</label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="b-hour">태어난 시간</label>
+        <select class="inp" id="b-hour"></select>
+      </div>
+
+      <div class="field">
+        <label>성별</label>
+        <div class="seg" id="b-gender">
+          <button data-v="female">여성</button>
+          <button data-v="male" class="on">남성</button>
+        </div>
+      </div>
+    </div>
+
+    <button class="sample-btn" id="btnSample">가상 샘플로 한 번에 채우기</button>
+
+    <button class="cta" id="btnRun">결제 없이 바로 PDF 만들기</button>
+    <div class="cta-sub">누르면 사주 계산 → 미리보기 → PDF 저장까지 한 번에 진행됩니다</div>
+
+    <div class="err-box" id="errBox" hidden></div>
+
+    <!-- 결과 -->
+    <div id="result" hidden>
+      <div class="res-head"><h2>계산 결과 &amp; 책 미리보기</h2><span class="pill">결제 없음</span></div>
+      <div class="res-prod" id="resProd"></div>
+
+      <div class="card" id="sumCard" style="margin-top:10px"></div>
+
+      <div class="preview-shell">
+        <div class="preview-bar"><span>책 미리보기 · <b id="pvPages">0쪽</b></span><span>두 손가락으로 확대</span></div>
+        <div id="preview-frame"></div>
+      </div>
+
+      <div class="card dl-box">
+        <div class="dl-status" id="dlStatus">PDF를 만드는 중입니다…</div>
+        <a class="dl-btn" id="dlBtn" hidden download>📥 PDF 저장</a>
+        <button class="dl-btn ghost" id="dlAgain" hidden>🔄 다시 계산해서 뽑기</button>
+      </div>
+    </div>
+
+    <div class="foot-note">
+      이 페이지는 운명나침반 운영자 개인 테스트용입니다.<br>
+      검색 노출 차단(noindex) · PIN 잠금 · 사이트 어디에서도 링크되지 않음
+    </div>
+  </div>
+</div>
+
+<div id="pdf-stage" hidden></div>
+
+<div id="mask" hidden>
+  <div class="mask-brand">運命羅針盤</div>
+  <div class="mask-text" id="maskText">사주 여덟 글자를 세고 있습니다…</div>
+  <div class="bar"><i id="maskBar"></i></div>
+  <div class="mask-note" id="maskNote">잠시만 기다려 주세요</div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="js/saju-engine.js"></script>
+<script src="js/saju-book.js"></script>
+<script src="js/pdf-export.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  var PIN_CODE = '2397';
+  var AUTH_KEY = 'nb_studio_auth_v1';
+
+  var PRODUCTS = {
+    newyear: { name: '2027 신년운세 완전판 PDF 책', short: '신년운세' },
+    life: { name: '평생 대운 정밀 맞춤 PDF 책', short: '평생종합' },
+    child: { name: '자녀 기질·입시대운 맞춤 솔루션 PDF 책', short: '자녀기질' },
+    couple: { name: '2인 사주 & 평생 궁합 완전판 PDF 책', short: '2인궁합' }
+  };
+
+  var HOURS = [
+    ['unknown', '시간을 잘 몰라요 (삼주로 풀이)'],
+    ['0', '자시 (23:30 ~ 01:29)'],
+    ['2', '축시 (01:30 ~ 03:29)'],
+    ['4', '인시 (03:30 ~ 05:29)'],
+    ['6', '묘시 (05:30 ~ 07:29)'],
+    ['8', '진시 (07:30 ~ 09:29)'],
+    ['10', '사시 (09:30 ~ 11:29)'],
+    ['12', '오시 (11:30 ~ 13:29)'],
+    ['14', '미시 (13:30 ~ 15:29)'],
+    ['16', '신시 (15:30 ~ 17:29)'],
+    ['18', '유시 (17:30 ~ 19:29)'],
+    ['20', '술시 (19:30 ~ 21:29)'],
+    ['22', '해시 (21:30 ~ 23:29)']
+  ];
+
+  // 가상 샘플 (실제 인물 정보 아님)
+  var SAMPLE = {
+    a: { name: '김하늘', gender: 'female', cal: 'solar', y: '1990', m: '5', d: '14', hour: '10' },
+    b: { name: '이도윤', gender: 'male', cal: 'solar', y: '1988', m: '11', d: '2', hour: 'unknown' }
+  };
+
+  var $ = function (id) { return document.getElementById(id); };
+  var state = { product: 'newyear', a: { cal: 'solar', gender: 'female' }, b: { cal: 'solar', gender: 'male' } };
+  var lastUrl = null, lastFilename = '', generating = false;
+
+  /* ── PIN 잠금 ───────────────────────────────────── */
+  var pinBuf = '';
+
+  function paintDots() {
+    var dots = $('pinDots').children;
+    for (var i = 0; i < dots.length; i++) dots[i].classList.toggle('on', i < pinBuf.length);
+  }
+
+  function pinMsg(text, isHint) {
+    var el = $('pinMsg');
+    el.textContent = text;
+    el.className = 'pin-msg' + (isHint ? ' hint' : '');
+  }
+
+  function resetPin() { pinBuf = ''; paintDots(); }
+
+  function unlock() {
+    try { sessionStorage.setItem(AUTH_KEY, '1'); } catch (e) {}
+    $('gate').classList.add('out');
+    $('app').hidden = false;
+    window.scrollTo(0, 0);
+  }
+
+  function submitPin() {
+    if (pinBuf === PIN_CODE) {
+      pinMsg('확인되었습니다', true);
+      setTimeout(unlock, 120);
+      return;
+    }
+    $('pinDots').classList.add('shake');
+    pinMsg('PIN이 맞지 않습니다');
+    setTimeout(function () { $('pinDots').classList.remove('shake'); resetPin(); }, 420);
+  }
+
+  function pressKey(k) {
+    if (k === 'del') { pinBuf = pinBuf.slice(0, -1); paintDots(); return; }
+    if (k === 'clear') { resetPin(); return; }
+    if (!/^[0-9]$/.test(k)) return;
+    if (pinBuf.length >= 4) return;
+    pinBuf += k;
+    paintDots();
+    if (pinBuf.length === 4) setTimeout(submitPin, 130);
+  }
+
+  $('keypad').addEventListener('click', function (e) {
+    var btn = e.target.closest('button[data-k]');
+    if (!btn) return;
+    pressKey(btn.getAttribute('data-k'));
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if ($('gate').classList.contains('out')) return;
+    if (/^[0-9]$/.test(e.key)) pressKey(e.key);
+    else if (e.key === 'Backspace') pressKey('del');
+    else if (e.key === 'Escape') pressKey('clear');
+  });
+
+  $('btnLock').addEventListener('click', function () {
+    try { sessionStorage.removeItem(AUTH_KEY); } catch (e) {}
+    resetPin();
+    pinMsg('비공개 테스트 페이지입니다', true);
+    $('app').hidden = true;
+    $('gate').classList.remove('out');
+  });
+
+  /* ── 폼 구성 ────────────────────────────────────── */
+  function fillYears(sel) {
+    var html = '';
+    for (var y = 2026; y >= 1936; y--) html += '<option value="' + y + '">' + y + '년</option>';
+    sel.innerHTML = html;
+  }
+  function fillMonths(sel) {
+    var html = '';
+    for (var m = 1; m <= 12; m++) html += '<option value="' + m + '">' + m + '월</option>';
+    sel.innerHTML = html;
+  }
+  function fillDays(sel, y, m, keep) {
+    var last = new Date(Number(y), Number(m), 0).getDate();
+    var prev = keep ? Number(sel.value) : 1;
+    var html = '';
+    for (var d = 1; d <= last; d++) html += '<option value="' + d + '">' + d + '일</option>';
+    sel.innerHTML = html;
+    sel.value = String(Math.min(prev && prev <= last ? prev : 1, last));
+  }
+  function fillHours(sel) {
+    sel.innerHTML = HOURS.map(function (h) { return '<option value="' + h[0] + '">' + h[1] + '</option>'; }).join('');
+  }
+
+  function initPerson(p) {
+    fillYears($(p + '-y')); fillMonths($(p + '-m')); fillHours($(p + '-hour'));
+    $(p + '-y').value = '1990';
+    $(p + '-m').value = '5';
+    fillDays($(p + '-d'), '1990', '5', false);
+    $(p + '-y').addEventListener('change', function () { fillDays($(p + '-d'), this.value, $(p + '-m').value, true); });
+    $(p + '-m').addEventListener('change', function () { fillDays($(p + '-d'), $(p + '-y').value, this.value, true); });
+    $(p + '-cal').addEventListener('click', function (e) {
+      var btn = e.target.closest('button[data-v]');
+      if (!btn) return;
+      state[p].cal = btn.getAttribute('data-v');
+      Array.prototype.forEach.call(this.querySelectorAll('button'), function (b) { b.classList.toggle('on', b === btn); });
+      $(p + '-leap-line').hidden = state[p].cal !== 'lunar';
+    });
+    $(p + '-gender').addEventListener('click', function (e) {
+      var btn = e.target.closest('button[data-v]');
+      if (!btn) return;
+      state[p].gender = btn.getAttribute('data-v');
+      Array.prototype.forEach.call(this.querySelectorAll('button'), function (b) { b.classList.toggle('on', b === btn); });
+    });
+  }
+
+  initPerson('a');
+  initPerson('b');
+
+  /* 상품 탭 */
+  $('tabs').addEventListener('click', function (e) {
+    var tab = e.target.closest('.tab');
+    if (!tab) return;
+    state.product = tab.getAttribute('data-key');
+    Array.prototype.forEach.call(this.querySelectorAll('.tab'), function (t) { t.classList.toggle('active', t === tab); });
+    var isCouple = state.product === 'couple';
+    $('partnerBox').hidden = !isCouple;
+    $('whoA').textContent = isCouple ? '첫 번째 분' : '입력하실 분';
+    $('btnRun').textContent = '결제 없이 ' + PRODUCTS[state.product].short + ' PDF 만들기';
+    if (isCouple && !$('b-name').value) fillPerson('b', SAMPLE.b);
+  });
+
+  function fillPerson(p, d) {
+    $(p + '-name').value = d.name;
+    $(p + '-y').value = d.y; $(p + '-m').value = d.m;
+    fillDays($(p + '-d'), d.y, d.m, false);
+    $(p + '-d').value = d.d;
+    $(p + '-hour').value = d.hour;
+    state[p].cal = d.cal; state[p].gender = d.gender;
+    Array.prototype.forEach.call($(p + '-cal').querySelectorAll('button'), function (b) {
+      b.classList.toggle('on', b.getAttribute('data-v') === d.cal);
+    });
+    Array.prototype.forEach.call($(p + '-gender').querySelectorAll('button'), function (b) {
+      b.classList.toggle('on', b.getAttribute('data-v') === d.gender);
+    });
+    $(p + '-leap-line').hidden = d.cal !== 'lunar';
+    $(p + '-leap').checked = false;
+  }
+
+  $('btnSample').addEventListener('click', function () {
+    fillPerson('a', SAMPLE.a);
+    fillPerson('b', SAMPLE.b);
+    if (state.product !== 'couple') {
+      // 샘플은 1인/2인 둘 다 채워두고, 2인 탭으로 안내만 한다.
+      $('partnerBox').hidden = true;
+    }
+    showErr('');
+  });
+
+  function showErr(msg) {
+    var box = $('errBox');
+    if (!msg) { box.hidden = true; box.textContent = ''; return; }
+    box.hidden = false; box.textContent = msg;
+    box.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
+  function readPerson(p) {
+    var name = ($(p + '-name').value || '').trim();
+    var y = parseInt($(p + '-y').value, 10);
+    var m = parseInt($(p + '-m').value, 10);
+    var d = parseInt($(p + '-d').value, 10);
+    return {
+      name: name || (p === 'a' ? '테스트' : '상대방'),
+      gender: state[p].gender,
+      calendar: state[p].cal,
+      leap: !!(state[p].cal === 'lunar' && $(p + '-leap').checked),
+      year: y, month: m, day: d,
+      hour: $(p + '-hour').value
+    };
+  }
+
+  /* ── 사주 계산 + 책 생성 ─────────────────────────── */
+  function birthText(inp, calc) {
+    var hour = inp.hour === 'unknown' ? '시간 미상' :
+      ['자시', '축시', '인시', '묘시', '진시', '사시', '오시', '미시', '신시', '유시', '술시', '해시'][Math.floor(((Number(inp.hour) + 1) % 24) / 2)] + '경';
+    var cal = inp.calendar === 'lunar' ? '음력' : '양력';
+    var t = cal + ' ' + inp.year + '.' + inp.month + '.' + inp.day + (inp.leap ? '(윤달)' : '') + ' · ' + hour;
+    if (calc && calc.input && calc.input.converted) {
+      t += ' → 양력 ' + calc.input.solar.y + '.' + calc.input.solar.m + '.' + calc.input.solar.d;
+    }
+    return t;
+  }
+
+  var ELEM_KR = { wood: '목(木)', fire: '화(火)', earth: '토(土)', metal: '금(金)', water: '수(水)' };
+  var ELEM_ICON = { wood: '🌳', fire: '🔥', earth: '⛰️', metal: '⚔️', water: '🌊' };
+  var SCORE_KR = [['money', '재물'], ['job', '직업'], ['biz', '사업'], ['love', '애정'], ['marriage', '결혼'], ['health', '건강'], ['y2027', '2027']];
+
+  function scoreCells(calc) {
+    return SCORE_KR.map(function (s) {
+      var v = (calc.scores && calc.scores[s[0]]) || 0;
+      var cls = v >= 75 ? 'hi' : (v <= 45 ? 'low' : '');
+      return '<div class="score-cell"><span>' + s[1] + '</span><b class="' + cls + '">' + v + '</b></div>';
+    }).join('');
+  }
+
+  function elemBars(calc) {
+    var order = ['wood', 'fire', 'earth', 'metal', 'water'];
+    return order.map(function (e) {
+      var pc = calc.percents[e] || 0;
+      return '<div class="elem-row"><span class="nm">' + ELEM_ICON[e] + ' ' + ELEM_KR[e].slice(0, 1) + '</span>' +
+        '<span class="tr"><i style="width:' + Math.max(pc, 2) + '%"></i></span>' +
+        '<span class="pc">' + pc + '%</span></div>';
+    }).join('');
+  }
+
+  function currentDaeun(calc) {
+    var list = (calc.daeun && calc.daeun.list) || [];
+    var cur = null;
+    for (var i = 0; i < list.length; i++) if (list[i].current) { cur = list[i]; break; }
+    if (!cur) return '대운 시작 전';
+    return cur.gan + cur.ji + ' (' + cur.startAge + '~' + cur.endAge + '세)';
+  }
+
+  function personSummary(calc, inp, title) {
+    var over = (calc.elements.over || []).map(function (e) { return ELEM_KR[e]; }).join(', ') || '고른 편';
+    var zero = (calc.elements.zero || []).map(function (e) { return ELEM_KR[e]; }).join(', ') || '없음';
+    return '<div class="' + (title ? 'partner-sum' : '') + '">' +
+      (title ? '<div class="p-name">' + esc(title) + ' · ' + esc(calc.input.name) + ' 님</div>' : '') +
+      '<div class="sum-grid">' +
+      '<div class="sum-cell"><span>일주</span><b>' + calc.ilju + ' (' + esc(calc.ilganHangul || '') + ')</b></div>' +
+      '<div class="sum-cell"><span>강약</span><b>' + esc(calc.strength.label) + '</b></div>' +
+      '<div class="sum-cell"><span>많은 기운</span><b class="small">' + over + '</b></div>' +
+      '<div class="sum-cell"><span>비어 있는 기운</span><b class="small">' + zero + '</b></div>' +
+      '<div class="sum-cell"><span>현재 대운</span><b class="small">' + currentDaeun(calc) + '</b></div>' +
+      '<div class="sum-cell"><span>내 편</span><b>' + calc.strength.supportPct + '%</b></div>' +
+      '</div>' +
+      '<div class="elem-bar">' + elemBars(calc) + '</div>' +
+      '<div class="score-grid">' + scoreCells(calc) + '</div>' +
+      '<div class="hintline">' + esc(birthText(inp, calc)) + '</div>' +
+      '</div>';
+  }
+
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c];
+    });
+  }
+
+  function renderSummary(calc, inpA, partnerCalc, inpB) {
+    var html = personSummary(calc, inpA, '');
+    if (partnerCalc) {
+      var rel = [];
+      try { rel = window.SajuEngine.compatOf(calc.ilji, partnerCalc.ilji) || []; } catch (e) {}
+      html += '<div class="partner-sum"><div class="p-name">두 사람의 일지 관계</div>' +
+        '<div class="sum-grid"><div class="sum-cell" style="grid-column:1/-1"><span>' +
+        calc.ilji + ' ↔ ' + partnerCalc.ilji + '</span><b class="small">' +
+        (rel.length ? esc(rel.join(' / ')) : '두드러진 합·충 없음') + '</b></div></div></div>';
+      html += personSummary(partnerCalc, inpB, '두 번째 분');
+    }
+    $('sumCard').innerHTML = html;
+  }
+
+  function renderPreview(bookRoot, pageCount) {
+    var frame = $('preview-frame');
+    frame.innerHTML = '';
+    var clone = bookRoot.cloneNode(true);
+    clone.classList.add('preview-book');
+    var avail = (frame.clientWidth || 340) - 16;
+    var scale = Math.min(1, (avail - 2) / 794);
+    clone.style.transform = 'scale(' + scale + ')';
+    var holder = document.createElement('div');
+    holder.style.position = 'relative';
+    holder.style.width = Math.round(794 * scale) + 'px';
+    holder.appendChild(clone);
+    frame.appendChild(holder);
+    holder.style.height = Math.ceil(clone.getBoundingClientRect().height) + 'px';
+    $('pvPages').textContent = pageCount + '쪽';
+  }
+
+  function filenameFor(nameA, nameB, key) {
+    var d = new Date();
+    var stamp = d.getFullYear() + String(d.getMonth() + 1).padStart(2, '0') + String(d.getDate()).padStart(2, '0');
+    if (key === 'couple') return '운명나침반_테스트_' + nameA + '_' + nameB + '_2인궁합책_' + stamp + '.pdf';
+    return '운명나침반_테스트_' + nameA + '_' + PRODUCTS[key].short + '_' + stamp + '.pdf';
+  }
+
+  function setBar(pct) { $('maskBar').style.width = Math.max(4, Math.min(100, pct)) + '%'; }
+
+  async function run() {
+    if (generating) return;
+    showErr('');
+
+    var key = state.product;
+    var inpA = readPerson('a');
+    var inpB = readPerson('b');
+
+    if (!inpA.year || !inpA.month || !inpA.day) { showErr('태어난 날짜(년·월·일)를 모두 선택해 주세요.'); return; }
+    if (key === 'couple' && (!inpB.year || !inpB.month || !inpB.day)) { showErr('2인 상품은 상대방의 태어난 날짜도 필요합니다.'); return; }
+
+    generating = true;
+    $('btnRun').disabled = true;
+    $('result').hidden = true;
+
+    var mask = $('mask');
+    mask.hidden = false;
+    $('maskText').textContent = key === 'couple' ? '두 사람의 여덟 글자를 세고 있습니다…' : '사주 여덟 글자를 세고 있습니다…';
+    $('maskNote').textContent = '잠시만 기다려 주세요';
+    setBar(6);
+
+    var calc = null, partnerCalc = null, book = null;
+    try {
+      await new Promise(function (r) { setTimeout(r, 60); });
+
+      calc = window.SajuEngine.compute({
+        name: inpA.name, gender: inpA.gender, year: inpA.year, month: inpA.month, day: inpA.day,
+        calendar: inpA.calendar, leap: inpA.leap, hour: inpA.hour
+      });
+      if (!calc || calc.error || calc.ok === false) {
+        throw new Error(calc && calc.error === 'lunar_out_of_range'
+          ? '음력 생년월일이 지원 범위(1936~2030년)를 벗어났습니다. 날짜를 다시 확인해 주세요.'
+          : '사주 계산에 실패했습니다. 날짜를 다시 확인해 주세요.');
+      }
+
+      if (key === 'couple') {
+        partnerCalc = window.SajuEngine.compute({
+          name: inpB.name, gender: inpB.gender, year: inpB.year, month: inpB.month, day: inpB.day,
+          calendar: inpB.calendar, leap: inpB.leap, hour: inpB.hour
+        });
+        if (!partnerCalc || partnerCalc.error || partnerCalc.ok === false) {
+          throw new Error(partnerCalc && partnerCalc.error === 'lunar_out_of_range'
+            ? '상대방의 음력 생년월일이 지원 범위(1936~2030년)를 벗어났습니다.'
+            : '상대방 사주 계산에 실패했습니다. 날짜를 다시 확인해 주세요.');
+        }
+      }
+
+      setBar(14);
+      $('maskText').textContent = '책을 엮고 있습니다…';
+
+      var stage = $('pdf-stage');
+      stage.hidden = false;
+      stage.innerHTML = '';
+      book = window.SajuBook.build(calc, {
+        product: key,
+        productName: PRODUCTS[key].name,
+        partnerCalc: partnerCalc
+      });
+      stage.appendChild(book);
+
+      if (document.fonts && document.fonts.ready) { await document.fonts.ready; }
+      window.SajuBook.finish(book);
+
+      var pages = book.querySelectorAll('.pdf-page').length;
+      setBar(22);
+      $('maskText').textContent = '미리보기를 준비하고 있습니다…';
+
+      // 화면을 먼저 펼친 뒤에 미리보기를 그려야 크기를 제대로 잴 수 있다.
+      $('result').hidden = false;
+      renderSummary(calc, inpA, partnerCalc, inpB);
+      $('resProd').innerHTML = '<b>' + esc(PRODUCTS[key].name) + '</b> · ' +
+        esc(calc.input.name) + ' 님' + (partnerCalc ? ' × ' + esc(partnerCalc.input.name) + ' 님' : '');
+      renderPreview(book, pages);
+      $('dlStatus').className = 'dl-status';
+      $('dlStatus').textContent = 'PDF를 만드는 중입니다… (' + pages + '쪽)';
+      $('dlBtn').hidden = true;
+      $('dlAgain').hidden = true;
+      $('result').scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+      if (!window.PdfExport || !window.PdfExport.libsReady()) {
+        throw new Error('PDF 생성 모듈(html2canvas·jsPDF)을 불러오지 못했습니다. 네트워크를 확인한 뒤 다시 시도해 주세요.');
+      }
+
+      $('maskText').textContent = 'PDF 파일을 만들고 있습니다…';
+      $('maskNote').textContent = '페이지를 한 장씩 그립니다';
+      var res = await window.PdfExport.toPdf(book, {
+        scale: 1.5,
+        onProgress: function (done, total) {
+          setBar(22 + Math.round(done / total * 74));
+          $('maskText').textContent = done + ' / ' + total + '쪽 만드는 중…';
+        }
+      });
+
+      stage.hidden = true;
+      stage.innerHTML = '';
+
+      var fname = filenameFor(inpA.name, inpB.name, key);
+      if (lastUrl) { try { URL.revokeObjectURL(lastUrl); } catch (e) {} lastUrl = null; }
+      lastUrl = window.PdfExport.saveBlob(res.blob, fname);
+      lastFilename = fname;
+
+      setBar(100);
+      mask.hidden = true;
+
+      var mb = (res.blob.size / 1048576).toFixed(1);
+      $('dlStatus').className = 'dl-status ok';
+      $('dlStatus').innerHTML = '✅ ' + res.pages + '쪽 PDF(' + mb + 'MB)가 만들어졌습니다.<br>저장이 시작되지 않았다면 아래 버튼을 눌러 주세요.';
+      var btn = $('dlBtn');
+      btn.href = lastUrl;
+      btn.setAttribute('download', fname);
+      btn.textContent = '📥 PDF 저장 (' + res.pages + '쪽 · ' + mb + 'MB)';
+      btn.hidden = false;
+      $('dlAgain').hidden = false;
+      window.__nbStudioPdf = { pages: res.pages, bytes: res.blob.size, filename: fname };
+    } catch (err) {
+      console.error('studio failed', err);
+      $('mask').hidden = true;
+      var stage2 = $('pdf-stage');
+      stage2.hidden = true; stage2.innerHTML = '';
+      $('dlStatus').className = 'dl-status err';
+      $('dlStatus').textContent = 'PDF를 만들지 못했습니다.';
+      showErr((err && err.message) || 'PDF 생성 중 문제가 생겼습니다. 다시 시도해 주세요.');
+    } finally {
+      generating = false;
+      $('btnRun').disabled = false;
+    }
+  }
+
+  $('btnRun').addEventListener('click', run);
+  $('dlAgain').addEventListener('click', function () {
+    $('result').hidden = true;
+    run();
+  });
+
+  /* ── 시작 ───────────────────────────────────────── */
+  var authed = false;
+  try { authed = sessionStorage.getItem(AUTH_KEY) === '1'; } catch (e) {}
+  if (authed) {
+    $('gate').classList.add('out');
+    $('app').hidden = false;
+  } else {
+    resetPin();
+    pinMsg('비공개 테스트 페이지입니다', true);
+  }
+})();
+</script>
+</body>
+</html>
