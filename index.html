@@ -502,6 +502,99 @@
       font-weight: 700;
     }
 
+    /* 결제 금액 영역: 모바일에서 '39,900원'이 줄바꿈되지 않게 */
+    #res-discount-rate,
+    #res-price-original,
+    #res-price-final { white-space: nowrap; }
+
+    .upsell-card .price-summary { gap: 10px; }
+
+    /* 두 번째 분(상대방) 입력 카드 */
+    .partner-card {
+      background: rgba(15, 23, 42, 0.92);
+      border: 1px solid rgba(212, 175, 55, 0.35);
+      border-radius: 16px;
+      padding: 18px 16px 20px;
+      margin-top: 14px;
+      text-align: left;
+    }
+
+    .partner-card[hidden] { display: none; }
+
+    .partner-step {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 14px;
+      font-weight: 800;
+      color: #f3e5ab;
+      margin-bottom: 8px;
+    }
+
+    .partner-step .step-no {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: rgba(212, 175, 55, 0.18);
+      border: 1px solid rgba(212, 175, 55, 0.45);
+      font-size: 11px;
+      color: #f3e5ab;
+    }
+
+    .partner-self {
+      font-size: 12.5px;
+      line-height: 1.65;
+      color: #cbd5e1;
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 10px;
+      padding: 10px 12px;
+    }
+
+    .partner-divider {
+      height: 1px;
+      background: rgba(255, 255, 255, 0.1);
+      margin: 16px 0;
+    }
+
+    .partner-lead {
+      font-size: 12px;
+      line-height: 1.65;
+      color: #94a3b8;
+      margin: 0 0 14px;
+      word-break: keep-all;
+    }
+
+    .partner-card .form-group { margin-bottom: 14px; }
+    .partner-card .form-group:last-child { margin-bottom: 0; }
+
+    .partner-leap {
+      display: none;
+      align-items: center;
+      gap: 6px;
+      font-size: 12.5px;
+      color: #cbd5e1;
+      margin-bottom: 8px;
+      cursor: pointer;
+    }
+
+    .partner-leap.show { display: flex; }
+    .partner-hour-chk.show { display: flex; }
+
+    .partner-leap input[type="checkbox"] {
+      width: 15px;
+      height: 15px;
+      accent-color: #d4af37;
+      cursor: pointer;
+    }
+
+    .date-select:disabled {
+      opacity: 0.4;
+    }
+
     /* Submit Button */
     .btn-submit {
       width: 100%;
@@ -1959,6 +2052,68 @@
         </div>
       </div>
 
+      <!-- 두 번째 분(상대방) 입력 · 39,900원 '2인 사주 & 평생 궁합'에서만 열립니다 -->
+      <div id="partner-form" class="partner-card" hidden>
+        <div class="partner-step"><span class="step-no">①</span> 첫 번째 분 (본인)</div>
+        <div class="partner-self" id="partner-self-summary">위에서 입력하신 생년월일시로 첫 번째 사주를 계산합니다.</div>
+
+        <div class="partner-divider"></div>
+
+        <div class="partner-step"><span class="step-no">②</span> 두 번째 분 (상대방)</div>
+        <p class="partner-lead">궁합 책은 두 사람의 사주를 함께 계산합니다. 상대방의 생년월일을 입력해 주세요.</p>
+
+        <div class="form-group">
+          <label class="form-label" for="partner-name">이름 또는 애칭 (선택)</label>
+          <input type="text" id="partner-name" class="input-text" placeholder="상대방 애칭 (선택)">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">태어난 날짜</label>
+          <div class="date-row" style="margin-bottom: 8px;">
+            <button type="button" class="radio-btn active" id="partner-btn-solar">양력</button>
+            <button type="button" class="radio-btn" id="partner-btn-lunar">음력</button>
+          </div>
+          <label id="partner-leap-row" class="partner-leap">
+            <input type="checkbox" id="partner-chk-leap"> 음력 윤달(閏月)에 태어났어요
+          </label>
+          <div class="date-row">
+            <select id="partner-birth-year" class="date-select"></select>
+            <select id="partner-birth-month" class="date-select"></select>
+            <select id="partner-birth-day" class="date-select"></select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">태어난 시간</label>
+          <label class="partner-leap partner-hour-chk show">
+            <input type="checkbox" id="partner-chk-hour-unknown" checked> 출생시간을 몰라요 (모르면 체크)
+          </label>
+          <select id="partner-birth-time" class="date-select" disabled style="display: none;">
+            <option value="unknown">시간을 잘 몰라요 (삼주로 풀이)</option>
+            <option value="0">자시 (23:30 ~ 01:29)</option>
+            <option value="2">축시 (01:30 ~ 03:29)</option>
+            <option value="4">인시 (03:30 ~ 05:29)</option>
+            <option value="6">묘시 (05:30 ~ 07:29)</option>
+            <option value="8">진시 (07:30 ~ 09:29)</option>
+            <option value="10">사시 (09:30 ~ 11:29)</option>
+            <option value="12">오시 (11:30 ~ 13:29)</option>
+            <option value="14">미시 (13:30 ~ 15:29)</option>
+            <option value="16">신시 (15:30 ~ 17:29)</option>
+            <option value="18">유시 (17:30 ~ 19:29)</option>
+            <option value="20">술시 (19:30 ~ 21:29)</option>
+            <option value="22">해시 (21:30 ~ 23:29)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">성별</label>
+          <div class="radio-row">
+            <button type="button" class="radio-btn" id="partner-btn-female">여성</button>
+            <button type="button" class="radio-btn" id="partner-btn-male">남성</button>
+          </div>
+        </div>
+      </div>
+
     <!-- Upsell Card -->
     <div class="upsell-card">
       <span class="upsell-badge" id="res-upsell-badge">🚨 2027년에도 똑같이 피눈물 흘리시겠습니까?</span>
@@ -2242,11 +2397,132 @@
     this.classList.add('active');
     document.getElementById('btn-male').classList.remove('active');
     selectedGender = 'female';
+    updatePartnerSelfSummary();
   });
   document.getElementById('btn-male').addEventListener('click', function() {
     this.classList.add('active');
     document.getElementById('btn-female').classList.remove('active');
     selectedGender = 'male';
+    updatePartnerSelfSummary();
+  });
+
+  // ── 두 번째 분(상대방) 입력 ──────────────────────────────────
+  // 39,900원 '2인 사주 & 평생 궁합 완전판'을 골랐을 때만 열린다.
+  const pYear = document.getElementById('partner-birth-year');
+  const pMonth = document.getElementById('partner-birth-month');
+  const pDay = document.getElementById('partner-birth-day');
+  const pTime = document.getElementById('partner-birth-time');
+
+  function fillSelect(sel, items, defLabel) {
+    if (!sel) return;
+    const def = document.createElement('option');
+    def.value = '';
+    def.textContent = defLabel;
+    def.disabled = true;
+    def.selected = true;
+    sel.appendChild(def);
+    items.forEach(function(x) {
+      const opt = document.createElement('option');
+      opt.value = x.value;
+      opt.textContent = x.label;
+      sel.appendChild(opt);
+    });
+  }
+
+  (function initPartnerSelects() {
+    const years = [];
+    for (let y = 2026; y >= 1940; y--) years.push({ value: y, label: y + '년' });
+    const months = [];
+    for (let m = 1; m <= 12; m++) months.push({ value: m, label: m + '월' });
+    const days = [];
+    for (let d = 1; d <= 31; d++) days.push({ value: d, label: d + '일' });
+    fillSelect(pYear, years, '년도 선택');
+    fillSelect(pMonth, months, '월 선택');
+    fillSelect(pDay, days, '일 선택');
+  })();
+
+  let partnerGender = null;
+  let partnerCalendar = 'solar';
+  let partnerLeap = false;
+
+  const pLeapRow = document.getElementById('partner-leap-row');
+  const pLeapChk = document.getElementById('partner-chk-leap');
+  document.getElementById('partner-btn-solar').addEventListener('click', function() {
+    this.classList.add('active');
+    document.getElementById('partner-btn-lunar').classList.remove('active');
+    partnerCalendar = 'solar';
+    partnerLeap = false;
+    if (pLeapRow) pLeapRow.classList.remove('show');
+    if (pLeapChk) pLeapChk.checked = false;
+  });
+  document.getElementById('partner-btn-lunar').addEventListener('click', function() {
+    this.classList.add('active');
+    document.getElementById('partner-btn-solar').classList.remove('active');
+    partnerCalendar = 'lunar';
+    if (pLeapRow) pLeapRow.classList.add('show');
+  });
+  if (pLeapChk) {
+    pLeapChk.addEventListener('change', function() { partnerLeap = !!this.checked; });
+  }
+
+  document.getElementById('partner-btn-female').addEventListener('click', function() {
+    this.classList.add('active');
+    document.getElementById('partner-btn-male').classList.remove('active');
+    partnerGender = 'female';
+  });
+  document.getElementById('partner-btn-male').addEventListener('click', function() {
+    this.classList.add('active');
+    document.getElementById('partner-btn-female').classList.remove('active');
+    partnerGender = 'male';
+  });
+
+  const pHourUnknown = document.getElementById('partner-chk-hour-unknown');
+  if (pHourUnknown) {
+    pHourUnknown.addEventListener('change', function() {
+      if (pTime) {
+        pTime.disabled = !!this.checked;
+        pTime.style.display = this.checked ? 'none' : '';
+        if (this.checked) pTime.value = 'unknown';
+      }
+    });
+  }
+
+  // 상품 탭에서 2인 상품을 골랐는지에 따라 상대방 입력칸을 연다.
+  function updatePartnerVisibility() {
+    const box = document.getElementById('partner-form');
+    if (!box) return;
+    const isCouple = currentProductKey === 'couple';
+    box.hidden = !isCouple;
+    if (isCouple) updatePartnerSelfSummary();
+  }
+
+  function hourLabelOf(v) {
+    if (v === 'unknown' || v === '' || v === null || v === undefined) return '시간 미상';
+    const names = ['자시','축시','인시','묘시','진시','사시','오시','미시','신시','유시','술시','해시'];
+    return names[Math.floor(((Number(v) + 1) % 24) / 2)] + '경';
+  }
+
+  function updatePartnerSelfSummary() {
+    const el = document.getElementById('partner-self-summary');
+    if (!el) return;
+    const nm = (document.getElementById('user-name').value || '').trim();
+    const y = selYear.value, m = selMonth.value, d = selDay.value;
+    if (!y || !m || !d) {
+      el.textContent = '위 입력창의 생년월일시로 첫 번째 사주를 계산합니다.';
+      return;
+    }
+    const hour = document.getElementById('birth-time').value;
+    el.textContent = (nm || '본인') + ' · ' +
+      (selectedCalendarType === 'lunar' ? '음력 ' : '양력 ') +
+      y + '.' + m + '.' + d + (selectedLeapMonth ? '(윤달)' : '') + ' · ' + hourLabelOf(hour) +
+      (selectedGender ? ' · ' + (selectedGender === 'female' ? '여성' : '남성') : '');
+  }
+
+  ['change', 'input'].forEach(function(ev) {
+    ['user-name', 'birth-year', 'birth-month', 'birth-day', 'birth-time'].forEach(function(id) {
+      const el = document.getElementById(id);
+      if (el) el.addEventListener(ev, updatePartnerSelfSummary);
+    });
   });
 
   // Saju Manse력 Engine
@@ -2386,6 +2662,9 @@
     if (tocBox && p.toc) {
       tocBox.innerHTML = p.toc.map(item => `<div class="toc-item">${item}</div>`).join('');
     }
+
+    // 39,900원 2인 궁합 상품에서만 상대방 입력칸을 연다.
+    if (typeof updatePartnerVisibility === 'function') updatePartnerVisibility();
   }
 
   // ── PortOne V2 · KG이니시스 결제 ───────────────────────────────
@@ -2445,6 +2724,39 @@
       return;
     }
 
+    // 2인 궁합 상품은 상대방 사주 정보가 있어야 책을 만들 수 있습니다.
+    let partnerRecord = null;
+    if (currentProductKey === 'couple') {
+      const pNameVal = (document.getElementById('partner-name').value || '').trim();
+      const pYB = parseInt(pYear.value, 10) || 0;
+      const pMB = parseInt(pMonth.value, 10) || 0;
+      const pDB = parseInt(pDay.value, 10) || 0;
+      const partnerBox = document.getElementById('partner-form');
+      if (!pYB || !pMB || !pDB) {
+        alert('2인 궁합 책은 두 번째 분(상대방)의 태어난 날짜도 필요합니다.');
+        if (partnerBox) partnerBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        if (pYear) pYear.focus();
+        return;
+      }
+      if (!partnerGender) {
+        alert('두 번째 분(상대방)의 성별을 선택해 주세요.');
+        if (partnerBox) partnerBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+      partnerRecord = {
+        name: pNameVal,
+        gender: partnerGender,
+        birth: {
+          y: pYB,
+          m: pMB,
+          d: pDB,
+          calendar: partnerCalendar,
+          leap: !!partnerLeap,
+          hour: (pHourUnknown && pHourUnknown.checked) ? 'unknown' : (pTime.value || 'unknown')
+        }
+      };
+    }
+
     const paymentId = createPaymentId(currentProductKey);
     const orderRecord = {
       paymentId: paymentId,
@@ -2464,6 +2776,7 @@
         leap: !!selectedLeapMonth,
         hour: document.getElementById('birth-time').value
       },
+      partner: partnerRecord,
       createdAt: new Date().toISOString()
     };
 

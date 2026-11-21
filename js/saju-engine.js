@@ -289,7 +289,13 @@
   var JI_SAMHAP = ['申子辰', '亥卯未', '寅午戌', '巳酉丑'];
 
   function pairKey(a, b) {
-    return [a, b].sort().join('');
+    // 지지·천간은 글자 코드순이 아니라 각 배열의 순서(子丑寅…/甲乙丙…)로 정렬해야
+    // '子午'(충)·'子丑'(육합)·'寅亥'(육합)처럼 표에 적힌 짝이 그대로 맞는다.
+    var ia = JI.indexOf(a), ib = JI.indexOf(b);
+    if (ia >= 0 && ib >= 0) return ia <= ib ? a + b : b + a;
+    var ga = GAN.indexOf(a), gb = GAN.indexOf(b);
+    if (ga >= 0 && gb >= 0) return ga <= gb ? a + b : b + a;
+    return a < b ? a + b : b + a;
   }
 
   function relationOf(a, b) {
@@ -300,6 +306,61 @@
     if (JI_YUKHAP[pk]) rel.push('육합(' + JI_YUKHAP[pk] + ')');
     if (JI_SAMHAP.some(function (s) { return s.indexOf(a) >= 0 && s.indexOf(b) >= 0; })) rel.push('삼합 인연');
     return rel;
+  }
+
+  // ── 2인 궁합용 관계 계산 (형·파·해 포함) ─────────────────────────
+  // 기존 relationOf()는 1인 책(세운·월운)에서 쓰이므로 그대로 두고,
+  // 두 사람의 지지를 맞세우는 궁합 계산에만 아래 표를 따로 쓴다.
+  function pairSet(list) {
+    var o = {};
+    list.forEach(function (p) { o[pairKey(p.charAt(0), p.charAt(1))] = 1; });
+    return o;
+  }
+  var JI_HYUNG_SET = pairSet(['寅巳', '巳申', '丑戌', '戌未', '子卯']);
+  var JI_HYUNG_SELF = ['辰', '午', '酉', '亥'];
+  var JI_PA_SET = pairSet(['子酉', '卯午', '辰丑', '未戌', '寅亥', '巳申']);
+  var JI_HAE_SET = pairSet(['子未', '丑午', '寅巳', '卯辰', '申亥', '酉戌']);
+  var GAN_CHUNG_SET = pairSet(['甲庚', '乙辛', '丙壬', '丁癸']);
+
+  /**
+   * 두 지지 사이의 관계(합·충·형·파·해)를 모두 돌려준다.
+   * @returns {string[]} 예: ['육합(토)'], ['충(沖)', '해(害)']
+   */
+  function compatOf(a, b) {
+    var rel = [];
+    if (!a || !b) return rel;
+    var pk = pairKey(a, b);
+    if (a === b) {
+      if (JI_HYUNG_SELF.indexOf(a) >= 0) rel.push('자형(自刑)');
+      return rel;
+    }
+    if (JI_YUKHAP[pk]) rel.push('육합(' + JI_YUKHAP[pk] + ')');
+    if (JI_SAMHAP.some(function (s) { return s.indexOf(a) >= 0 && s.indexOf(b) >= 0; })) rel.push('삼합(반합)');
+    if (JI_CHUNG.indexOf(pk) >= 0) rel.push('충(沖)');
+    if (JI_HYUNG_SET[pk]) rel.push('형(刑)');
+    if (JI_PA_SET[pk]) rel.push('파(破)');
+    if (JI_HAE_SET[pk]) rel.push('해(害)');
+    return rel;
+  }
+
+  /**
+   * 두 천간 사이의 관계(오합·충·동일)를 돌려준다.
+   */
+  function ganRelation(a, b) {
+    var rel = [];
+    if (!a || !b) return rel;
+    var pk = pairKey(a, b);
+    if (a === b) { rel.push('같은 천간'); return rel; }
+    if (GAN_HAP[pk]) rel.push('천간합(' + GAN_HAP[pk] + ')');
+    if (GAN_CHUNG_SET[pk]) rel.push('천간충(沖)');
+    return rel;
+  }
+
+  /** 특정 날짜의 일진(日辰) 간지를 돌려준다. 궁합 '화해 날짜' 계산에 쓴다. */
+  function dayPillar(y, m, d) {
+    var jdn = getJulianDay(y, m, d);
+    var idx = ((jdn + 49) % 60 + 60) % 60;
+    return { gan: GAN[idx % 10], ji: JI[idx % 12], ganElem: ELEM_OF_GAN[GAN[idx % 10]], jiElem: ELEM_OF_JI[JI[idx % 12]] };
   }
 
   // ── 대운 기산수 ────────────────────────────────────────────────
@@ -608,7 +669,9 @@
     if (cntWealth >= 2) sLove += 6;
     sLove = Math.max(38, Math.min(96, Math.round(sLove + ((month * 2 + day) % 7) - 3)));
 
-    var clashWithDay = relationOf(dJi, JI[(JI.indexOf(dJi) + 6) % 12]).indexOf('충(沖)') >= 0;
+    // 일지가 다른 기둥(년·월·시)의 지지와 충하는지로 본다.
+    // (예전에는 일지의 반대 궁을 비교해 모든 사주가 충으로 계산되는 문제가 있었다.)
+    var clashWithDay = jiList.some(function (b) { return b.ji !== dJi && relationOf(dJi, b.ji).indexOf('충(沖)') >= 0; });
     var sMarriage = 58;
     if (clashWithDay) sMarriage -= 18; else sMarriage += 12;
     if (cntSelf >= 3) sMarriage -= 8;
@@ -704,10 +767,19 @@
     getSolarLongitude: getSolarLongitude,
     getJulianDay: getJulianDay,
     getShipshin: getShipshin,
+    compatOf: compatOf,
+    ganRelation: ganRelation,
+    dayPillar: dayPillar,
     GAN: GAN, JI: JI,
     ELEM_OF_GAN: ELEM_OF_GAN, ELEM_OF_JI: ELEM_OF_JI,
     ELEM_KR: ELEM_KR, ELEM_ICON: ELEM_ICON, ELEM_ORDER: ELEM_ORDER,
     JIGANGAN: JIGANGAN,
+    MAIN_STEM_OF_JI: MAIN_STEM_OF_JI,
+    MOTHER_OF: MOTHER_OF,
+    DRAIN_OF: DRAIN_OF,
+    WEALTH_OF: WEALTH_OF,
+    OFFICER_OF: OFFICER_OF,
+    GAN_HAP: GAN_HAP,
     LUNAR_RANGE: [LUNAR_START_YEAR, LUNAR_START_YEAR + LUNAR_TABLE.length - 1]
   };
 })(typeof window !== 'undefined' ? window : this);
